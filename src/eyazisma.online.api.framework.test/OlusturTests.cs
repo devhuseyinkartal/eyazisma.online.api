@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;

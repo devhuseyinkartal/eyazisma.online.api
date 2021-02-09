@@ -1,9 +1,9 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Interfaces.Fluents
+namespace eyazisma.online.api.Interfaces.Fluents
 {
     public interface IUstveriV1XFluent
     {

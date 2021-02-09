@@ -1,4 +1,4 @@
-﻿namespace eyazisma.online.api.framework.Classes
+﻿namespace eyazisma.online.api.Classes
 {
     public sealed class Referans
     {

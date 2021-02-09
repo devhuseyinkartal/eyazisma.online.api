@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using System;
 using System.IO;
 using System.IO.Packaging;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace eyazisma.online.api.framework.Extensions
+namespace eyazisma.online.api.Extensions
 {
     internal static class PackageExtensions
     {

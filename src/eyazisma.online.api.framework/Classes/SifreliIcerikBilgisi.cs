@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Classes
+namespace eyazisma.online.api.Classes
 {
     /// <summary>
     /// Şifreleme yöntemi bilgileridir.

@@ -1,7 +1,7 @@
-﻿using eyazisma.online.api.framework.Interfaces.Fluents;
+﻿using eyazisma.online.api.Interfaces.Fluents;
 using System;
 
-namespace eyazisma.online.api.framework.Classes
+namespace eyazisma.online.api.Classes
 {
     /// <summary>
     /// Tüzel şahıs bilgisidir.

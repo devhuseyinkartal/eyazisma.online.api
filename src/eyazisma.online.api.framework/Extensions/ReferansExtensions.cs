@@ -1,9 +1,9 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Extensions
+namespace eyazisma.online.api.Extensions
 {
     public static partial class ReferansExtensions
     {

@@ -1,8 +1,8 @@
-﻿using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Classes
+namespace eyazisma.online.api.Classes
 {
 
     public sealed class DogrulamaHatasi

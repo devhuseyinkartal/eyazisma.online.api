@@ -1,4 +1,4 @@
-﻿namespace eyazisma.online.api.framework.Api.V1X
+﻿namespace eyazisma.online.api.Api.V1X
 {
     internal enum OzetModu
     {

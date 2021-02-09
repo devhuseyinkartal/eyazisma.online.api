@@ -1,8 +1,8 @@
-﻿using eyazisma.online.api.framework.Classes;
+﻿using eyazisma.online.api.Classes;
 using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Interfaces.Fluents
+namespace eyazisma.online.api.Interfaces.Fluents
 {
     public interface INihaiUstveriFluent : IDisposable,
                                             INihaiUstveriFluentTarih,

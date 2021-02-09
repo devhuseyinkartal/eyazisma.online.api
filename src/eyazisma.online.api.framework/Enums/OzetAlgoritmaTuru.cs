@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace eyazisma.online.api.framework.Enums
+namespace eyazisma.online.api.Enums
 {
     /// <summary>
     /// Özet algoritma türünü belirtir.

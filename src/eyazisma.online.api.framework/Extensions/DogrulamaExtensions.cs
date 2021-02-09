@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +8,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace eyazisma.online.api.framework.Extensions
+namespace eyazisma.online.api.Extensions
 {
     public static class DogrulamaExtensions
     {

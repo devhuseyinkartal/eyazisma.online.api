@@ -1,9 +1,9 @@
-﻿using eyazisma.online.api.framework.Classes;
+﻿using eyazisma.online.api.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace eyazisma.online.api.framework.Interfaces
+namespace eyazisma.online.api.Interfaces
 {
     public interface ISifreliPaket : ISifreliPaketOlustur,
                               ISifreliPaketOku,

@@ -1,7 +1,7 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
-using eyazisma.online.api.framework.Extensions;
-using eyazisma.online.api.framework.Interfaces;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
+using eyazisma.online.api.Extensions;
+using eyazisma.online.api.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace eyazisma.online.api.framework
+namespace eyazisma.online.api
 {
     /// <summary>
     /// E-Yazışma Teknik Rehberi Sürümlerine uygun şekilde şifreli paket işlemlerinin gerçekleştirilmesi için kullanılır.

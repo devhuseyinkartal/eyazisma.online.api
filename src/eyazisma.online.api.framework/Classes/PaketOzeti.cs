@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Classes
+namespace eyazisma.online.api.Classes
 {
     /// <summary>
     /// İmzalanacak paket bileşenlerinin özet değerleridir. 

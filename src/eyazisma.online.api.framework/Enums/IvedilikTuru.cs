@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eyazisma.online.api.framework.Enums
+namespace eyazisma.online.api.Enums
 {
     /// <summary>
     /// Dağıtıma ait ivedilik türünü belirtir. 

@@ -1,4 +1,4 @@
-﻿namespace eyazisma.online.api.framework.Enums
+﻿namespace eyazisma.online.api.Enums
 {
     /// <summary>
     /// Ekin türünü belirtir.

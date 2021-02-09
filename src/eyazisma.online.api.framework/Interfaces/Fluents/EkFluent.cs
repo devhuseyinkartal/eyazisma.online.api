@@ -1,6 +1,6 @@
-﻿using eyazisma.online.api.framework.Classes;
+﻿using eyazisma.online.api.Classes;
 
-namespace eyazisma.online.api.framework.Interfaces.Fluents
+namespace eyazisma.online.api.Interfaces.Fluents
 {
     public interface IEkDEDFluent
     {

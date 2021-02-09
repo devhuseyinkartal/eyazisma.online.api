@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO.Packaging;
 
-namespace eyazisma.online.api.framework
+namespace eyazisma.online.api
 {
     internal static class Constants
     {

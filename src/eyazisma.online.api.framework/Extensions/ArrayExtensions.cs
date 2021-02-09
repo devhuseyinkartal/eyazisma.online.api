@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace eyazisma.online.api.framework.Extensions
+namespace eyazisma.online.api.Extensions
 {
     internal static class ArrayExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace eyazisma.online.api.framework.Extensions
+namespace eyazisma.online.api.Extensions
 {
     internal static class StringExtensions
     {

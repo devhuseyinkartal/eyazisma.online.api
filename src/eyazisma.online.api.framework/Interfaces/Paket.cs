@@ -1,10 +1,10 @@
-﻿using eyazisma.online.api.framework.Classes;
-using eyazisma.online.api.framework.Enums;
+﻿using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace eyazisma.online.api.framework.Interfaces
+namespace eyazisma.online.api.Interfaces
 {
     public interface IPaket : IPaketOlustur,
                               IPaketOku,

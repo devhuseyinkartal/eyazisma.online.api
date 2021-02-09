@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace eyazisma.online.api.framework.Api.V1X
+namespace eyazisma.online.api.Api.V1X
 {
     [Serializable()]
     [XmlType(Namespace = "urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2")]

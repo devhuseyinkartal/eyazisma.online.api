@@ -1,8 +1,8 @@
-﻿using eyazisma.online.api.framework.Interfaces.Fluents;
+﻿using eyazisma.online.api.Interfaces.Fluents;
 using System;
 using System.Collections.Generic;
 
-namespace eyazisma.online.api.framework.Classes
+namespace eyazisma.online.api.Classes
 {
     /// <summary>
     /// Sadece belgenin son imzasını alması sırasında belirlenebilen, belgeye ilişkin kimlik bilgileridir.
