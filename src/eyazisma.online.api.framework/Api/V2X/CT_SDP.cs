@@ -1,0 +1,19 @@
+﻿using System;
+using System.Xml.Serialization;
+
+namespace eyazisma.online.api.framework.Api.V2X
+{
+    [Serializable()]
+    [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2")]
+    public sealed class CT_SDP
+    {
+        [XmlElement(Order = 0)]
+        public string Kod { get; set; }
+
+        [XmlElement(Order = 1)]
+        public string Ad { get; set; }
+
+        [XmlElement(Order = 2)]
+        public string Aciklama { get; set; }
+    }
+}

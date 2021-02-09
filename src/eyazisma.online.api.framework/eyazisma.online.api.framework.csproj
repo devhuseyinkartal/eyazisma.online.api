@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{45558ED4-2B9A-486D-AC23-BB1133474299}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eyazisma.online.api.framework</RootNamespace>
+    <AssemblyName>eyazisma.online.api.framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\V1X\CT_BelgeHedef.cs" />
+    <Compile Include="Api\V1X\CT_BelgeImza.cs" />
+    <Compile Include="Api\V1X\CT_Dagitim.cs" />
+    <Compile Include="Api\V1X\CT_DigestMethod.cs" />
+    <Compile Include="Api\V1X\CT_Ek.cs" />
+    <Compile Include="Api\V1X\CT_GercekSahis.cs" />
+    <Compile Include="Api\V1X\CT_Hedef.cs" />
+    <Compile Include="Api\V1X\CT_Id.cs" />
+    <Compile Include="Api\V1X\CT_IletisimBilgisi.cs" />
+    <Compile Include="Api\V1X\CT_Ilgi.cs" />
+    <Compile Include="Api\V1X\CT_Ilgili.cs" />
+    <Compile Include="Api\V1X\CT_Imza.cs" />
+    <Compile Include="Api\V1X\CT_Kisi.cs" />
+    <Compile Include="Api\V1X\CT_KonulmamisEk.cs" />
+    <Compile Include="Api\V1X\CT_KurumKurulus.cs" />
+    <Compile Include="Api\V1X\CT_NihaiOzet.cs" />
+    <Compile Include="Api\V1X\CT_Olusturan.cs" />
+    <Compile Include="Api\V1X\CT_Ozet.cs" />
+    <Compile Include="Api\V1X\CT_OzetAlgoritmasi.cs" />
+    <Compile Include="Api\V1X\CT_PaketOzeti.cs" />
+    <Compile Include="Api\V1X\CT_Reference.cs" />
+    <Compile Include="Api\V1X\CT_SifreliIcerikBilgisi.cs" />
+    <Compile Include="Api\V1X\CT_TuzelSahis.cs" />
+    <Compile Include="Api\V1X\CT_Ustveri.cs" />
+    <Compile Include="Api\V1X\IdentifierType.cs" />
+    <Compile Include="Api\V1X\NameType.cs" />
+    <Compile Include="Api\V1X\OzetModu.cs" />
+    <Compile Include="Api\V1X\ST_KodDagitimTuru.cs" />
+    <Compile Include="Api\V1X\ST_KodEkTuru.cs" />
+    <Compile Include="Api\V1X\ST_KodGuvenlikKodu.cs" />
+    <Compile Include="Api\V1X\ST_KodIvedilik.cs" />
+    <Compile Include="Api\V1X\TextType.cs" />
+    <Compile Include="Api\V2X\CT_BelgeHedef.cs" />
+    <Compile Include="Api\V2X\CT_Dagitim.cs" />
+    <Compile Include="Api\V2X\CT_DigestItem.cs" />
+    <Compile Include="Api\V2X\CT_DigestMethod.cs" />
+    <Compile Include="Api\V2X\CT_DogrulamaBilgisi.cs" />
+    <Compile Include="Api\V2X\CT_Ek.cs" />
+    <Compile Include="Api\V2X\CT_GercekSahis.cs" />
+    <Compile Include="Api\V2X\CT_Hedef.cs" />
+    <Compile Include="Api\V2X\CT_HEYSK.cs" />
+    <Compile Include="Api\V2X\CT_Id.cs" />
+    <Compile Include="Api\V2X\CT_IletisimBilgisi.cs" />
+    <Compile Include="Api\V2X\CT_Ilgi.cs" />
+    <Compile Include="Api\V2X\CT_Ilgili.cs" />
+    <Compile Include="Api\V2X\CT_Imza.cs" />
+    <Compile Include="Api\V2X\CT_Kisi.cs" />
+    <Compile Include="Api\V2X\CT_KonulmamisEk.cs" />
+    <Compile Include="Api\V2X\CT_KurumKurulus.cs" />
+    <Compile Include="Api\V2X\CT_NihaiOzet.cs" />
+    <Compile Include="Api\V2X\CT_NihaiUstveri.cs" />
+    <Compile Include="Api\V2X\CT_Olusturan.cs" />
+    <Compile Include="Api\V2X\CT_Ozet.cs" />
+    <Compile Include="Api\V2X\CT_OzetAlgoritmasi.cs" />
+    <Compile Include="Api\V2X\CT_PaketOzeti.cs" />
+    <Compile Include="Api\V2X\CT_ParafOzeti.cs" />
+    <Compile Include="Api\V2X\CT_Reference.cs" />
+    <Compile Include="Api\V2X\CT_SDP.cs" />
+    <Compile Include="Api\V2X\CT_SDPBilgisi.cs" />
+    <Compile Include="Api\V2X\CT_SifreliIcerikBilgisi.cs" />
+    <Compile Include="Api\V2X\CT_TuzelSahis.cs" />
+    <Compile Include="Api\V2X\CT_Ustveri.cs" />
+    <Compile Include="Api\V2X\IdentifierType.cs" />
+    <Compile Include="Api\V2X\NameType.cs" />
+    <Compile Include="Api\V2X\OzetModu.cs" />
+    <Compile Include="Api\V2X\ST_KodDagitimTuru.cs" />
+    <Compile Include="Api\V2X\ST_KodEkTuru.cs" />
+    <Compile Include="Api\V2X\ST_KodGuvenlikKodu.cs" />
+    <Compile Include="Api\V2X\ST_KodIvedilik.cs" />
+    <Compile Include="Api\V2X\TextType.cs" />
+    <Compile Include="Classes\BelgeHedef.cs" />
+    <Compile Include="Classes\BelgeImza.cs" />
+    <Compile Include="Classes\Dagitim.cs" />
+    <Compile Include="Classes\DogrulamaHatasi.cs" />
+    <Compile Include="Classes\Ek.cs" />
+    <Compile Include="Classes\EkDosya.cs" />
+    <Compile Include="Classes\SDPBilgisi.cs" />
+    <Compile Include="Classes\PaketOzeti.cs" />
+    <Compile Include="Classes\ParafOzeti.cs" />
+    <Compile Include="Classes\NihaiOzet.cs" />
+    <Compile Include="Classes\Olusturan.cs" />
+    <Compile Include="Classes\HEYSK.cs" />
+    <Compile Include="Classes\Ilgi.cs" />
+    <Compile Include="Classes\Ilgili.cs" />
+    <Compile Include="Classes\NihaiUstveri.cs" />
+    <Compile Include="Classes\Ozet.cs" />
+    <Compile Include="Classes\OzetAlgoritmasi.cs" />
+    <Compile Include="Classes\DogrulamaBilgisi.cs" />
+    <Compile Include="Classes\GercekSahis.cs" />
+    <Compile Include="Classes\Hedef.cs" />
+    <Compile Include="Classes\SDP.cs" />
+    <Compile Include="Classes\SifreliIcerikBilgisi.cs" />
+    <Compile Include="Classes\TanimlayiciTip.cs" />
+    <Compile Include="Classes\IdTip.cs" />
+    <Compile Include="Classes\IletisimBilgisi.cs" />
+    <Compile Include="Classes\Imza.cs" />
+    <Compile Include="Classes\Kisi.cs" />
+    <Compile Include="Classes\KonulmamisEk.cs" />
+    <Compile Include="Classes\KurumKurulus.cs" />
+    <Compile Include="Classes\IsimTip.cs" />
+    <Compile Include="Classes\Referans.cs" />
+    <Compile Include="Classes\MetinTip.cs" />
+    <Compile Include="Classes\TuzelSahis.cs" />
+    <Compile Include="Classes\Ustveri.cs" />
+    <Compile Include="Classes\UstYazi.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Enums\DogrulamaHataTuru.cs" />
+    <Compile Include="Enums\GuvenlikKoduTuru.cs" />
+    <Compile Include="Enums\OzetAlgoritmaTuru.cs" />
+    <Compile Include="Enums\DagitimTuru.cs" />
+    <Compile Include="Enums\EkTuru.cs" />
+    <Compile Include="Enums\IvedilikTuru.cs" />
+    <Compile Include="Enums\PaketModuTuru.cs" />
+    <Compile Include="Enums\PaketVersiyonTuru.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\ConversionExtensions.cs" />
+    <Compile Include="Extensions\PackageExtensions.cs" />
+    <Compile Include="Extensions\ReferansExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\DogrulamaExtensions.cs" />
+    <Compile Include="Interfaces\Fluents\BelgeHedefFluent.cs" />
+    <Compile Include="Interfaces\Fluents\BelgeImzaFluent.cs" />
+    <Compile Include="Interfaces\Fluents\DagitimFluent.cs" />
+    <Compile Include="Interfaces\Fluents\EkFluent.cs" />
+    <Compile Include="Interfaces\Fluents\UstveriFluent.cs" />
+    <Compile Include="Interfaces\Fluents\UstYaziFluent.cs" />
+    <Compile Include="Interfaces\Fluents\EkDosyaFluent.cs" />
+    <Compile Include="Interfaces\Fluents\SDPBilgisiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\OlusturanFluent.cs" />
+    <Compile Include="Interfaces\Fluents\IlgiliFluent.cs" />
+    <Compile Include="Interfaces\Fluents\HEYSKFluent.cs" />
+    <Compile Include="Interfaces\Fluents\IlgiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\KurumKurulusFluent.cs" />
+    <Compile Include="Interfaces\Fluents\NihaiUstveriFluent.cs" />
+    <Compile Include="Interfaces\Fluents\OzetFluent.cs" />
+    <Compile Include="Interfaces\Fluents\OzetAlgoritmasiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\DogrulamaBilgisiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\GercekSahisFluent.cs" />
+    <Compile Include="Interfaces\Fluents\HedefFluent.cs" />
+    <Compile Include="Interfaces\Fluents\SDPFluent.cs" />
+    <Compile Include="Interfaces\Fluents\TanimlayiciTipFluent.cs" />
+    <Compile Include="Interfaces\Fluents\IdTipFluent.cs" />
+    <Compile Include="Interfaces\Fluents\IletisimBilgisiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\ImzaFluent.cs" />
+    <Compile Include="Interfaces\Fluents\KisiFluent.cs" />
+    <Compile Include="Interfaces\Fluents\KonulmamisEkFluent.cs" />
+    <Compile Include="Interfaces\Fluents\IsimTipFluent.cs" />
+    <Compile Include="Interfaces\Fluents\MetinTipFluent.cs" />
+    <Compile Include="Interfaces\Fluents\TuzelSahisFluent.cs" />
+    <Compile Include="Interfaces\Paket.cs" />
+    <Compile Include="Interfaces\SifreliPaket.cs" />
+    <Compile Include="Paket.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SifreliPaket.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
