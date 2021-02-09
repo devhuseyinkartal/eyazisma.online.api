@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.0.0</Version>
+    <Authors>Hüseyin KARTAL</Authors>
+    <Company>eyazisma.online</Company>
+    <Description>E-Yazışma Teknik Rehberinin tüm sürümlerine uygun şekilde e-yazışma paketi oluşturmak, güncellemek ve okumak için hazırlanmış bir yardımcı kütüphanedir.</Description>
+    <Copyright>Copyright © 2021</Copyright>
+    <PackageProjectUrl>http://eyazisma.online</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/devhuseyinkartal/eyazisma.online.api</RepositoryUrl>
+    <Product>eyazisma.online.api</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>

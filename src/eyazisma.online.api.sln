@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eyazisma.online.api.framewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eyazisma.online.api.framework.test", "eyazisma.online.api.framework.test\eyazisma.online.api.framework.test.csproj", "{30FD0BCC-36E9-474A-AE3F-A2C135AFB117}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eyazisma.online.api.standard", "eyazisma.online.api.standard\eyazisma.online.api.standard.csproj", "{22F841F9-AB2C-4AFE-80E5-F8508DD2A7BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{30FD0BCC-36E9-474A-AE3F-A2C135AFB117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30FD0BCC-36E9-474A-AE3F-A2C135AFB117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30FD0BCC-36E9-474A-AE3F-A2C135AFB117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F841F9-AB2C-4AFE-80E5-F8508DD2A7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F841F9-AB2C-4AFE-80E5-F8508DD2A7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F841F9-AB2C-4AFE-80E5-F8508DD2A7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F841F9-AB2C-4AFE-80E5-F8508DD2A7BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
