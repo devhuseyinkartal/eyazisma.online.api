@@ -378,7 +378,7 @@ namespace eyazisma.online.api.Extensions
 
         public static bool ParafOzetiExists(this Package package) => package.PartExists(Constants.URI_PARAFOZETI);
 
-        public static Stream GetParafOzetiStream(this Package package) => package.PaketOzetiExists() ? package.GetPart(Constants.URI_PARAFOZETI).GetStream() : null;
+        public static Stream GetParafOzetiStream(this Package package) => package.ParafOzetiExists() ? package.GetPart(Constants.URI_PARAFOZETI).GetStream() : null;
 
         public static void DeleteParafOzeti(this Package package)
         {
