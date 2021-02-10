@@ -93,8 +93,8 @@ Dagitim.Kilavuz
                                           .IlceIle(IsimTip.Kilavuz.DegerAta("ÇANKAYA").Olustur())
                                           .IlIle(IsimTip.Kilavuz.DegerAta("ANKARA").Olustur())
                                           .UlkeIle(IsimTip.Kilavuz.DegerAta("TÜRKİYE").Olustur())
-									      .Olustur())
-	   .IvedilikTuruAta(IvedilikTuru.NRM)
+					  .Olustur())
+       .IvedilikTuruAta(IvedilikTuru.NRM)
        .DagitimTuruAta(DagitimTuru.GRG)
        .Olustur();
 ```
