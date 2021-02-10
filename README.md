@@ -10,7 +10,7 @@ sürümlerinde belirtilen kriterlere uygun şekilde e-yazışma paketi oluşturm
 * .NET Framework 4.5
 * .NET Standard 2.0
 
-ile kodlanmış iki sürüme sahiptir.
+ile kodlanmış iki release sahiptir.
 
 eyazisma.online.api Apache Lisansı, Sürüm 2.0 koşullarına riayet ederek kullanılabilir.
 
