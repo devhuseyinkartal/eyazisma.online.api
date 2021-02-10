@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("eyazisma.online.api")]
+[assembly: AssemblyTitle("eyazisma.online.api.framework")]
 [assembly: AssemblyDescription("E-Yazışma Teknik Rehberinin tüm sürümlerine uygun şekilde e-yazışma paketi oluşturmak, güncellemek ve okumak için hazırlanmış bir yardımcı kütüphanedir.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("eyazisma.online")]
