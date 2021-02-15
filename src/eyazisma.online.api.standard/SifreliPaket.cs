@@ -31,35 +31,33 @@ namespace eyazisma.online.api
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Yeni bir şifreli paket oluşturmak için kullanılır.
+        /// </summary>
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        public static ISifreliPaketOlustur Olustur(Stream sifreliPaketStream)
         {
-            if (_stream != null)
-            {
-                _stream.Close();
-                _stream.Dispose();
-            }
+            if (sifreliPaketStream == null)
+                sifreliPaketStream = new MemoryStream();
 
-            GC.SuppressFinalize(this);
+            return new SifreliPaket(sifreliPaketStream, PaketModuTuru.Olustur);
         }
 
         /// <summary>
         /// Yeni bir şifreli paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketOlustur Olustur(Stream paketStream) =>
-            new SifreliPaket(paketStream, PaketModuTuru.Olustur);
-
-        /// <summary>
-        /// Yeni bir şifreli paket oluşturmak için kullanılır.
-        /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketOlustur Olustur(string paketDosyaYolu)
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketOlustur Olustur(string sifreliPaketDosyaYolu)
         {
-            if (File.Exists(paketDosyaYolu))
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+
+            if (File.Exists(sifreliPaketDosyaYolu))
             {
-                try { File.Delete(paketDosyaYolu); } catch { }
+                try { File.Delete(sifreliPaketDosyaYolu); } catch { }
             }
-            return new SifreliPaket(File.Open(paketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
+            return new SifreliPaket(File.Open(sifreliPaketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
         }
 
         public ISifreliPaketV1XOlustur Versiyon1X()
@@ -75,16 +73,30 @@ namespace eyazisma.online.api
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketOku Oku(Stream paketStream) =>
-            new SifreliPaket(paketStream, PaketModuTuru.Oku);
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketOku Oku(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
+                throw new ArgumentNullException(nameof(sifreliPaketStream), nameof(sifreliPaketStream) + " boş olmamalıdır.");
+            return new SifreliPaket(sifreliPaketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketOku Oku(string paketDosyaYolu) =>
-            new SifreliPaket(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static ISifreliPaketOku Oku(string sifreliPaketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(sifreliPaketDosyaYolu))
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+
+            return new SifreliPaket(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// SifreliPaket ait bileşenlerin verilerinin alınması için kullanılır.
@@ -99,7 +111,6 @@ namespace eyazisma.online.api
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 SifreliPaketV1X.Oku(_stream).BilesenleriAl(action).Kapat();
-            Dispose();
             return this;
         }
 
@@ -112,46 +123,87 @@ namespace eyazisma.online.api
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Şifreli pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public void Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
+        public ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon2X)
                 SifreliPaketV2X.Oku(_stream).BilesenleriAl(action).Kapat();
-            Dispose();
+            return this;
         }
 
         /// <summary>
         /// Varolan bir şifreli paketin versiyon bilgisini almak için kullanılır.
         /// </summary>
         /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        /// <returns>Şifreli paket versiyon bilgisidir.</returns>
+        /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
         public static PaketVersiyonTuru SifreliPaketVersiyonuAl(Stream sifreliPaketStream)
         {
-            using (Package package = Package.Open(sifreliPaketStream, FileMode.Open, FileAccess.Read))
-                return package.GetPaketVersiyon();
+            if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
+                throw new ArgumentNullException(nameof(sifreliPaketStream), nameof(sifreliPaketStream) + " boş olmamalıdır.");
+            sifreliPaketStream.Position = 0;
+            return Package.Open(sifreliPaketStream, FileMode.Open, FileAccess.Read).GetPaketVersiyon();
         }
 
         /// <summary>
         /// Varolan bir şifreli paketin versiyon bilgisini almak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static PaketVersiyonTuru SifreliPaketVersiyonuAl(string paketDosyaYolu) =>
-            SifreliPaketVersiyonuAl(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read));
-
-        /// <summary>
-        /// Varolan bir şifreli pakete ait şifreli içerik bilgisini almak için kullanılır.
-        /// </summary>
-        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static Stream SifreliIcerikAl(Stream sifreliPaketStream)
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <returns>Şifreli paket versiyon bilgisidir.</returns>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static PaketVersiyonTuru SifreliPaketVersiyonuAl(string sifreliPaketDosyaYolu)
         {
-            using (Package package = Package.Open(sifreliPaketStream, FileMode.Open, FileAccess.Read))
-                return package.GetSifreliIcerikStream();
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(sifreliPaketDosyaYolu))
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+
+            return SifreliPaketVersiyonuAl(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read));
         }
 
         /// <summary>
         /// Varolan bir şifreli pakete ait şifreli içerik bilgisini almak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static Stream SifreliIcerikAl(string paketDosyaYolu) =>
-            SifreliIcerikAl(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read));
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        /// <returns>Şifreli içerik bilgisisidir.</returns>
+        /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static Stream SifreliIcerikAl(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
+                throw new ArgumentNullException(nameof(sifreliPaketStream), nameof(sifreliPaketStream) + " boş olmamalıdır.");
+            sifreliPaketStream.Position = 0;
+            return Package.Open(sifreliPaketStream, FileMode.Open, FileAccess.Read).GetSifreliIcerikStream();
+        }
+
+        /// <summary>
+        /// Varolan bir şifreli pakete ait şifreli içerik bilgisini almak için kullanılır.
+        /// </summary>
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <returns>Şifreli içerik bilgisisidir.</returns>
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static Stream SifreliIcerikAl(string sifreliPaketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(sifreliPaketDosyaYolu))
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+
+            return SifreliIcerikAl(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read));
+        }
+
+        public void Kapat() => Dispose();
+
+        public void Dispose()
+        {
+            if (_stream != null)
+            {
+                _stream.Close();
+                _stream.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 
     /// <summary>
@@ -167,10 +219,12 @@ namespace eyazisma.online.api
         /// Şifreli paketin iletileceği hedefleri barındıran nesneye ulaşılır.
         /// </summary>
         public BelgeHedef BelgeHedef { get; set; }
+
         /// <summary>
         /// Şifreli paket içerisindeki BelgeHedef bileşenini STREAM olarak verir.
         /// </summary>
         public Stream BelgeHedefAl() => _package.GetBelgeHedefStream();
+
         /// <summary>
         /// Şifreli paket içerisindeki BelgeHedef bileşeninin olup olmadığını gösterir.
         /// </summary>
@@ -180,10 +234,12 @@ namespace eyazisma.online.api
         /// Şifreli paket içerisinde imzalanan bileşenlere ait özet bilgilerinin bulunduğu nesneye ulaşılır.
         /// </summary>
         public PaketOzeti PaketOzeti { get; set; }
+
         /// <summary>
         /// Şifreli paket içerisindeki PaketOzeti bileşenini STREAM olarak verir.
         /// </summary>
         public Stream PaketOzetiAl() => _package.GetPaketOzetiStream();
+
         /// <summary>
         /// Şifreli paket içerisindeki PaketOzeti bileşeninin olup olmadığını gösterir.
         /// </summary>
@@ -211,6 +267,8 @@ namespace eyazisma.online.api
 
         private SifreliPaketV1X(Stream stream, PaketModuTuru paketModu)
         {
+            _dogrulamaHatalari = new List<DogrulamaHatasi>();
+            _paketModu = paketModu;
             switch (paketModu)
             {
                 case PaketModuTuru.Oku:
@@ -455,21 +513,29 @@ namespace eyazisma.online.api
         /// <summary>
         /// Yeni bir şifreli paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketV1XOlustur Olustur(Stream paketStream) =>
-                new SifreliPaketV1X(paketStream, PaketModuTuru.Olustur);
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        public static ISifreliPaketV1XOlustur Olustur(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null)
+                sifreliPaketStream = new MemoryStream();
+            return new SifreliPaketV1X(sifreliPaketStream, PaketModuTuru.Olustur);
+        }
 
         /// <summary>
         /// Yeni bir şifreli paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketV1XOlustur Olustur(string paketDosyaYolu)
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV1XOlustur Olustur(string sifreliPaketDosyaYolu)
         {
-            if (File.Exists(paketDosyaYolu))
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+
+            if (File.Exists(sifreliPaketDosyaYolu))
             {
-                try { File.Delete(paketDosyaYolu); } catch { }
+                try { File.Delete(sifreliPaketDosyaYolu); } catch { }
             }
-            return new SifreliPaketV1X(File.Open(paketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
+            return new SifreliPaketV1X(File.Open(sifreliPaketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
         }
 
         /// <summary>
@@ -557,7 +623,7 @@ namespace eyazisma.online.api
                     });
 
                 if (!KritikHataExists())
-                    _package.AddSifreliIcerik(sifreliIcerikStream, paketId);
+                    _package.AddSifreliIcerik(sifreliIcerikStream, paketId, PaketVersiyonTuru.Versiyon1X);
             }
 
             return this;
@@ -606,6 +672,14 @@ namespace eyazisma.online.api
         /// </summary>
         public ISifreliPaketV1XOlusturBilesen BilesenleriOlustur()
         {
+            if (BelgeHedef != null && BelgeHedef != new BelgeHedef())
+            {
+                if (_paketModu == PaketModuTuru.Guncelle)
+                    _package.DeleteBelgeHedef();
+
+                _package.GenerateBelgeHedef(BelgeHedef, PaketVersiyonTuru.Versiyon1X);
+            }
+
             SifreliIcerikBilgisi.Id = "";
             SifreliIcerikBilgisi.URI = new List<string> { Constants.SIFRELEME_YONTEMI_URI_1, Constants.SIFRELEME_YONTEMI_URI_2 };
             SifreliIcerikBilgisi.Yontem = Constants.SIFRELEME_YONTEMI;
@@ -619,9 +693,8 @@ namespace eyazisma.online.api
             _package.PackageProperties.Category = Constants.SIFRELI_PAKET_KATEGORI;
             _package.PackageProperties.ContentType = Constants.PAKET_MIMETURU;
             _package.PackageProperties.Version = Constants.PAKET_VERSIYON_V1X;
-            _package.PackageProperties.Revision = string.Format(Constants.PAKET_REVIZYON, System.Reflection.Assembly.GetAssembly(typeof(Paket)).GetName().Version);
+            _package.PackageProperties.Revision = string.Format(Constants.PAKET_REVIZYON, System.Reflection.Assembly.GetAssembly(typeof(SifreliPaket)).GetName().Version);
 
-            _package.Flush();
             return this;
         }
 
@@ -642,16 +715,29 @@ namespace eyazisma.online.api
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketV1XOku Oku(Stream paketStream) =>
-            new SifreliPaketV1X(paketStream, PaketModuTuru.Oku);
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV1XOku Oku(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
+                throw new ArgumentNullException(nameof(sifreliPaketStream), nameof(sifreliPaketStream) + " boş olmamalıdır.");
+            return new SifreliPaketV1X(sifreliPaketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketV1XOku Oku(string paketDosyaYolu) =>
-            new SifreliPaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV1XOku Oku(string sifreliPaketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(sifreliPaketDosyaYolu))
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new SifreliPaketV1X(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Şifreli pakete ait bileşenlerin verilerinin alınması için kullanılır.
@@ -664,7 +750,7 @@ namespace eyazisma.online.api
         /// </param>
         public ISifreliPaketV1XOkuBilesenAl BilesenleriAl(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
-            bilesenAction.Invoke(!KritikHataExists(), this, _dogrulamaHatalari);
+            bilesenAction.Invoke(KritikHataExists(), this, _dogrulamaHatalari);
             return this;
         }
 
@@ -674,6 +760,7 @@ namespace eyazisma.online.api
         {
             if (_package != null)
                 _package.Close();
+
             GC.SuppressFinalize(this);
         }
 
@@ -694,10 +781,12 @@ namespace eyazisma.online.api
         /// Şifreli paketin iletileceği hedefleri barındıran nesneye ulaşılır.
         /// </summary>
         public BelgeHedef BelgeHedef { get; set; }
+
         /// <summary>
         /// Şifreli paket içerisindeki BelgeHedef bileşenini STREAM olarak verir.
         /// </summary>
         public Stream BelgeHedefAl() => _package.GetBelgeHedefStream();
+
         /// <summary>
         /// Şifreli paket içerisindeki BelgeHedef bileşeninin olup olmadığını gösterir.
         /// </summary>
@@ -707,10 +796,12 @@ namespace eyazisma.online.api
         /// Şifreli paket içerisinde imzalanan bileşenlere ait özet bilgilerinin bulunduğu nesneye ulaşılır.
         /// </summary>
         public NihaiOzet NihaiOzet { get; set; }
+
         /// <summary>
         /// Şifreli paket içerisindeki NihaiOzet bileşenini STREAM olarak verir.
         /// </summary>
         public Stream NihaiOzetAl() => _package.GetNihaiOzetStream();
+
         /// <summary>
         /// Şifreli paket içerisindeki NihaiOzet bileşeninin olup olmadığını gösterir.
         /// </summary>
@@ -738,6 +829,8 @@ namespace eyazisma.online.api
 
         private SifreliPaketV2X(Stream stream, PaketModuTuru paketModu)
         {
+            _dogrulamaHatalari = new List<DogrulamaHatasi>();
+            _paketModu = paketModu;
             switch (paketModu)
             {
                 case PaketModuTuru.Oku:
@@ -888,21 +981,29 @@ namespace eyazisma.online.api
         /// <summary>
         /// Yeni bir şifreli paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketV2XOlustur Olustur(Stream paketStream) =>
-                new SifreliPaketV2X(paketStream, PaketModuTuru.Olustur);
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        public static ISifreliPaketV2XOlustur Olustur(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null)
+                sifreliPaketStream = new MemoryStream();
+            return new SifreliPaketV2X(sifreliPaketStream, PaketModuTuru.Olustur);
+        }
 
         /// <summary>
         /// Yeni bir şifreli paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketV2XOlustur Olustur(string paketDosyaYolu)
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV2XOlustur Olustur(string sifreliPaketDosyaYolu)
         {
-            if (File.Exists(paketDosyaYolu))
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+
+            if (File.Exists(sifreliPaketDosyaYolu))
             {
-                try { File.Delete(paketDosyaYolu); } catch { }
+                try { File.Delete(sifreliPaketDosyaYolu); } catch { }
             }
-            return new SifreliPaketV2X(File.Open(paketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
+            return new SifreliPaketV2X(File.Open(sifreliPaketDosyaYolu, FileMode.OpenOrCreate, FileAccess.ReadWrite), PaketModuTuru.Olustur);
         }
 
         /// <summary>
@@ -990,7 +1091,7 @@ namespace eyazisma.online.api
                     });
 
                 if (!KritikHataExists())
-                    _package.AddSifreliIcerik(sifreliIcerikStream, paketId);
+                    _package.AddSifreliIcerik(sifreliIcerikStream, paketId, PaketVersiyonTuru.Versiyon2X);
             }
 
             return this;
@@ -1039,6 +1140,14 @@ namespace eyazisma.online.api
         /// </summary>
         public ISifreliPaketV2XOlusturBilesen BilesenleriOlustur()
         {
+            if (BelgeHedef != null && BelgeHedef != new BelgeHedef())
+            {
+                if (_paketModu == PaketModuTuru.Guncelle)
+                    _package.DeleteBelgeHedef();
+
+                _package.GenerateBelgeHedef(BelgeHedef, PaketVersiyonTuru.Versiyon2X);
+            }
+
             SifreliIcerikBilgisi.Id = "";
             SifreliIcerikBilgisi.URI = new List<string> { Constants.SIFRELEME_YONTEMI_URI_1, Constants.SIFRELEME_YONTEMI_URI_2 };
             SifreliIcerikBilgisi.Yontem = Constants.SIFRELEME_YONTEMI;
@@ -1052,9 +1161,8 @@ namespace eyazisma.online.api
             _package.PackageProperties.Category = Constants.SIFRELI_PAKET_KATEGORI;
             _package.PackageProperties.ContentType = Constants.PAKET_MIMETURU;
             _package.PackageProperties.Version = Constants.PAKET_VERSIYON_V2X;
-            _package.PackageProperties.Revision = string.Format(Constants.PAKET_REVIZYON, System.Reflection.Assembly.GetAssembly(typeof(Paket)).GetName().Version);
+            _package.PackageProperties.Revision = string.Format(Constants.PAKET_REVIZYON, System.Reflection.Assembly.GetAssembly(typeof(SifreliPaket)).GetName().Version);
 
-            _package.Flush();
             return this;
         }
 
@@ -1075,16 +1183,29 @@ namespace eyazisma.online.api
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        public static ISifreliPaketV2XOku Oku(Stream paketStream) =>
-            new SifreliPaketV2X(paketStream, PaketModuTuru.Oku);
+        /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV2XOku Oku(Stream sifreliPaketStream)
+        {
+            if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
+                throw new ArgumentNullException(nameof(sifreliPaketStream), nameof(sifreliPaketStream) + " boş olmamalıdır.");
+            return new SifreliPaketV2X(sifreliPaketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir şifreli paketi okumak için kullanılır.
         /// </summary>
-        /// <param name="paketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        public static ISifreliPaketV2XOku Oku(string paketDosyaYolu) =>
-            new SifreliPaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static ISifreliPaketV2XOku Oku(string sifreliPaketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
+                throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(sifreliPaketDosyaYolu))
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new SifreliPaketV2X(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Şifreli pakete ait bileşenlerin verilerinin alınması için kullanılır.
@@ -1097,7 +1218,7 @@ namespace eyazisma.online.api
         /// </param>
         public ISifreliPaketV2XOkuBilesenAl BilesenleriAl(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
-            bilesenAction.Invoke(!KritikHataExists(), this, _dogrulamaHatalari);
+            bilesenAction.Invoke(KritikHataExists(), this, _dogrulamaHatalari);
             return this;
         }
 

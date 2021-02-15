@@ -1196,7 +1196,7 @@ namespace eyazisma.online.api.Extensions
             else
             {
                 var nihaiOzetV1X = new Api.V1X.CT_NihaiOzet();
-                nihaiOzetV1X.Id = nihaiOzet.Id.ToString();
+                nihaiOzetV1X.Id = nihaiOzet.Id.ToString().ToUpperInvariant();
                 if (nihaiOzet.Referanslar != null && nihaiOzet.Referanslar.Count > 0)
                     nihaiOzet.Referanslar.ForEach((referans) => { nihaiOzetV1X.Reference = nihaiOzetV1X.Reference.Add(referans.ToV1XCT_Reference()); });
 
@@ -1211,7 +1211,7 @@ namespace eyazisma.online.api.Extensions
             else
             {
                 var nihaiOzetV2X = new Api.V2X.CT_NihaiOzet();
-                nihaiOzetV2X.Id = nihaiOzet.Id.ToString();
+                nihaiOzetV2X.Id = nihaiOzet.Id.ToString().ToUpperInvariant();
                 if (nihaiOzet.Referanslar != null && nihaiOzet.Referanslar.Count > 0)
                     nihaiOzet.Referanslar.ForEach((referans) => { nihaiOzetV2X.Reference = nihaiOzetV2X.Reference.Add(referans.ToV2XCT_Reference()); });
 
@@ -1458,69 +1458,69 @@ namespace eyazisma.online.api.Extensions
                 };
         }
 
-        public static Api.V1X.CT_PaketOzeti ToV1XCT_PaketOzeti(this PaketOzeti PaketOzeti)
+        public static Api.V1X.CT_PaketOzeti ToV1XCT_PaketOzeti(this PaketOzeti paketOzeti)
         {
-            if (PaketOzeti == null)
+            if (paketOzeti == null)
                 return null;
             else
             {
-                var PaketOzetiV1X = new Api.V1X.CT_PaketOzeti();
-                PaketOzetiV1X.Id = PaketOzeti.Id.ToString();
-                if (PaketOzeti.Referanslar != null && PaketOzeti.Referanslar.Count > 0)
-                    PaketOzeti.Referanslar.ForEach((referans) => { PaketOzetiV1X.Reference = PaketOzetiV1X.Reference.Add(referans.ToV1XCT_Reference()); });
+                var paketOzetiV1X = new Api.V1X.CT_PaketOzeti();
+                paketOzetiV1X.Id = paketOzeti.Id.ToString().ToUpperInvariant();
+                if (paketOzeti.Referanslar != null && paketOzeti.Referanslar.Count > 0)
+                    paketOzeti.Referanslar.ForEach((referans) => { paketOzetiV1X.Reference = paketOzetiV1X.Reference.Add(referans.ToV1XCT_Reference()); });
 
-                return PaketOzetiV1X;
+                return paketOzetiV1X;
             }
         }
 
-        public static Api.V2X.CT_PaketOzeti ToV2XCT_PaketOzeti(this PaketOzeti PaketOzeti)
+        public static Api.V2X.CT_PaketOzeti ToV2XCT_PaketOzeti(this PaketOzeti paketOzeti)
         {
-            if (PaketOzeti == null)
+            if (paketOzeti == null)
                 return null;
             else
             {
-                var PaketOzetiV2X = new Api.V2X.CT_PaketOzeti();
-                PaketOzetiV2X.Id = PaketOzeti.Id.ToString();
-                if (PaketOzeti.Referanslar != null && PaketOzeti.Referanslar.Count > 0)
-                    PaketOzeti.Referanslar.ForEach((referans) => { PaketOzetiV2X.Reference = PaketOzetiV2X.Reference.Add(referans.ToV2XCT_Reference()); });
+                var paketOzetiV2X = new Api.V2X.CT_PaketOzeti();
+                paketOzetiV2X.Id = paketOzeti.Id.ToString().ToUpperInvariant();
+                if (paketOzeti.Referanslar != null && paketOzeti.Referanslar.Count > 0)
+                    paketOzeti.Referanslar.ForEach((referans) => { paketOzetiV2X.Reference = paketOzetiV2X.Reference.Add(referans.ToV2XCT_Reference()); });
 
-                return PaketOzetiV2X;
+                return paketOzetiV2X;
             }
         }
 
-        public static PaketOzeti ToPaketOzeti(this Api.V1X.CT_PaketOzeti PaketOzetiV1X)
+        public static PaketOzeti ToPaketOzeti(this Api.V1X.CT_PaketOzeti paketOzetiV1X)
         {
-            if (PaketOzetiV1X == null)
+            if (paketOzetiV1X == null)
                 return null;
             else
             {
-                var PaketOzeti = new PaketOzeti();
-                PaketOzeti.Id = Guid.Parse(PaketOzetiV1X.Id);
-                if (PaketOzetiV1X.Reference != null && PaketOzetiV1X.Reference.Length > 0)
+                var paketOzeti = new PaketOzeti();
+                paketOzeti.Id = Guid.Parse(paketOzetiV1X.Id);
+                if (paketOzetiV1X.Reference != null && paketOzetiV1X.Reference.Length > 0)
                 {
-                    PaketOzeti.Referanslar = new List<Referans>();
-                    Array.ForEach(PaketOzetiV1X.Reference, (reference) => { PaketOzeti.Referanslar.Add(reference.ToReferans()); });
+                    paketOzeti.Referanslar = new List<Referans>();
+                    Array.ForEach(paketOzetiV1X.Reference, (reference) => { paketOzeti.Referanslar.Add(reference.ToReferans()); });
                 }
 
-                return PaketOzeti;
+                return paketOzeti;
             }
         }
 
-        public static PaketOzeti ToPaketOzeti(this Api.V2X.CT_PaketOzeti PaketOzetiV2X)
+        public static PaketOzeti ToPaketOzeti(this Api.V2X.CT_PaketOzeti paketOzetiV2X)
         {
-            if (PaketOzetiV2X == null)
+            if (paketOzetiV2X == null)
                 return null;
             else
             {
-                var PaketOzeti = new PaketOzeti();
-                PaketOzeti.Id = Guid.Parse(PaketOzetiV2X.Id);
-                if (PaketOzetiV2X.Reference != null && PaketOzetiV2X.Reference.Length > 0)
+                var paketOzeti = new PaketOzeti();
+                paketOzeti.Id = Guid.Parse(paketOzetiV2X.Id);
+                if (paketOzetiV2X.Reference != null && paketOzetiV2X.Reference.Length > 0)
                 {
-                    PaketOzeti.Referanslar = new List<Referans>();
-                    Array.ForEach(PaketOzetiV2X.Reference, (reference) => { PaketOzeti.Referanslar.Add(reference.ToReferans()); });
+                    paketOzeti.Referanslar = new List<Referans>();
+                    Array.ForEach(paketOzetiV2X.Reference, (reference) => { paketOzeti.Referanslar.Add(reference.ToReferans()); });
                 }
 
-                return PaketOzeti;
+                return paketOzeti;
             }
         }
 
@@ -1531,7 +1531,7 @@ namespace eyazisma.online.api.Extensions
             else
             {
                 var parafOzetiV2X = new Api.V2X.CT_ParafOzeti();
-                parafOzetiV2X.Id = parafOzeti.Id.ToString();
+                parafOzetiV2X.Id = parafOzeti.Id.ToString().ToUpperInvariant();
                 if (parafOzeti.Referanslar != null && parafOzeti.Referanslar.Count > 0)
                     parafOzeti.Referanslar.ForEach((reference) => { parafOzetiV2X.Reference = parafOzetiV2X.Reference.Add(reference.ToV2XCT_Reference()); });
 

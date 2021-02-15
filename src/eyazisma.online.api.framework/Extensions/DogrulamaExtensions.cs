@@ -1224,7 +1224,7 @@ namespace eyazisma.online.api.Extensions
             if (hedef == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(hedef) + " boş olmamalıdır.",
+                    Hata = nameof(Hedef) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
@@ -1232,7 +1232,7 @@ namespace eyazisma.online.api.Extensions
                 if (hedef.Oge == null)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(hedef) + " alanı boş olmamalıdır.",
+                        Hata = nameof(Hedef.Oge) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -1473,7 +1473,7 @@ namespace eyazisma.online.api.Extensions
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 AltDogrulamaHatalari = hatalar,
-                                Hata = nameof(hedef) + " alanı doğrulanamamıştır.",
+                                Hata = nameof(Hedef) + " alanı doğrulanamamıştır.",
                                 HataTuru = hatalar.GetDogrulamaHataTuru().Value
                             });
                     }
@@ -1905,33 +1905,33 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this PaketOzeti PaketOzeti, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this PaketOzeti paketOzeti, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
-            if (PaketOzeti == null)
+            if (paketOzeti == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(PaketOzeti) + " boş olmamalıdır.",
+                    Hata = nameof(paketOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
             {
-                if (PaketOzeti.Id == Guid.Empty)
+                if (paketOzeti.Id == Guid.Empty)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(PaketOzeti.Id) + " alanı boş olmamalıdır.",
+                        Hata = nameof(paketOzeti.Id) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
-                if (PaketOzeti.Referanslar == null || PaketOzeti.Referanslar.Count == 0)
+                if (paketOzeti.Referanslar == null || paketOzeti.Referanslar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(PaketOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Referans).Name + " tipinde öğe içermelidir.",
+                        Hata = nameof(paketOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Referans).Name + " tipinde öğe içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
-                    foreach (var referans in PaketOzeti.Referanslar)
+                    foreach (var referans in paketOzeti.Referanslar)
                     {
                         var hatalar = new List<DogrulamaHatasi>();
                         if (!referans.Dogrula(paketVersiyon, ref hatalar))
@@ -2375,7 +2375,7 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        internal static bool PaketOzetiDogrula(this PaketOzeti PaketOzeti,
+        internal static bool PaketOzetiDogrula(this PaketOzeti paketOzeti,
                                                Package package,
                                                PaketVersiyonTuru paketVersiyon,
                                                ref List<DogrulamaHatasi> dogrulamaHatalariRef,
@@ -2384,10 +2384,10 @@ namespace eyazisma.online.api.Extensions
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
-            if (PaketOzeti == null)
+            if (paketOzeti == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(PaketOzeti) + " boş olmamalıdır.",
+                    Hata = nameof(paketOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
@@ -2401,7 +2401,7 @@ namespace eyazisma.online.api.Extensions
                 else
                 {
                     Uri readedUstveriUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
-                    if (!PaketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstveriUri.ToString(), true) == 0))
+                    if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstveriUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "PaketOzeti bileşeninde Ustveri özet alanı yoktur.",
@@ -2420,7 +2420,7 @@ namespace eyazisma.online.api.Extensions
                 else
                 {
                     Uri readedUstYaziUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
-                    if (!PaketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstYaziUri.ToString(), true) == 0))
+                    if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstYaziUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "PaketOzeti bileşeninde UstYazi özet alanı yoktur.",
@@ -2439,7 +2439,7 @@ namespace eyazisma.online.api.Extensions
                     else
                     {
                         Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                        if (!PaketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
+                        if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 Hata = "PaketOzeti bileşeninde BelgeHedef özet alanı yoktur.",
@@ -2448,7 +2448,7 @@ namespace eyazisma.online.api.Extensions
                     }
                 }
 
-                foreach (Referans referans in PaketOzeti.Referanslar)
+                foreach (Referans referans in paketOzeti.Referanslar)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
                     if (!referans.ReferansDogrula(package, paketVersiyon, ref hatalar, ustveri, dagitimTanimlayici))

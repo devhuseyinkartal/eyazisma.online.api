@@ -7,7 +7,7 @@ namespace eyazisma.online.api.Extensions
 {
     public static partial class ReferansExtensions
     {
-        public static void ReferansEkle(this PaketOzeti PaketOzeti,
+        public static void ReferansEkle(this PaketOzeti paketOzeti,
                                         PaketVersiyonTuru paketVersiyon,
                                         OzetAlgoritmaTuru ozetAlgoritma,
                                         byte[] ozetDegeri,
@@ -20,14 +20,14 @@ namespace eyazisma.online.api.Extensions
             else if (ozetAlgoritma == OzetAlgoritmaTuru.SHA384 && paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 throw new ArgumentException(nameof(OzetAlgoritmaTuru.SHA384) + " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir.", nameof(ozetAlgoritma));
 
-            if (PaketOzeti.Referanslar != null && PaketOzeti.Referanslar.Count > 0)
+            if (paketOzeti.Referanslar != null && paketOzeti.Referanslar.Count > 0)
             {
-                var oncekiReferans = PaketOzeti.Referanslar.Find(p => string.Compare(p.URI, uri.ToString(), StringComparison.InvariantCultureIgnoreCase) == 0);
+                var oncekiReferans = paketOzeti.Referanslar.Find(p => string.Compare(p.URI, uri.ToString(), StringComparison.InvariantCultureIgnoreCase) == 0);
                 if (oncekiReferans != default(Referans))
-                    PaketOzeti.Referanslar.Remove(oncekiReferans);
+                    paketOzeti.Referanslar.Remove(oncekiReferans);
             }
             else
-                PaketOzeti.Referanslar = new List<Referans>();
+                paketOzeti.Referanslar = new List<Referans>();
 
             var yeniReferans = new Referans()
             {
@@ -41,7 +41,7 @@ namespace eyazisma.online.api.Extensions
                 yeniReferans.Ozet1 = Ozet.Kilavuz.OzetAlgoritmasiAta(OzetAlgoritmasi.Kilavuz.AlgoritmaAta(OzetAlgoritmaTuru.SHA512).Olustur()).OzetDegeriAta(ozetDegeriSha512).Olustur();
             }
 
-            PaketOzeti.Referanslar.Add(yeniReferans);
+            paketOzeti.Referanslar.Add(yeniReferans);
         }
 
         public static void ReferansEkle(this ParafOzeti parafOzeti,

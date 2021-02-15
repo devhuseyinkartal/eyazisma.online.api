@@ -1081,7 +1081,7 @@ namespace eyazisma.online.api
             if (!KritikHataExists())
             {
                 _package.GenerateCore(Ustveri, PaketVersiyonTuru.Versiyon1X);
-                _package.GenerateBelgeHedef(BelgeHedef);
+                _package.GenerateBelgeHedef(BelgeHedef, PaketVersiyonTuru.Versiyon1X);
                 if (BelgeImza != null && BelgeImza != new BelgeImza())
                     _package.GenerateBelgeImza(BelgeImza);
                 _package.GenerateUstveri(Ustveri, PaketVersiyonTuru.Versiyon1X);
@@ -1168,7 +1168,7 @@ namespace eyazisma.online.api
         /// </param>
         public IPaketV1XOkuBilesenAl BilesenleriAl(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
-            bilesenAction.Invoke(!KritikHataExists(), this, _dogrulamaHatalari);
+            bilesenAction.Invoke(KritikHataExists(), this, _dogrulamaHatalari);
             return this;
         }
 
@@ -2856,7 +2856,7 @@ namespace eyazisma.online.api
         /// </param>
         public IPaketV2XOkuBilesenAl BilesenleriAl(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
-            bilesenAction.Invoke(!KritikHataExists(), this, _dogrulamaHatalari);
+            bilesenAction.Invoke(KritikHataExists(), this, _dogrulamaHatalari);
             return this;
         }
 
@@ -3597,7 +3597,8 @@ namespace eyazisma.online.api
                 NihaiOzet.ReferansEkle(PaketVersiyonTuru.Versiyon2X,
                                         _ozetAlgoritma,
                                         ozetCore,
-                                        coreRelations.First().TargetUri);
+                                        coreRelations.First().TargetUri,
+                                        ozetCoreSha512);
             }
 
             var hatalar = new List<DogrulamaHatasi>();

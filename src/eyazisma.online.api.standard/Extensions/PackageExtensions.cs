@@ -120,20 +120,42 @@ namespace eyazisma.online.api.Extensions
             }
         }
 
-        public static void GenerateBelgeHedef(this Package package, BelgeHedef belgeHedef)
+        public static void GenerateBelgeHedef(this Package package, BelgeHedef belgeHedef, PaketVersiyonTuru paketVersiyon)
         {
             if (belgeHedef != null && belgeHedef.Hedefler != null && belgeHedef.Hedefler.Count > 0)
             {
+                object belgeHedefObject = null;
+                Type belgeHedefType = null;
+                string nsString = null;
+
+                switch (paketVersiyon)
+                {
+                    case PaketVersiyonTuru.Versiyon1X:
+                        {
+                            belgeHedefObject = belgeHedef.ToV1XCT_BelgeHedef();
+                            belgeHedefType = typeof(Api.V1X.CT_BelgeHedef);
+                            nsString = "urn:dpt:eyazisma:schema:xsd:Tipler-1";
+                            break;
+                        }
+                    case PaketVersiyonTuru.Versiyon2X:
+                        {
+                            belgeHedefObject = belgeHedef.ToV2XCT_BelgeHedef();
+                            belgeHedefType = typeof(Api.V2X.CT_BelgeHedef);
+                            nsString = "urn:dpt:eyazisma:schema:xsd:Tipler-2";
+                            break;
+                        }
+                }
+
                 var partBelgeHedef = package.CreatePart(Constants.URI_BELGEHEDEF, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partBelgeHedef.Uri, TargetMode.Internal, Constants.RELATION_TYPE_BELGEHEDEF, Constants.ID_BELGEHEDEF);
-                var xmlSerializer = new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef));
+                var xmlSerializer = new XmlSerializer(belgeHedefType);
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                ns.Add("tipler", "urn:dpt:eyazisma:schema:xsd:Tipler-1");
+                ns.Add("tipler", nsString);
                 XmlTextWriter xmlTextWriter = new XmlTextWriter(partBelgeHedef.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
                 };
-                xmlSerializer.Serialize(xmlTextWriter, belgeHedef.ToV1XCT_BelgeHedef(), ns);
+                xmlSerializer.Serialize(xmlTextWriter, belgeHedefObject, ns);
             }
         }
 
@@ -336,36 +358,36 @@ namespace eyazisma.online.api.Extensions
             }
         }
 
-        public static void GeneratePaketOzeti(this Package package, PaketOzeti PaketOzeti, PaketVersiyonTuru paketVersiyon)
+        public static void GeneratePaketOzeti(this Package package, PaketOzeti paketOzeti, PaketVersiyonTuru paketVersiyon)
         {
-            if (PaketOzeti != null && PaketOzeti.Referanslar != null && PaketOzeti.Referanslar.Count > 0)
+            if (paketOzeti != null && paketOzeti.Referanslar != null && paketOzeti.Referanslar.Count > 0)
             {
-                object PaketOzetiObject = null;
-                Type PaketOzetiType = null;
+                object paketOzetiObject = null;
+                Type paketOzetiType = null;
 
                 switch (paketVersiyon)
                 {
                     case PaketVersiyonTuru.Versiyon1X:
                         {
-                            PaketOzetiObject = PaketOzeti.ToV1XCT_PaketOzeti();
-                            PaketOzetiType = typeof(Api.V1X.CT_PaketOzeti);
+                            paketOzetiObject = paketOzeti.ToV1XCT_PaketOzeti();
+                            paketOzetiType = typeof(Api.V1X.CT_PaketOzeti);
                             break;
                         }
                     case PaketVersiyonTuru.Versiyon2X:
                         {
-                            PaketOzetiObject = PaketOzeti.ToV2XCT_PaketOzeti();
-                            PaketOzetiType = typeof(Api.V2X.CT_PaketOzeti);
+                            paketOzetiObject = paketOzeti.ToV2XCT_PaketOzeti();
+                            paketOzetiType = typeof(Api.V2X.CT_PaketOzeti);
                             break;
                         }
                 }
                 var partPaketOzeti = package.CreatePart(Constants.URI_PAKETOZETI, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partPaketOzeti.Uri, TargetMode.Internal, Constants.RELATION_TYPE_PAKETOZETI, Constants.ID_PaketOzeti);
-                var xmlSerializer = new XmlSerializer(PaketOzetiType);
+                var xmlSerializer = new XmlSerializer(paketOzetiType);
                 XmlTextWriter xmlTextWriter = new XmlTextWriter(partPaketOzeti.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
                 };
-                xmlSerializer.Serialize(xmlTextWriter, PaketOzetiObject);
+                xmlSerializer.Serialize(xmlTextWriter, paketOzetiObject);
             }
         }
 
@@ -457,7 +479,7 @@ namespace eyazisma.online.api.Extensions
             }
         }
 
-        public static bool CoreRelationExists(this Package package) => package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE).Count() == 0;
+        public static bool CoreRelationExists(this Package package) => !(package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE).Count() == 0);
 
         public static void GenerateCore(this Package package, Ustveri ustveri, PaketVersiyonTuru paketVersiyon)
         {
@@ -473,12 +495,12 @@ namespace eyazisma.online.api.Extensions
             package.Flush();
         }
 
-        public static void AddSifreliIcerik(this Package package, Stream sifreliIcerikStream, Guid paketId)
+        public static void AddSifreliIcerik(this Package package, Stream sifreliIcerikStream, Guid paketId, PaketVersiyonTuru paketVersiyon)
         {
-            var partSifreliIcerikUri = new Uri(string.Format(Constants.URI_FORMAT_SIFRELIICERIK_V1X_STRING, Uri.EscapeDataString(paketId.ToString().ToUpperInvariant())), UriKind.Relative);
-            var partSifreliIcerik = package.CreatePart(partSifreliIcerikUri, "application/pkcs7-mime", CompressionOption.Maximum);
+            var partSifreliIcerikUri = new Uri(string.Format(paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_FORMAT_SIFRELIICERIK_V1X_STRING : Constants.URI_FORMAT_SIFRELIICERIK_V2X_STRING, Uri.EscapeDataString(paketId.ToString().ToUpperInvariant())), UriKind.Relative);
+            var partSifreliIcerik = package.CreatePart(partSifreliIcerikUri, Constants.MIME_PKCS7MIME, CompressionOption.Maximum);
+            sifreliIcerikStream.Position = 0;
             sifreliIcerikStream.CopyTo(partSifreliIcerik.GetStream());
-
             package.CreateRelationship(partSifreliIcerik.Uri, TargetMode.Internal, Constants.RELATION_TYPE_SIFRELIICERIK, Constants.ID_SIFRELIICERIK);
         }
 

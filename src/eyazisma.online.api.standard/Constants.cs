@@ -176,6 +176,8 @@ namespace eyazisma.online.api
         /// <summary> XML Octet-stream türü.</summary>
         public const string MIME_OCTETSTREAM = "application/octet-stream";
 
+        public const string MIME_PKCS7MIME = "application/pkcs7-mime";
+
         public static string[] KEPHS_DOMAINS = new string[]
         {
             "hs01.kep.tr",

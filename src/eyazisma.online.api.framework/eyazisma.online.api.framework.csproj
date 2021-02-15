@@ -157,6 +157,7 @@
     <Compile Include="Enums\PaketModuTuru.cs" />
     <Compile Include="Enums\PaketVersiyonTuru.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\BilesenExtensions.cs" />
     <Compile Include="Extensions\ConversionExtensions.cs" />
     <Compile Include="Extensions\PackageExtensions.cs" />
     <Compile Include="Extensions\ReferansExtensions.cs" />

@@ -6,8 +6,8 @@ using System.IO;
 namespace eyazisma.online.api.Interfaces
 {
     public interface ISifreliPaket : ISifreliPaketOlustur,
-                              ISifreliPaketOku,
-                              ISifreliPaketOkuAction
+                                     ISifreliPaketOku,
+                                     ISifreliPaketOkuAction
     {
 
     }
@@ -30,6 +30,7 @@ namespace eyazisma.online.api.Interfaces
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
         ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> action);
+        void Kapat();
     }
 
     public interface ISifreliPaketOkuAction
@@ -43,7 +44,8 @@ namespace eyazisma.online.api.Interfaces
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        void Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        void Kapat();
     }
 
     public interface ISifreliPaketV1X : ISifreliPaketV1XOlustur,
