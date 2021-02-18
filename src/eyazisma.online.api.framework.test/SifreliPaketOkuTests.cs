@@ -29,37 +29,37 @@ namespace eyazisma.online.api.framework.test
         [TestMethod]
         public void SifreliPaket_VersiyonAl_Versiyon1XBasarili()
         {
-            using (MemoryStream ms = new MemoryStream(TestComponents.PAKET_V1X_BYTE_ARRAY()))
+            using (MemoryStream ms = new MemoryStream(TestComponents.SIFRELI_PAKET_V1X_BYTE_ARRAY()))
                 Assert.AreEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(ms));
 
-            Assert.AreEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.PAKET_V1X_FILE_PATH));
+            Assert.AreEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.SIFRELI_PAKET_V1X_FILE_PATH));
         }
 
         [TestMethod]
         public void SifreliPaket_VersiyonAl_Versiyon1XBasarisiz()
         {
-            using (MemoryStream ms = new MemoryStream(TestComponents.PAKET_V2X_BYTE_ARRAY()))
+            using (MemoryStream ms = new MemoryStream(TestComponents.SIFRELI_PAKET_V2X_BYTE_ARRAY()))
                 Assert.AreNotEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(ms));
 
-            Assert.AreNotEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.PAKET_V2X_FILE_PATH));
+            Assert.AreNotEqual(PaketVersiyonTuru.Versiyon1X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.SIFRELI_PAKET_V2X_FILE_PATH));
         }
 
         [TestMethod]
         public void SifreliPaket_VersiyonAl_Versiyon2XBasarili()
         {
-            using (MemoryStream ms = new MemoryStream(TestComponents.PAKET_V2X_BYTE_ARRAY()))
+            using (MemoryStream ms = new MemoryStream(TestComponents.SIFRELI_PAKET_V2X_BYTE_ARRAY()))
                 Assert.AreEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(ms));
 
-            Assert.AreEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.PAKET_V2X_FILE_PATH));
+            Assert.AreEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.SIFRELI_PAKET_V2X_FILE_PATH));
         }
 
         [TestMethod]
         public void SifreliPaket_VersiyonAl_Versiyon2XBasarisiz()
         {
-            using (MemoryStream ms = new MemoryStream(TestComponents.PAKET_V1X_BYTE_ARRAY()))
+            using (MemoryStream ms = new MemoryStream(TestComponents.SIFRELI_PAKET_V1X_BYTE_ARRAY()))
                 Assert.AreNotEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(ms));
 
-            Assert.AreNotEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.PAKET_V1X_FILE_PATH));
+            Assert.AreNotEqual(PaketVersiyonTuru.Versiyon2X, SifreliPaket.SifreliPaketVersiyonuAl(TestComponents.SIFRELI_PAKET_V1X_FILE_PATH));
         }
 
         [TestMethod]
@@ -134,27 +134,27 @@ namespace eyazisma.online.api.framework.test
             using (var sifreliPaketStream = new MemoryStream(TestComponents.SIFRELI_PAKET_V1X_BYTE_ARRAY()))
             {
                 SifreliPaket.Oku(sifreliPaketStream)
-                                            .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.IsFalse(sKritikHataVarMi);
-                                            })
-                                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
-                                            })
-                                            .Kapat();
+                            .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                            {
+                                Assert.IsFalse(sKritikHataVarMi);
+                            })
+                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                            {
+                                Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
+                            })
+                            .Kapat();
             }
 
             SifreliPaket.Oku(TestComponents.SIFRELI_PAKET_V1X_FILE_PATH)
-                                            .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.IsFalse(sKritikHataVarMi);
-                                            })
-                                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
-                                            })
-                                            .Kapat();
+                        .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                        {
+                            Assert.IsFalse(sKritikHataVarMi);
+                        })
+                        .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                        {
+                            Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
+                        })
+                        .Kapat();
         }
 
         [TestMethod]
@@ -163,29 +163,28 @@ namespace eyazisma.online.api.framework.test
             using (var sifreliPaketStream = new MemoryStream(TestComponents.SIFRELI_PAKET_V2X_BYTE_ARRAY()))
             {
                 SifreliPaket.Oku(sifreliPaketStream)
-                                            .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
+                            .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                            {
+                                Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
 
-                                            })
-                                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.IsFalse(sKritikHataVarMi);
-                                            })
-                                            .Kapat();
+                            })
+                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                            {
+                                Assert.IsFalse(sKritikHataVarMi);
+                            })
+                            .Kapat();
             }
 
             SifreliPaket.Oku(TestComponents.SIFRELI_PAKET_V2X_FILE_PATH)
-                                           .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                           {
-                                               Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
-
-                                           })
-                                            .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
-                                            {
-                                                Assert.IsFalse(sKritikHataVarMi);
-                                            })
-                                            .Kapat();
+                        .Versiyon1XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                        {
+                            Assert.Fail("Şifreli paket versiyonu yanlış okunmuştur.");
+                        })
+                        .Versiyon2XIse((sKritikHataVarMi, sBilesenler, sTumHatalar) =>
+                        {
+                            Assert.IsFalse(sKritikHataVarMi);
+                        })
+                        .Kapat();
         }
 
         [TestMethod]

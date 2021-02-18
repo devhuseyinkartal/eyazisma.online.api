@@ -31,30 +31,27 @@ namespace eyazisma.online.api
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Yeni bir paket oluşturmak için kullanılır.
+        /// </summary>
+        /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
+        public static IPaketOlustur Olustur(Stream paketStream)
         {
-            if (_stream != null)
-            {
-                _stream.Close();
-                _stream.Dispose();
-            }
-
-            GC.SuppressFinalize(this);
+            if (paketStream == null)
+                paketStream = new MemoryStream();
+            return new Paket(paketStream, PaketModuTuru.Olustur);
         }
 
         /// <summary>
         /// Yeni bir paket oluşturmak için kullanılır.
         /// </summary>
-        /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketOlustur Olustur(Stream paketStream) =>
-            new Paket(paketStream, PaketModuTuru.Olustur);
-
-        /// <summary>
-        /// Yeni bir paket oluşturmak için kullanılır.
-        /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
         public static IPaketOlustur Olustur(string paketDosyaYolu)
         {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+
             if (File.Exists(paketDosyaYolu))
             {
                 try { File.Delete(paketDosyaYolu); } catch { }
@@ -76,15 +73,28 @@ namespace eyazisma.online.api
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketOku Oku(Stream paketStream) =>
-            new Paket(paketStream, PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static IPaketOku Oku(Stream paketStream)
+        {
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return new Paket(paketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static IPaketOku Oku(string paketDosyaYolu) =>
-            new Paket(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static IPaketOku Oku(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new Paket(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Paket ait bileşenlerin verilerinin alınması için kullanılır.
@@ -99,7 +109,6 @@ namespace eyazisma.online.api
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 PaketV1X.Oku(_stream).BilesenleriAl(action).Kapat();
-            Dispose();
             return this;
         }
 
@@ -112,11 +121,11 @@ namespace eyazisma.online.api
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public void Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
+        public IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon2X)
                 PaketV2X.Oku(_stream).BilesenleriAl(action).Kapat();
-            Dispose();
+            return this;
         }
 
         /// <summary>
@@ -137,33 +146,56 @@ namespace eyazisma.online.api
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 action.Invoke(PaketV1X.Guncelle(_stream));
-            Dispose();
             return this;
         }
 
-        public void Versiyon2XIse(Action<IPaketV2XGuncelle> action)
+        public IPaketGuncelleAction Versiyon2XIse(Action<IPaketV2XGuncelle> action)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon2X)
                 action.Invoke(PaketV2X.Guncelle(_stream));
-            Dispose();
+            return this;
         }
 
         /// <summary>
         /// Varolan bir paketin versiyon bilgisini almak için kullanılır.
         /// </summary>
-        /// <param name="stream">Pakete ilişkin STREAM objesidir.</param>
-        public static PaketVersiyonTuru PaketVersiyonuAl(Stream stream)
+        /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static PaketVersiyonTuru PaketVersiyonuAl(Stream paketStream)
         {
-            using (Package package = Package.Open(stream, FileMode.Open, FileAccess.Read))
-                return package.GetPaketVersiyon();
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return Package.Open(paketStream, FileMode.Open, FileAccess.Read).GetPaketVersiyon();
         }
 
         /// <summary>
         /// Varolan bir paketin versiyon bilgisini almak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static PaketVersiyonTuru PaketVersiyonuAl(string paketDosyaYolu) =>
-            PaketVersiyonuAl(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read));
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static PaketVersiyonTuru PaketVersiyonuAl(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+
+            return PaketVersiyonuAl(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read));
+        }
+
+        public void Kapat() => Dispose();
+
+        public void Dispose()
+        {
+            if (_stream != null)
+            {
+                _stream.Close();
+                _stream.Dispose();
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 
     /// <summary>
@@ -227,7 +259,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri;
-                                Api.V1X.CT_Ustveri readedUstveri = (Api.V1X.CT_Ustveri)new XmlSerializer(typeof(Api.V1X.CT_Ustveri)).Deserialize(_package.GetPart(readedUstveriUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_Ustveri readedUstveri = (Api.V1X.CT_Ustveri)new XmlSerializer(typeof(Api.V1X.CT_Ustveri)).Deserialize(_package.GetPartStream(readedUstveriUri));
                                 Ustveri = readedUstveri.ToUstveri();
                             }
                             catch (Exception ex)
@@ -259,7 +291,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPart(readedBelgeHedefUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPartStream(readedBelgeHedefUri));
                                 BelgeHedef = readedBelgeHedef.ToBelgeHedef();
                             }
                             catch (Exception ex)
@@ -304,7 +336,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -337,7 +369,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeImzaUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA).First().TargetUri);
-                                Api.V1X.CT_BelgeImza readedBelgeImza = (Api.V1X.CT_BelgeImza)(new XmlSerializer(typeof(Api.V1X.CT_BelgeImza))).Deserialize(_package.GetPart(readedBelgeImzaUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeImza readedBelgeImza = (Api.V1X.CT_BelgeImza)(new XmlSerializer(typeof(Api.V1X.CT_BelgeImza))).Deserialize(_package.GetPartStream(readedBelgeImzaUri));
                                 BelgeImza = readedBelgeImza.ToBelgeImza();
                             }
                             catch (Exception ex)
@@ -364,7 +396,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiOzetUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIOZET).First().TargetUri);
-                                Api.V1X.CT_NihaiOzet readedNihaiOzet = (Api.V1X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V1X.CT_NihaiOzet)).Deserialize(_package.GetPart(readedNihaiOzetUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_NihaiOzet readedNihaiOzet = (Api.V1X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V1X.CT_NihaiOzet)).Deserialize(_package.GetPartStream(readedNihaiOzetUri));
                                 NihaiOzet = readedNihaiOzet.ToNihaiOzet();
                             }
                             catch (Exception ex)
@@ -461,7 +493,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri;
-                                Api.V1X.CT_Ustveri readedUstveri = (Api.V1X.CT_Ustveri)new XmlSerializer(typeof(Api.V1X.CT_Ustveri)).Deserialize(_package.GetPart(readedUstveriUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_Ustveri readedUstveri = (Api.V1X.CT_Ustveri)new XmlSerializer(typeof(Api.V1X.CT_Ustveri)).Deserialize(_package.GetPartStream(readedUstveriUri));
                                 Ustveri = readedUstveri.ToUstveri();
                             }
                             catch (Exception ex)
@@ -488,7 +520,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPart(readedBelgeHedefUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPartStream(readedBelgeHedefUri));
                                 BelgeHedef = readedBelgeHedef.ToBelgeHedef();
                             }
                             catch (Exception ex)
@@ -522,7 +554,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -556,7 +588,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeImzaUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA).First().TargetUri);
-                                Api.V1X.CT_BelgeImza readedBelgeImza = (Api.V1X.CT_BelgeImza)(new XmlSerializer(typeof(Api.V1X.CT_BelgeImza))).Deserialize(_package.GetPart(readedBelgeImzaUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeImza readedBelgeImza = (Api.V1X.CT_BelgeImza)(new XmlSerializer(typeof(Api.V1X.CT_BelgeImza))).Deserialize(_package.GetPartStream(readedBelgeImzaUri));
                                 BelgeImza = readedBelgeImza.ToBelgeImza();
                             }
                             catch (Exception ex)
@@ -583,7 +615,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiOzetUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIOZET).First().TargetUri);
-                                Api.V1X.CT_NihaiOzet readedNihaiOzet = (Api.V1X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V1X.CT_NihaiOzet)).Deserialize(_package.GetPart(readedNihaiOzetUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_NihaiOzet readedNihaiOzet = (Api.V1X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V1X.CT_NihaiOzet)).Deserialize(_package.GetPartStream(readedNihaiOzetUri));
                                 NihaiOzet = readedNihaiOzet.ToNihaiOzet();
                             }
                             catch (Exception ex)
@@ -766,15 +798,23 @@ namespace eyazisma.online.api
         /// Yeni bir paket oluşturmak için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV1XOlustur Olustur(Stream paketStream) =>
-            new PaketV1X(paketStream, PaketModuTuru.Olustur);
+        public static IPaketV1XOlustur Olustur(Stream paketStream)
+        {
+            if (paketStream == null)
+                paketStream = new MemoryStream();
+            return new PaketV1X(paketStream, PaketModuTuru.Olustur);
+        }
 
         /// <summary>
         /// Yeni bir paket oluşturmak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
         public static IPaketV1XOlustur Olustur(string paketDosyaYolu)
         {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+
             if (File.Exists(paketDosyaYolu))
             {
                 try { File.Delete(paketDosyaYolu); } catch { }
@@ -1147,15 +1187,28 @@ namespace eyazisma.online.api
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV1XOku Oku(Stream paketStream) =>
-            new PaketV1X(paketStream, PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static IPaketV1XOku Oku(Stream paketStream)
+        {
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return new PaketV1X(paketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static IPaketV1XOku Oku(string paketDosyaYolu) =>
-            new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static IPaketV1XOku Oku(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Paket ait bileşenlerin verilerinin alınması için kullanılır.
@@ -1176,15 +1229,28 @@ namespace eyazisma.online.api
         /// Var olan bir paketi güncellemek için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV1XGuncelle Guncelle(Stream paketStream) =>
-            new PaketV1X(paketStream, PaketModuTuru.Guncelle);
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static IPaketV1XGuncelle Guncelle(Stream paketStream)
+        {
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return new PaketV1X(paketStream, PaketModuTuru.Guncelle);
+        }
 
         /// <summary>
         /// Var olan bir paketi güncellemek için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static IPaketV1XGuncelle Guncelle(string paketDosyaYolu) =>
-            new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static IPaketV1XGuncelle Guncelle(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
+        }
 
         /// <summary>
         /// Paketin son güncelleme tarih bilgisinin ekler.
@@ -1413,6 +1479,20 @@ namespace eyazisma.online.api
         /// bool -> Kritik hata olup olmadığını belirtir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir. 
         /// </param>
+        IPaketV1XGuncelleDogrula IPaketV1XGuncelleMuhur.Dogrula(Action<bool, List<DogrulamaHatasi>> dogrulamaAction)
+        {
+            dogrulamaAction.Invoke(KritikHataExists(), _dogrulamaHatalari);
+            return this;
+        }
+
+        /// <summary>
+        /// Güncellenen paketin doğrulama sonuçlarının alınmasını sağlar.
+        /// </summary>
+        /// <param name="dogrulamaAction">
+        /// Doğrulama sonuçlarını almak için kullanılacak fonksiyondur.
+        /// bool -> Kritik hata olup olmadığını belirtir.
+        /// List -> Pakete ait tüm doğrulama hatalarını belirtir. 
+        /// </param>
         IPaketV1XGuncelleDogrula IPaketV1XGuncelleImza.Dogrula(Action<bool, List<DogrulamaHatasi>> dogrulamaAction)
         {
             dogrulamaAction.Invoke(KritikHataExists(), _dogrulamaHatalari);
@@ -1576,7 +1656,7 @@ namespace eyazisma.online.api
                         if (ek.Tur == EkTuru.DED && ek.ImzaliMi)
                         {
                             var relationShip = _package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).SingleOrDefault(r => string.Compare(r.Id, Constants.ID_ROOT_EK(ek.Id.Deger), true) == 0);
-                            var ekStream = _package.GetPart(relationShip.TargetUri).GetStream();
+                            var ekStream = _package.GetPartStream(relationShip.TargetUri);
                             byte[] ekOzeti = _ozetAlgoritma.CalculateHash(ekStream);
                             ekStream.Position = 0;
                             PaketOzeti.ReferansEkle(PaketVersiyonTuru.Versiyon1X,
@@ -1668,7 +1748,7 @@ namespace eyazisma.online.api
                         if (ek.Tur == EkTuru.DED && ek.ImzaliMi)
                         {
                             var relationShip = _package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).SingleOrDefault(r => string.Compare(r.Id, Constants.ID_ROOT_EK(ek.Id.Deger), true) == 0);
-                            var ekStream = _package.GetPart(relationShip.TargetUri).GetStream();
+                            var ekStream = _package.GetPartStream(relationShip.TargetUri);
                             byte[] ekOzeti = _ozetAlgoritma.CalculateHash(ekStream);
                             ekStream.Position = 0;
                             NihaiOzet.ReferansEkle(PaketVersiyonTuru.Versiyon1X,
@@ -1724,10 +1804,8 @@ namespace eyazisma.online.api
             }
             else
             {
-                var corePart = _package.GetPart(coreRelations.First().TargetUri);
-                var stream = corePart.GetStream();
-                stream.Position = 0;
-                byte[] ozetCore = _ozetAlgoritma.CalculateHash(stream);
+                var corePartStream = _package.GetPartStream(coreRelations.First().TargetUri);
+                byte[] ozetCore = _ozetAlgoritma.CalculateHash(corePartStream);
                 NihaiOzet.ReferansEkle(PaketVersiyonTuru.Versiyon1X,
                                         _ozetAlgoritma,
                                         ozetCore,
@@ -1815,6 +1893,8 @@ namespace eyazisma.online.api
         }
 
         private bool KritikHataExists() => _dogrulamaHatalari.Any(p => p.HataTuru == DogrulamaHataTuru.Kritik);
+
+
     }
 
     /// <summary>
@@ -1878,7 +1958,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri;
-                                Api.V2X.CT_Ustveri readedUstveri = (Api.V2X.CT_Ustveri)new XmlSerializer(typeof(Api.V2X.CT_Ustveri)).Deserialize(_package.GetPart(readedUstveriUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_Ustveri readedUstveri = (Api.V2X.CT_Ustveri)new XmlSerializer(typeof(Api.V2X.CT_Ustveri)).Deserialize(_package.GetPartStream(readedUstveriUri));
                                 Ustveri = readedUstveri.ToUstveri();
                             }
                             catch (Exception ex)
@@ -1924,7 +2004,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIUSTVERI).First().TargetUri;
-                                Api.V2X.CT_NihaiUstveri readedNihaiUstveri = (Api.V2X.CT_NihaiUstveri)new XmlSerializer(typeof(Api.V2X.CT_NihaiUstveri)).Deserialize(_package.GetPart(readedNihaiUstveriUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_NihaiUstveri readedNihaiUstveri = (Api.V2X.CT_NihaiUstveri)new XmlSerializer(typeof(Api.V2X.CT_NihaiUstveri)).Deserialize(_package.GetPartStream(readedNihaiUstveriUri));
                                 NihaiUstveri = readedNihaiUstveri.ToNihaiUstveri();
                             }
                             catch (Exception ex)
@@ -1956,7 +2036,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V2X.CT_PaketOzeti readedPaketOzeti = (Api.V2X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V2X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_PaketOzeti readedPaketOzeti = (Api.V2X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V2X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -2001,7 +2081,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiOzetUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIOZET).First().TargetUri);
-                                Api.V2X.CT_NihaiOzet readedNihaiOzet = (Api.V2X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V2X.CT_NihaiOzet)).Deserialize(_package.GetPart(readedNihaiOzetUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_NihaiOzet readedNihaiOzet = (Api.V2X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V2X.CT_NihaiOzet)).Deserialize(_package.GetPartStream(readedNihaiOzetUri));
                                 NihaiOzet = readedNihaiOzet.ToNihaiOzet();
                             }
                             catch (Exception ex)
@@ -2021,7 +2101,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedParafOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PARAFOZETI).First().TargetUri);
-                                Api.V2X.CT_ParafOzeti readedParafOzeti = (Api.V2X.CT_ParafOzeti)(new XmlSerializer(typeof(Api.V2X.CT_ParafOzeti))).Deserialize(_package.GetPart(readedParafOzetiUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_ParafOzeti readedParafOzeti = (Api.V2X.CT_ParafOzeti)(new XmlSerializer(typeof(Api.V2X.CT_ParafOzeti))).Deserialize(_package.GetPartStream(readedParafOzetiUri));
                                 ParafOzeti = readedParafOzeti.ToParafOzeti();
                             }
                             catch (Exception ex)
@@ -2117,7 +2197,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri;
-                                Api.V1X.CT_Ustveri readedUstveri = (Api.V1X.CT_Ustveri)new XmlSerializer(typeof(Api.V1X.CT_Ustveri)).Deserialize(_package.GetPart(readedUstveriUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_Ustveri readedUstveri = (Api.V2X.CT_Ustveri)new XmlSerializer(typeof(Api.V2X.CT_Ustveri)).Deserialize(_package.GetPartStream(readedUstveriUri));
                                 Ustveri = readedUstveri.ToUstveri();
                             }
                             catch (Exception ex)
@@ -2144,7 +2224,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiUstveriUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIUSTVERI).First().TargetUri;
-                                Api.V2X.CT_NihaiUstveri readedNihaiUstveri = (Api.V2X.CT_NihaiUstveri)new XmlSerializer(typeof(Api.V2X.CT_NihaiUstveri)).Deserialize(_package.GetPart(readedNihaiUstveriUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_NihaiUstveri readedNihaiUstveri = (Api.V2X.CT_NihaiUstveri)new XmlSerializer(typeof(Api.V2X.CT_NihaiUstveri)).Deserialize(_package.GetPartStream(readedNihaiUstveriUri));
                                 NihaiUstveri = readedNihaiUstveri.ToNihaiUstveri();
                             }
                             catch (Exception ex)
@@ -2178,7 +2258,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_PaketOzeti readedPaketOzeti = (Api.V2X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V2X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -2212,7 +2292,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedParafOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PARAFOZETI).First().TargetUri);
-                                Api.V2X.CT_ParafOzeti readedParafOzeti = (Api.V2X.CT_ParafOzeti)(new XmlSerializer(typeof(Api.V2X.CT_ParafOzeti))).Deserialize(_package.GetPart(readedParafOzetiUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_ParafOzeti readedParafOzeti = (Api.V2X.CT_ParafOzeti)(new XmlSerializer(typeof(Api.V2X.CT_ParafOzeti))).Deserialize(_package.GetPartStream(readedParafOzetiUri));
                                 ParafOzeti = readedParafOzeti.ToParafOzeti();
                             }
                             catch (Exception ex)
@@ -2239,7 +2319,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiOzetUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIOZET).First().TargetUri);
-                                Api.V1X.CT_NihaiOzet readedNihaiOzet = (Api.V1X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V1X.CT_NihaiOzet)).Deserialize(_package.GetPart(readedNihaiOzetUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_NihaiOzet readedNihaiOzet = (Api.V2X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V2X.CT_NihaiOzet)).Deserialize(_package.GetPartStream(readedNihaiOzetUri));
                                 NihaiOzet = readedNihaiOzet.ToNihaiOzet();
                             }
                             catch (Exception ex)
@@ -2444,15 +2524,23 @@ namespace eyazisma.online.api
         /// Yeni bir paket oluşturmak için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV2XOlustur Olustur(Stream paketStream) =>
-            new PaketV2X(paketStream, PaketModuTuru.Olustur);
+        public static IPaketV2XOlustur Olustur(Stream paketStream)
+        {
+            if (paketStream == null)
+                paketStream = new MemoryStream();
+            return new PaketV2X(paketStream, PaketModuTuru.Olustur);
+        }
 
         /// <summary>
         /// Yeni bir paket oluşturmak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
         public static IPaketV2XOlustur Olustur(string paketDosyaYolu)
         {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+
             if (File.Exists(paketDosyaYolu))
             {
                 try { File.Delete(paketDosyaYolu); } catch { }
@@ -2835,15 +2923,28 @@ namespace eyazisma.online.api
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV2XOku Oku(Stream paketStream) =>
-            new PaketV2X(paketStream, PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static IPaketV2XOku Oku(Stream paketStream)
+        {
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return new PaketV2X(paketStream, PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Var olan bir paketi okumak için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static IPaketV2XOku Oku(string paketDosyaYolu) =>
-            new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static IPaketV2XOku Oku(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
+        }
 
         /// <summary>
         /// Paket ait bileşenlerin verilerinin alınması için kullanılır.
@@ -2864,15 +2965,28 @@ namespace eyazisma.online.api
         /// Var olan bir paketi güncellemek için kullanılır.
         /// </summary>
         /// <param name="paketStream">Pakete ilişkin STREAM objesidir.</param>
-        public static IPaketV2XGuncelle Guncelle(Stream paketStream) =>
-            new PaketV2X(paketStream, PaketModuTuru.Guncelle);
+        /// <exception cref="ArgumentNullException">paketStream boş olduğu durumlarda fırlatılır.</exception>
+        public static IPaketV2XGuncelle Guncelle(Stream paketStream)
+        {
+            if (paketStream == null || paketStream.Length == 0)
+                throw new ArgumentNullException(nameof(paketStream), nameof(paketStream) + " boş olmamalıdır.");
+            return new PaketV2X(paketStream, PaketModuTuru.Guncelle);
+        }
 
         /// <summary>
         /// Var olan bir paketi güncellemek için kullanılır.
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
-        public static IPaketV2XGuncelle Guncelle(string paketDosyaYolu) =>
-            new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
+        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        public static IPaketV2XGuncelle Guncelle(string paketDosyaYolu)
+        {
+            if (string.IsNullOrWhiteSpace(paketDosyaYolu))
+                throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
+            else if (!File.Exists(paketDosyaYolu))
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+            return new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
+        }
 
         /// <summary>
         /// Paketin son güncelleme tarih bilgisinin ekler.
@@ -3108,8 +3222,46 @@ namespace eyazisma.online.api
         /// <summary>
         /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
         /// </summary>
+        /// <param name="muhurFunction">
+        /// Mühür ekleme işlemi için kullanılacak fonksiyondur.
+        /// Stream -> İmzalanacak NihaiOzet bileşenine ait STREAM değeridir.
+        /// byte[] -> Paket içerisine eklenecek mühür değeridir.
+        /// </param>
+        /// <remarks>Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</remarks>
+        IPaketV2XGuncelleMuhur IPaketV2XGuncelle.MuhurEkle(Func<Stream, byte[]> muhurFunction)
+        {
+            if (!KritikHataExists())
+            {
+                var muhurByteArray = muhurFunction.Invoke(NihaiOzetAl());
+                MuhurEkleInternal(muhurByteArray);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
+        /// <param name="muhurFunction">
+        /// Mühür ekleme işlemi için kullanılacak fonksiyondur.
+        /// Stream -> İmzalanacak NihaiOzet bileşenine ait STREAM değeridir.
+        /// byte[] -> Paket içerisine eklenecek mühür değeridir.
+        /// </param>
+        /// <remarks>Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</remarks>
+        IPaketV2XGuncelleMuhur IPaketV2XGuncellePaketBilgi.MuhurEkle(Func<Stream, byte[]> muhurFunction)
+        {
+            if (!KritikHataExists())
+            {
+                var muhurByteArray = muhurFunction.Invoke(NihaiOzetAl());
+                MuhurEkleInternal(muhurByteArray);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
         /// <param name="muhur">Paket içerisine eklenecek NihaiOzet bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
-        public IPaketV2XGuncelleImza MuhurEkle(byte[] muhur)
+        public IPaketV2XGuncelleMuhur MuhurEkle(byte[] muhur)
         {
             if (!KritikHataExists())
                 MuhurEkleInternal(muhur);
@@ -3313,7 +3465,7 @@ namespace eyazisma.online.api
                         if (ek.Tur == EkTuru.DED && ek.ImzaliMi)
                         {
                             var relationShip = _package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).SingleOrDefault(r => string.Compare(r.Id, Constants.ID_ROOT_EK(ek.Id.Deger), true) == 0);
-                            var ekStream = _package.GetPart(relationShip.TargetUri).GetStream();
+                            var ekStream = _package.GetPartStream(relationShip.TargetUri);
                             byte[] ekOzeti = _ozetAlgoritma.CalculateHash(ekStream);
                             ekStream.Position = 0;
                             byte[] ekOzetiSha512 = OzetAlgoritmaTuru.SHA512.CalculateHash(ekStream);
@@ -3388,7 +3540,7 @@ namespace eyazisma.online.api
                         if (ek.Tur == EkTuru.DED && ek.ImzaliMi)
                         {
                             var relationShip = _package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).SingleOrDefault(r => string.Compare(r.Id, Constants.ID_ROOT_EK(ek.Id.Deger), true) == 0);
-                            var ekStream = _package.GetPart(relationShip.TargetUri).GetStream();
+                            var ekStream = _package.GetPartStream(relationShip.TargetUri);
                             byte[] ekOzeti = _ozetAlgoritma.CalculateHash(ekStream);
                             ekStream.Position = 0;
                             byte[] ekOzetiSha512 = OzetAlgoritmaTuru.SHA512.CalculateHash(ekStream);
@@ -3485,7 +3637,7 @@ namespace eyazisma.online.api
                         if (ek.Tur == EkTuru.DED && ek.ImzaliMi)
                         {
                             var relationShip = _package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).SingleOrDefault(r => string.Compare(r.Id, Constants.ID_ROOT_EK(ek.Id.Deger), true) == 0);
-                            var ekStream = _package.GetPart(relationShip.TargetUri).GetStream();
+                            var ekStream = _package.GetPartStream(relationShip.TargetUri);
                             byte[] ekOzeti = _ozetAlgoritma.CalculateHash(ekStream);
                             ekStream.Position = 0;
                             byte[] ekOzetiSha512 = OzetAlgoritmaTuru.SHA512.CalculateHash(ekStream);
@@ -3587,13 +3739,11 @@ namespace eyazisma.online.api
             }
             else
             {
-                var corePart = _package.GetPart(coreRelations.First().TargetUri);
-                var stream = corePart.GetStream();
-                stream.Position = 0;
-                byte[] ozetCore = _ozetAlgoritma.CalculateHash(stream);
-                stream.Position = 0;
-                byte[] ozetCoreSha512 = OzetAlgoritmaTuru.SHA512.CalculateHash(stream);
-                stream.Position = 0;
+                var corePartStream = _package.GetPartStream(coreRelations.First().TargetUri);
+                byte[] ozetCore = _ozetAlgoritma.CalculateHash(corePartStream);
+                corePartStream.Position = 0;
+                byte[] ozetCoreSha512 = OzetAlgoritmaTuru.SHA512.CalculateHash(corePartStream);
+                corePartStream.Position = 0;
                 NihaiOzet.ReferansEkle(PaketVersiyonTuru.Versiyon2X,
                                         _ozetAlgoritma,
                                         ozetCore,
@@ -3668,5 +3818,7 @@ namespace eyazisma.online.api
             if (!KritikHataExists())
                 _package.SetPaketDurumu(durum);
         }
+
+
     }
 }

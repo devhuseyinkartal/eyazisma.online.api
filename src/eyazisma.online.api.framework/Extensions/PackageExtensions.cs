@@ -12,6 +12,35 @@ namespace eyazisma.online.api.Extensions
 {
     internal static class PackageExtensions
     {
+        //Added to beat the exception of .NET Core and .NET 5
+        //System.IO.IOException: Entries cannot be opened multiple times in Update mode.
+        public static Stream GetPartStream(this Package package, Uri partUri)
+        {
+            using (Stream s = package.GetPart(partUri).GetStream())
+            {
+                var ms = new MemoryStream();
+                s.CopyTo(ms);
+                ms.Position = 0;
+                return ms;
+            }
+        }
+
+        //Added to beat the exception of .NET Core and .NET 5
+        //System.IO.IOException: Entries cannot be opened multiple times in Update mode.
+        public static void AddToPartStream(this PackagePart part, Stream streamToBeAdded)
+        {
+            using (Stream s = part.GetStream())
+                streamToBeAdded.CopyTo(s);
+        }
+
+        //Added to beat the exception of .NET Core and .NET 5
+        //System.IO.IOException: Entries cannot be opened multiple times in Update mode.
+        public static void AddToPartStream(this PackagePart part, byte[] dataToBeAdded)
+        {
+            using (Stream s = part.GetStream())
+                s.Write(dataToBeAdded, 0, dataToBeAdded.Length);
+        }
+
         public static PaketVersiyonTuru GetPaketVersiyon(this Package package)
         {
             var paketVersiyon = PaketVersiyonTuru.TespitEdilemedi;
@@ -37,13 +66,13 @@ namespace eyazisma.online.api.Extensions
 
         public static bool UstYaziExists(this Package package) => !(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).Count() == 0);
 
-        public static Stream GetUstYaziStream(this Package package) => package.UstYaziExists() ? package.GetPart(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri).GetStream() : null;
+        public static Stream GetUstYaziStream(this Package package) => package.UstYaziExists() ? package.GetPartStream(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri) : null;
 
         public static void AddUstYazi(this Package package, UstYazi ustYazi)
         {
             var partUstYaziUri = new Uri(string.Format(Constants.URI_FORMAT_USTYAZI_STRING, ustYazi.DosyaAdi.EncodePath()), UriKind.Relative);
             var partUstYazi = package.CreatePart(partUstYaziUri, ustYazi.MimeTuru, CompressionOption.Maximum);
-            ustYazi.Dosya.CopyTo(partUstYazi.GetStream());
+            partUstYazi.AddToPartStream(ustYazi.Dosya);
             package.CreateRelationship(partUstYazi.Uri, TargetMode.Internal, Constants.RELATION_TYPE_USTYAZI, Constants.ID_USTYAZI);
         }
 
@@ -56,9 +85,9 @@ namespace eyazisma.online.api.Extensions
             var ekIdImzasizUri = Constants.ID_ROOT_IMZASIZEK(id.Deger.ToString().ToUpperInvariant());
 
             if (package.RelationshipExists(ekIdUri))
-                return package.GetPart(package.GetRelationship(ekIdUri).TargetUri).GetStream();
+                return package.GetPartStream(package.GetRelationship(ekIdUri).TargetUri);
             else if (package.RelationshipExists(ekIdImzasizUri))
-                return package.GetPart(package.GetRelationship(ekIdImzasizUri).TargetUri).GetStream();
+                return package.GetPartStream(package.GetRelationship(ekIdImzasizUri).TargetUri);
             return null;
         }
 
@@ -101,7 +130,7 @@ namespace eyazisma.online.api.Extensions
             }
             var partEkDosyaUri = new Uri(string.Format("/{0}/{1}", klasorAdi, ekDosya.DosyaAdi.EncodePath()), UriKind.Relative);
             var partEkDosya = package.CreatePart(partEkDosyaUri, ekDosya.Ek.MimeTuru, CompressionOption.Maximum);
-            ekDosya.Dosya.CopyTo(partEkDosya.GetStream());
+            partEkDosya.AddToPartStream(ekDosya.Dosya);
             package.CreateRelationship(partEkDosya.Uri, TargetMode.Internal, iliskiAdi, id);
         }
 
@@ -109,7 +138,7 @@ namespace eyazisma.online.api.Extensions
 
         public static bool BelgeHedefRelationExists(this Package package) => !(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).Count() == 0);
 
-        public static Stream GetBelgeHedefStream(this Package package) => package.BelgeHedefUriExists() ? package.GetPart(Constants.URI_BELGEHEDEF).GetStream() : null;
+        public static Stream GetBelgeHedefStream(this Package package) => package.BelgeHedefUriExists() ? package.GetPartStream(Constants.URI_BELGEHEDEF) : null;
 
         public static void DeleteBelgeHedef(this Package package)
         {
@@ -151,11 +180,11 @@ namespace eyazisma.online.api.Extensions
                 var xmlSerializer = new XmlSerializer(belgeHedefType);
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 ns.Add("tipler", nsString);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partBelgeHedef.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partBelgeHedef.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, belgeHedefObject, ns);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, belgeHedefObject, ns);
             }
         }
 
@@ -163,7 +192,7 @@ namespace eyazisma.online.api.Extensions
 
         public static bool BelgeImzaRelationExists(this Package package) => !(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA).Count() == 0);
 
-        public static Stream GetBelgeImzaStream(this Package package) => package.BelgeImzaUriExists() ? package.GetPart(Constants.URI_BELGEIMZA).GetStream() : null;
+        public static Stream GetBelgeImzaStream(this Package package) => package.BelgeImzaUriExists() ? package.GetPartStream(Constants.URI_BELGEIMZA) : null;
 
         public static void DeleteBelgeImza(this Package package)
         {
@@ -183,17 +212,17 @@ namespace eyazisma.online.api.Extensions
                 var xmlSerializer = new XmlSerializer(typeof(Api.V1X.CT_BelgeImza));
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 ns.Add("tipler", "urn:dpt:eyazisma:schema:xsd:Tipler-1");
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partBelgeImza.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partBelgeImza.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, belgeImza.ToV1XCT_BelgeImza(), ns);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, belgeImza.ToV1XCT_BelgeImza(), ns);
             }
         }
 
         public static bool ImzaExists(this Package package) => package.PartExists(Constants.URI_IMZA);
 
-        public static Stream GetImzaStream(this Package package) => package.ImzaExists() ? package.GetPart(Constants.URI_IMZA).GetStream() : null;
+        public static Stream GetImzaStream(this Package package) => package.ImzaExists() ? package.GetPartStream(Constants.URI_IMZA) : null;
 
         public static void DeleteImza(this Package package)
         {
@@ -207,13 +236,13 @@ namespace eyazisma.online.api.Extensions
         public static void AddImza(this Package package, byte[] imza)
         {
             PackagePart partImza = package.CreatePart(Constants.URI_IMZA, Constants.MIME_OCTETSTREAM, CompressionOption.Maximum);
-            partImza.GetStream().Write(imza, 0, imza.Length);
+            partImza.AddToPartStream(imza);
             package.GetPart(Constants.URI_PAKETOZETI).CreateRelationship(PackUriHelper.GetRelativeUri(Constants.URI_PAKETOZETI, Constants.URI_IMZA), TargetMode.Internal, Constants.RELATION_TYPE_IMZA, Constants.ID_IMZA);
         }
 
         public static bool ParafImzaExists(this Package package) => package.PartExists(Constants.URI_PARAFIMZA);
 
-        public static Stream GetParafImzaStream(this Package package) => package.ParafImzaExists() ? package.GetPart(Constants.URI_PARAFIMZA).GetStream() : null;
+        public static Stream GetParafImzaStream(this Package package) => package.ParafImzaExists() ? package.GetPartStream(Constants.URI_PARAFIMZA) : null;
 
         public static void DeleteParafImza(this Package package)
         {
@@ -226,21 +255,15 @@ namespace eyazisma.online.api.Extensions
 
         public static void AddParafImza(this Package package, byte[] imza)
         {
-            if (package.ParafImzaExists())
-            {
-                package.DeletePart(Constants.URI_PARAFIMZA);
-                package.GetPart(Constants.URI_PAKETOZETI).DeleteRelationship(Constants.ID_PARAFOZETI);
-            }
-
-            PackagePart partImza = package.CreatePart(Constants.URI_PARAFIMZA, Constants.MIME_OCTETSTREAM, CompressionOption.Maximum);
-            partImza.GetStream().Write(imza, 0, imza.Length);
+            PackagePart partParafImza = package.CreatePart(Constants.URI_PARAFIMZA, Constants.MIME_OCTETSTREAM, CompressionOption.Maximum);
+            partParafImza.AddToPartStream(imza);
             package.GetPart(Constants.URI_PARAFOZETI).CreateRelationship(PackUriHelper.GetRelativeUri(Constants.URI_PARAFOZETI, Constants.URI_PARAFIMZA), TargetMode.Internal, Constants.RELATION_TYPE_PARAFIMZA, Constants.ID_PARAFIMZA);
         }
 
         public static bool MuhurExists(this Package package, PaketVersiyonTuru paketVersiyon) => package.PartExists(paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_MUHUR_V1X : Constants.URI_MUHUR_V2X);
 
         public static Stream GetMuhurStream(this Package package, PaketVersiyonTuru paketVersiyon) => package.MuhurExists(paketVersiyon) ?
-                                                                                                      package.GetPart(paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_MUHUR_V1X : Constants.URI_MUHUR_V2X).GetStream() : null;
+                                                                                                      package.GetPartStream(paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_MUHUR_V1X : Constants.URI_MUHUR_V2X) : null;
         public static void DeleteMuhur(this Package package, PaketVersiyonTuru paketVersiyon)
         {
             var partMuhurUri = paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_MUHUR_V1X : Constants.URI_MUHUR_V2X;
@@ -257,13 +280,13 @@ namespace eyazisma.online.api.Extensions
             var partMuhurUri = paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_MUHUR_V1X : Constants.URI_MUHUR_V2X;
 
             PackagePart partMuhur = package.CreatePart(partMuhurUri, Constants.MIME_OCTETSTREAM, CompressionOption.Maximum);
-            partMuhur.GetStream().Write(muhur, 0, muhur.Length);
+            partMuhur.AddToPartStream(muhur);
             package.GetPart(Constants.URI_NIHAIOZET).CreateRelationship(PackUriHelper.GetRelativeUri(Constants.URI_NIHAIOZET, partMuhurUri), TargetMode.Internal, Constants.RELATION_TYPE_MUHUR, Constants.ID_MUHUR);
         }
 
         public static bool NihaiUstveriExists(this Package package) => package.PartExists(Constants.URI_NIHAIUSTVERI);
 
-        public static Stream GetNihaiUstveriStream(this Package package) => package.NihaiUstveriExists() ? package.GetPart(Constants.URI_NIHAIUSTVERI).GetStream() : null;
+        public static Stream GetNihaiUstveriStream(this Package package) => package.NihaiUstveriExists() ? package.GetPartStream(Constants.URI_NIHAIUSTVERI) : null;
 
         public static void DeleteNihaiUstveri(this Package package)
         {
@@ -284,17 +307,17 @@ namespace eyazisma.online.api.Extensions
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 ns.Add("tipler", "urn:dpt:eyazisma:schema:xsd:Tipler-2");
                 var x = new XmlSerializer(typeof(Api.V2X.CT_NihaiUstveri));
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partNihaiUstveri.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partNihaiUstveri.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                x.Serialize(xmlTextWriter, nihaiUstveri.ToV2XCT_NihaiUstveri(), ns);
+                })
+                    x.Serialize(xmlTextWriter, nihaiUstveri.ToV2XCT_NihaiUstveri(), ns);
             }
         }
 
         public static bool NihaiOzetExists(this Package package) => package.PartExists(Constants.URI_NIHAIOZET);
 
-        public static Stream GetNihaiOzetStream(this Package package) => package.NihaiOzetExists() ? package.GetPart(Constants.URI_NIHAIOZET).GetStream() : null;
+        public static Stream GetNihaiOzetStream(this Package package) => package.NihaiOzetExists() ? package.GetPartStream(Constants.URI_NIHAIOZET) : null;
 
         public static void GenerateNihaiOzet(this Package package, NihaiOzet nihaiOzet, PaketVersiyonTuru paketVersiyon)
         {
@@ -321,11 +344,11 @@ namespace eyazisma.online.api.Extensions
                 var partNihaiOzet = package.CreatePart(Constants.URI_NIHAIOZET, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partNihaiOzet.Uri, TargetMode.Internal, Constants.RELATION_TYPE_NIHAIOZET, Constants.ID_NIHAIOZET);
                 var xmlSerializer = new XmlSerializer(nihaiOzetType);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partNihaiOzet.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partNihaiOzet.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, nihaiOzetObject);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, nihaiOzetObject);
             }
         }
 
@@ -342,12 +365,12 @@ namespace eyazisma.online.api.Extensions
         {
             var partNihaiOzet = package.CreatePart(Constants.URI_NIHAIOZET, Constants.MIME_XML, CompressionOption.Maximum);
             package.CreateRelationship(partNihaiOzet.Uri, TargetMode.Internal, Constants.RELATION_TYPE_NIHAIOZET, Constants.ID_NIHAIOZET);
-            nihaiOzetStream.CopyTo(partNihaiOzet.GetStream());
+            partNihaiOzet.AddToPartStream(nihaiOzetStream);
         }
 
         public static bool PaketOzetiExists(this Package package) => package.PartExists(Constants.URI_PAKETOZETI);
 
-        public static Stream GetPaketOzetiStream(this Package package) => package.PaketOzetiExists() ? package.GetPart(Constants.URI_PAKETOZETI).GetStream() : null;
+        public static Stream GetPaketOzetiStream(this Package package) => package.PaketOzetiExists() ? package.GetPartStream(Constants.URI_PAKETOZETI) : null;
 
         public static void DeletePaketOzeti(this Package package)
         {
@@ -383,11 +406,11 @@ namespace eyazisma.online.api.Extensions
                 var partPaketOzeti = package.CreatePart(Constants.URI_PAKETOZETI, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partPaketOzeti.Uri, TargetMode.Internal, Constants.RELATION_TYPE_PAKETOZETI, Constants.ID_PaketOzeti);
                 var xmlSerializer = new XmlSerializer(paketOzetiType);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partPaketOzeti.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partPaketOzeti.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, paketOzetiObject);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, paketOzetiObject);
             }
         }
 
@@ -395,12 +418,12 @@ namespace eyazisma.online.api.Extensions
         {
             var partPaketOzeti = package.CreatePart(Constants.URI_PAKETOZETI, Constants.MIME_XML, CompressionOption.Maximum);
             package.CreateRelationship(partPaketOzeti.Uri, TargetMode.Internal, Constants.RELATION_TYPE_PAKETOZETI, Constants.ID_PaketOzeti);
-            paketOzetiStream.CopyTo(partPaketOzeti.GetStream());
+            partPaketOzeti.AddToPartStream(paketOzetiStream);
         }
 
         public static bool ParafOzetiExists(this Package package) => package.PartExists(Constants.URI_PARAFOZETI);
 
-        public static Stream GetParafOzetiStream(this Package package) => package.ParafOzetiExists() ? package.GetPart(Constants.URI_PARAFOZETI).GetStream() : null;
+        public static Stream GetParafOzetiStream(this Package package) => package.ParafOzetiExists() ? package.GetPartStream(Constants.URI_PARAFOZETI) : null;
 
         public static void DeleteParafOzeti(this Package package)
         {
@@ -418,17 +441,17 @@ namespace eyazisma.online.api.Extensions
                 var partParafOzeti = package.CreatePart(Constants.URI_PARAFOZETI, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partParafOzeti.Uri, TargetMode.Internal, Constants.RELATION_TYPE_PARAFOZETI, Constants.ID_PARAFOZETI);
                 var xmlSerializer = new XmlSerializer(typeof(Api.V2X.CT_ParafOzeti));
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partParafOzeti.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partParafOzeti.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, parafOzeti.ToV2XCT_ParafOzeti());
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, parafOzeti.ToV2XCT_ParafOzeti());
             }
         }
 
         public static bool UstveriExists(this Package package) => package.PartExists(Constants.URI_USTVERI);
 
-        public static Stream GetUstveriStream(this Package package) => package.UstveriExists() ? package.GetPart(Constants.URI_USTVERI).GetStream() : null;
+        public static Stream GetUstveriStream(this Package package) => package.UstveriExists() ? package.GetPartStream(Constants.URI_USTVERI) : null;
 
         public static void DeleteUstveri(this Package package)
         {
@@ -470,12 +493,12 @@ namespace eyazisma.online.api.Extensions
 
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 ns.Add("tipler", nsString);
-                var x = new XmlSerializer(ustveriType);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partUstveri.GetStream(), Encoding.UTF8)
+                var xmlSerializer = new XmlSerializer(ustveriType);
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partUstveri.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                x.Serialize(xmlTextWriter, ustveriObject, ns);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, ustveriObject, ns);
             }
         }
 
@@ -500,13 +523,13 @@ namespace eyazisma.online.api.Extensions
             var partSifreliIcerikUri = new Uri(string.Format(paketVersiyon == PaketVersiyonTuru.Versiyon1X ? Constants.URI_FORMAT_SIFRELIICERIK_V1X_STRING : Constants.URI_FORMAT_SIFRELIICERIK_V2X_STRING, Uri.EscapeDataString(paketId.ToString().ToUpperInvariant())), UriKind.Relative);
             var partSifreliIcerik = package.CreatePart(partSifreliIcerikUri, Constants.MIME_PKCS7MIME, CompressionOption.Maximum);
             sifreliIcerikStream.Position = 0;
-            sifreliIcerikStream.CopyTo(partSifreliIcerik.GetStream());
+            partSifreliIcerik.AddToPartStream(sifreliIcerikStream);
             package.CreateRelationship(partSifreliIcerik.Uri, TargetMode.Internal, Constants.RELATION_TYPE_SIFRELIICERIK, Constants.ID_SIFRELIICERIK);
         }
 
         public static bool SifreliIcerikExists(this Package package) => !(package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIK) == null || package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIK).Count() == 0);
 
-        public static Stream GetSifreliIcerikStream(this Package package) => package.SifreliIcerikExists() ? package.GetPart(package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIK).First().TargetUri).GetStream() : null;
+        public static Stream GetSifreliIcerikStream(this Package package) => package.SifreliIcerikExists() ? package.GetPartStream(package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIK).First().TargetUri) : null;
 
         public static string GetSifreliIcerikDosyasiAdi(this Package package) => package.SifreliIcerikExists() ? package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIK).First().TargetUri.OriginalString.Split('/').Last() : null;
 
@@ -544,11 +567,11 @@ namespace eyazisma.online.api.Extensions
                 var partSifreliIcerikBilgisi = package.CreatePart(Constants.URI_SIFRELIICERIKBILGISI, Constants.MIME_XML, CompressionOption.Maximum);
                 package.CreateRelationship(partSifreliIcerikBilgisi.Uri, TargetMode.Internal, Constants.RELATION_TYPE_SIFRELIICERIKBILGISI, Constants.ID_SIFRELIICERIKBILGISI);
                 var xmlSerializer = new XmlSerializer(sifreliIcerikBilgisiType);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(partSifreliIcerikBilgisi.GetStream(), Encoding.UTF8)
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(partSifreliIcerikBilgisi.GetStream(), Encoding.UTF8)
                 {
                     Formatting = Formatting.Indented
-                };
-                xmlSerializer.Serialize(xmlTextWriter, sifreliIcerikBilgisiObject);
+                })
+                    xmlSerializer.Serialize(xmlTextWriter, sifreliIcerikBilgisiObject);
             }
         }
 
@@ -571,6 +594,5 @@ namespace eyazisma.online.api.Extensions
         public static void SetPaketBasligi(this Package package, string baslik) => package.PackageProperties.Title = baslik;
 
         public static void SetPaketDili(this Package package, string dil) => package.PackageProperties.Language = dil;
-
     }
 }

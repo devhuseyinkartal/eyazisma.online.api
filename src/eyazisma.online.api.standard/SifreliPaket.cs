@@ -167,6 +167,7 @@ namespace eyazisma.online.api
         /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
         /// <returns>Şifreli içerik bilgisisidir.</returns>
         /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="InvalidOperationException">SifreliIcerik bileşeninin olmadığı durumlarda fırlatılır.</exception>
         public static Stream SifreliIcerikAl(Stream sifreliPaketStream)
         {
             if (sifreliPaketStream == null || sifreliPaketStream.Length == 0)
@@ -180,8 +181,9 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
         /// <returns>Şifreli içerik bilgisisidir.</returns>
-        /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
+        /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
         /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="InvalidOperationException">SifreliIcerik bileşeninin olmadığı durumlarda fırlatılır.</exception>
         public static Stream SifreliIcerikAl(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
@@ -212,6 +214,7 @@ namespace eyazisma.online.api
     public sealed class SifreliPaketV1X : ISifreliPaketV1X
     {
         readonly Package _package;
+        readonly Stream _stream;
         readonly PaketModuTuru _paketModu;
         readonly List<DogrulamaHatasi> _dogrulamaHatalari;
 
@@ -293,7 +296,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPart(readedBelgeHedefUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPartStream(readedBelgeHedefUri));
                                 BelgeHedef = readedBelgeHedef.ToBelgeHedef();
                             }
                             catch (Exception ex)
@@ -333,7 +336,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -365,7 +368,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedSifreliIcerikBilgisiUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIKBILGISI).First().TargetUri;
-                                Api.V1X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V1X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V1X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPart(readedSifreliIcerikBilgisiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V1X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V1X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPartStream(readedSifreliIcerikBilgisiUri));
                                 SifreliIcerikBilgisi = readedSifreliIcerikBilgisi.ToSifreliIcerikBilgisi();
                             }
                             catch (Exception ex)
@@ -421,7 +424,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPart(readedBelgeHedefUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_BelgeHedef readedBelgeHedef = (Api.V1X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V1X.CT_BelgeHedef)).Deserialize(_package.GetPartStream(readedBelgeHedefUri));
                                 BelgeHedef = readedBelgeHedef.ToBelgeHedef();
                             }
                             catch (Exception ex)
@@ -448,7 +451,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedPaketOzetiUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_PAKETOZETI).First().TargetUri);
-                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPart(readedPaketOzetiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_PaketOzeti readedPaketOzeti = (Api.V1X.CT_PaketOzeti)new XmlSerializer(typeof(Api.V1X.CT_PaketOzeti)).Deserialize(_package.GetPartStream(readedPaketOzetiUri));
                                 PaketOzeti = readedPaketOzeti.ToPaketOzeti();
                             }
                             catch (Exception ex)
@@ -475,7 +478,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedSifreliIcerikBilgisiUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIKBILGISI).First().TargetUri;
-                                Api.V1X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V1X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V1X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPart(readedSifreliIcerikBilgisiUri).GetStream(FileMode.Open));
+                                Api.V1X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V1X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V1X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPartStream(readedSifreliIcerikBilgisiUri));
                                 SifreliIcerikBilgisi = readedSifreliIcerikBilgisi.ToSifreliIcerikBilgisi();
                             }
                             catch (Exception ex)
@@ -508,6 +511,7 @@ namespace eyazisma.online.api
                         break;
                     }
             }
+            _stream = stream;
         }
 
         /// <summary>
@@ -761,6 +765,12 @@ namespace eyazisma.online.api
             if (_package != null)
                 _package.Close();
 
+            if (_stream != null)
+            {
+                _stream.Close();
+                _stream.Dispose();
+            }
+
             GC.SuppressFinalize(this);
         }
 
@@ -774,6 +784,7 @@ namespace eyazisma.online.api
     public sealed class SifreliPaketV2X : ISifreliPaketV2X
     {
         readonly Package _package;
+        readonly Stream _stream;
         readonly PaketModuTuru _paketModu;
         readonly List<DogrulamaHatasi> _dogrulamaHatalari;
 
@@ -855,7 +866,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                                Api.V2X.CT_BelgeHedef readedBelgeHedef = (Api.V2X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V2X.CT_BelgeHedef)).Deserialize(_package.GetPart(readedBelgeHedefUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_BelgeHedef readedBelgeHedef = (Api.V2X.CT_BelgeHedef)new XmlSerializer(typeof(Api.V2X.CT_BelgeHedef)).Deserialize(_package.GetPartStream(readedBelgeHedefUri));
                                 BelgeHedef = readedBelgeHedef.ToBelgeHedef();
                             }
                             catch (Exception ex)
@@ -895,7 +906,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedNihaiOzetUri = PackUriHelper.CreatePartUri(_package.GetRelationshipsByType(Constants.RELATION_TYPE_NIHAIOZET).First().TargetUri);
-                                Api.V2X.CT_NihaiOzet readedNihaiOzet = (Api.V2X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V2X.CT_NihaiOzet)).Deserialize(_package.GetPart(readedNihaiOzetUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_NihaiOzet readedNihaiOzet = (Api.V2X.CT_NihaiOzet)new XmlSerializer(typeof(Api.V2X.CT_NihaiOzet)).Deserialize(_package.GetPartStream(readedNihaiOzetUri));
                                 NihaiOzet = readedNihaiOzet.ToNihaiOzet();
                             }
                             catch (Exception ex)
@@ -927,7 +938,7 @@ namespace eyazisma.online.api
                             try
                             {
                                 Uri readedSifreliIcerikBilgisiUri = _package.GetRelationshipsByType(Constants.RELATION_TYPE_SIFRELIICERIKBILGISI).First().TargetUri;
-                                Api.V2X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V2X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V2X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPart(readedSifreliIcerikBilgisiUri).GetStream(FileMode.Open));
+                                Api.V2X.CT_SifreliIcerikBilgisi readedSifreliIcerikBilgisi = (Api.V2X.CT_SifreliIcerikBilgisi)new XmlSerializer(typeof(Api.V2X.CT_SifreliIcerikBilgisi)).Deserialize(_package.GetPartStream(readedSifreliIcerikBilgisiUri));
                                 SifreliIcerikBilgisi = readedSifreliIcerikBilgisi.ToSifreliIcerikBilgisi();
                             }
                             catch (Exception ex)
@@ -976,6 +987,7 @@ namespace eyazisma.online.api
                         break;
                     }
             }
+            _stream = stream;
         }
 
         /// <summary>
@@ -1228,6 +1240,13 @@ namespace eyazisma.online.api
         {
             if (_package != null)
                 _package.Close();
+
+            if (_stream != null)
+            {
+                _stream.Close();
+                _stream.Dispose();
+            }
+
             GC.SuppressFinalize(this);
         }
 

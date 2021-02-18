@@ -552,7 +552,7 @@ namespace eyazisma.online.api.Extensions
             if (dagitim == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(dagitim) + " boş olmamalıdır.",
+                    Hata = nameof(Dagitim) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
@@ -560,14 +560,14 @@ namespace eyazisma.online.api.Extensions
                 if (dagitim.Oge == null)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(dagitim) + " alanı boş olmamalıdır.",
+                        Hata = nameof(Dagitim) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
                 if (!(dagitim.Oge is KurumKurulus || dagitim.Oge is TuzelSahis || dagitim.Oge is GercekSahis))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(dagitim.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
+                        Hata = nameof(Dagitim.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else if (dagitim.Oge is KurumKurulus kurumKurulus)
@@ -577,7 +577,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(dagitim.Oge) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Dagitim.Oge) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }
@@ -588,7 +588,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(dagitim.Oge) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Dagitim.Oge) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }
@@ -599,7 +599,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(dagitim.Oge) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Dagitim.Oge) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }
@@ -607,14 +607,14 @@ namespace eyazisma.online.api.Extensions
                 if (dagitim.IvedilikTuru == IvedilikTuru.CIV || dagitim.IvedilikTuru == IvedilikTuru.IVD)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(dagitim.IvedilikTuru) + " alanı için " + nameof(IvedilikTuru.CIV) + " ve " + nameof(IvedilikTuru.IVD) + " seçeneği kullanımdan kaldırılmıştır.",
+                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı için " + nameof(IvedilikTuru.CIV) + " ve " + nameof(IvedilikTuru.IVD) + " seçeneği kullanımdan kaldırılmıştır.",
                         HataTuru = DogrulamaHataTuru.Onemli
                     });
 
                 if (dagitim.Miat == default(TimeSpan) && dagitim.IvedilikTuru == IvedilikTuru.GNL)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(dagitim.IvedilikTuru) + " alanı " + nameof(IvedilikTuru.GNL) + " olması durumunda " + nameof(dagitim.Miat) + " alanı boş olmamalıdır.",
+                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı " + nameof(IvedilikTuru.GNL) + " olması durumunda " + nameof(Dagitim.Miat) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -623,7 +623,7 @@ namespace eyazisma.online.api.Extensions
                     if (dagitim.KonulmamisEkler.Count == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(dagitim.KonulmamisEkler) + " alanı en az bir tane " + typeof(KonulmamisEk).Name + " tipinde öğe içermelidir.",
+                            Hata = nameof(Dagitim.KonulmamisEkler) + " alanı en az bir tane " + typeof(KonulmamisEk).Name + " tipinde öğe içermelidir.",
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
                     else
@@ -653,7 +653,7 @@ namespace eyazisma.online.api.Extensions
             if (ek == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(ek) + " boş olmamalıdır.",
+                    Hata = nameof(Ek) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
@@ -663,7 +663,7 @@ namespace eyazisma.online.api.Extensions
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         AltDogrulamaHatalari = hatalar,
-                        Hata = nameof(ek.Id) + " alanı doğrulanamamıştır.",
+                        Hata = nameof(Ek.Id) + " alanı doğrulanamamıştır.",
                         HataTuru = hatalar.GetDogrulamaHataTuru().Value
                     });
 
@@ -674,7 +674,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(ek.Ad) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Ek.Ad) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }
@@ -682,7 +682,7 @@ namespace eyazisma.online.api.Extensions
                 {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ek.Ad) + " alanı boş olmamalıdır.",
+                        Hata = nameof(Ek.Ad) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
                 }
@@ -690,7 +690,7 @@ namespace eyazisma.online.api.Extensions
                 if (ek.SiraNo < 1)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ek.SiraNo) + " alanı değeri 0'dan büyük olmalıdır.",
+                        Hata = nameof(Ek.SiraNo) + " alanı değeri 0'dan büyük olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -701,7 +701,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(ek.Aciklama) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Ek.Aciklama) + " alanı doğrulanamamıştır.",
                             HataTuru = DogrulamaHataTuru.Onemli
                         });
                 }
@@ -711,13 +711,13 @@ namespace eyazisma.online.api.Extensions
                     if (string.IsNullOrWhiteSpace(ek.DosyaAdi))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(ek.DosyaAdi) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(Ek.DosyaAdi) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                     if (string.IsNullOrWhiteSpace(ek.MimeTuru))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(ek.MimeTuru) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(Ek.MimeTuru) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                 }
@@ -733,13 +733,13 @@ namespace eyazisma.online.api.Extensions
                     if (string.IsNullOrWhiteSpace(ek.Referans))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(ek.Tur) + " alanı değeri " + nameof(EkTuru.HRF) + " olması durumunda " + nameof(ek.Referans) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.HRF) + " olması durumunda " + nameof(Ek.Referans) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                     else if (!ek.Referans.DogrulaWebAdresi())
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(ek.Referans) + " alanı formatı uygun değildir.",
+                            Hata = nameof(Ek.Referans) + " alanı formatı uygun değildir.",
                             HataTuru = DogrulamaHataTuru.Onemli
                         });
 
@@ -750,7 +750,7 @@ namespace eyazisma.online.api.Extensions
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 AltDogrulamaHatalari = hatalar,
-                                Hata = nameof(ek.Ozet) + " alanı doğrulanamamıştır.",
+                                Hata = nameof(Ek.Ozet) + " alanı doğrulanamamıştır.",
                                 HataTuru = hatalar.GetDogrulamaHataTuru().Value
                             });
                     }
@@ -772,7 +772,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(ek.OzId) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Ek.OzId) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }
@@ -1006,7 +1006,7 @@ namespace eyazisma.online.api.Extensions
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 AltDogrulamaHatalari = hatalar,
-                                Hata = nameof(dagitim) + " alanı doğrulanamamıştır.",
+                                Hata = nameof(Dagitim) + " alanı doğrulanamamıştır.",
                                 HataTuru = hatalar.GetDogrulamaHataTuru().Value
                             });
                     }
@@ -1026,7 +1026,7 @@ namespace eyazisma.online.api.Extensions
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 AltDogrulamaHatalari = hatalar,
-                                Hata = nameof(ek) + " alanı doğrulanamamıştır.",
+                                Hata = nameof(Ek) + " alanı doğrulanamamıştır.",
                                 HataTuru = hatalar.GetDogrulamaHataTuru().Value
                             });
                     }
@@ -1743,7 +1743,7 @@ namespace eyazisma.online.api.Extensions
             if (ekDosya == null)
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
-                    Hata = nameof(ekDosya) + " boş olmamalıdır.",
+                    Hata = nameof(EkDosya) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
             else
@@ -1751,21 +1751,21 @@ namespace eyazisma.online.api.Extensions
                 if (ekDosya.Dosya == null || ekDosya.Dosya.Length == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ekDosya.Dosya) + " alanı boş olmamalıdır.",
+                        Hata = nameof(EkDosya.Dosya) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
                 if (string.IsNullOrWhiteSpace(ekDosya.DosyaAdi))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ekDosya.DosyaAdi) + " alanı boş olmamalıdır.",
+                        Hata = nameof(EkDosya.DosyaAdi) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
                 if (ekDosya.Ek == null)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ekDosya.Ek) + " alanı boş olmamalıdır.",
+                        Hata = nameof(EkDosya.Ek) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -1782,7 +1782,7 @@ namespace eyazisma.online.api.Extensions
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         AltDogrulamaHatalari = hatalar,
-                        Hata = nameof(ekDosya.Ek) + " alanı doğrulanamamıştır.",
+                        Hata = nameof(EkDosya.Ek) + " alanı doğrulanamamıştır.",
                         HataTuru = hatalar.GetDogrulamaHataTuru().Value
                     });
             }
@@ -2100,7 +2100,7 @@ namespace eyazisma.online.api.Extensions
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             AltDogrulamaHatalari = hatalar,
-                            Hata = nameof(ek) + " alanı doğrulanamamıştır.",
+                            Hata = nameof(Ek) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
                 }

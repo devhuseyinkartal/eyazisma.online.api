@@ -33,6 +33,18 @@ namespace eyazisma.online.api.Interfaces
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
         IPaketOkuAction Versiyon1XIse(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> action);
+
+        /// <summary>
+        /// Paket ait bileşenlerin verilerinin alınması için kullanılır.
+        /// </summary>
+        /// <param name="bilesenAction">
+        /// Paket bileşenlerini almak için kullanılacak fonksiyondur.
+        /// bool -> Kritik hata olup olmadığını belirtir.
+        /// IPaketV1XOkuBilesen -> Bileşen verileridir.
+        /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
+        /// </param>
+        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+
     }
 
     public interface IPaketOkuAction
@@ -46,42 +58,45 @@ namespace eyazisma.online.api.Interfaces
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        void Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        void Kapat();
     }
 
     public interface IPaketGuncelle
     {
         IPaketGuncelleAction Versiyon1XIse(Action<IPaketV1XGuncelle> action);
+        IPaketGuncelleAction Versiyon2XIse(Action<IPaketV2XGuncelle> action);
     }
 
     public interface IPaketGuncelleAction
     {
-        void Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        IPaketGuncelleAction Versiyon2XIse(Action<IPaketV2XGuncelle> action);
+        void Kapat();
     }
 
     public interface IPaketV1X : IPaketV1XOlustur,
-                             IPaketV1XOlusturOzetAlgoritma,
-                             IPaketV1XOlusturUstYazi,
-                             IPaketV1XOlusturUstveri,
-                             IPaketV1XOlusturBelgeHedef,
-                             IPaketV1XOlusturBelgeImza,
-                             IPaketV1XOlusturEkDosya,
-                             IPaketV1XOlusturEkDosyalar,
-                             IPaketV1XOlusturPaketBilgi,
-                             IPaketV1XOlusturBilesen,
-                             IPaketV1XOlusturImza,
-                             IPaketV1XOlusturMuhur,
-                             IPaketV1XOlusturDogrula,
-                             IPaketV1XOku,
-                             IPaketV1XOkuBilesenAl,
-                             IPaketV1XOkuBilesen,
-                             IPaketV1XGuncelle,
-                             IPaketV1XGuncelleBelgeImza,
-                             IPaketV1XGuncelleImza,
-                             IPaketV1XGuncelleMuhur,
-                             IPaketV1XGuncelleEkDosya,
-                             IPaketV1XGuncellePaketBilgi,
-                             IPaketV1XGuncelleDogrula
+                                 IPaketV1XOlusturOzetAlgoritma,
+                                 IPaketV1XOlusturUstYazi,
+                                 IPaketV1XOlusturUstveri,
+                                 IPaketV1XOlusturBelgeHedef,
+                                 IPaketV1XOlusturBelgeImza,
+                                 IPaketV1XOlusturEkDosya,
+                                 IPaketV1XOlusturEkDosyalar,
+                                 IPaketV1XOlusturPaketBilgi,
+                                 IPaketV1XOlusturBilesen,
+                                 IPaketV1XOlusturImza,
+                                 IPaketV1XOlusturMuhur,
+                                 IPaketV1XOlusturDogrula,
+                                 IPaketV1XOku,
+                                 IPaketV1XOkuBilesenAl,
+                                 IPaketV1XOkuBilesen,
+                                 IPaketV1XGuncelle,
+                                 IPaketV1XGuncelleBelgeImza,
+                                 IPaketV1XGuncelleImza,
+                                 IPaketV1XGuncelleMuhur,
+                                 IPaketV1XGuncelleEkDosya,
+                                 IPaketV1XGuncellePaketBilgi,
+                                 IPaketV1XGuncelleDogrula
     {
     }
 
@@ -716,7 +731,15 @@ namespace eyazisma.online.api.Interfaces
 
     public interface IPaketV1XGuncelleMuhur
     {
-        void Kapat();
+        /// <summary>
+        /// Güncellenen paketin doğrulama sonuçlarının alınmasını sağlar.
+        /// </summary>
+        /// <param name="dogrulamaAction">
+        /// Doğrulama sonuçlarını almak için kullanılacak fonksiyondur.
+        /// bool -> Kritik hata olup olmadığını belirtir.
+        /// List -> Pakete ait tüm doğrulama hatalarını belirtir. 
+        /// </param>
+        IPaketV1XGuncelleDogrula Dogrula(Action<bool, List<DogrulamaHatasi>> dogrulamaAction);
     }
 
     public interface IPaketV1XGuncelleEkDosya
@@ -1375,6 +1398,22 @@ namespace eyazisma.online.api.Interfaces
         /// <param name="imza">Paket içerisine eklenecek PaketOzeti bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
         IPaketV2XGuncelleImza ImzaEkle(byte[] imza);
         /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
+        /// <param name="muhurFunction">
+        /// Mühür ekleme işlemi için kullanılacak fonksiyondur.
+        /// Stream -> İmzalanacak NihaiOzet bileşenine ait STREAM değeridir.
+        /// byte[] -> Paket içerisine eklenecek mühür değeridir.
+        /// </param>
+        /// <remarks>Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</remarks>
+        IPaketV2XGuncelleMuhur MuhurEkle(Func<Stream, byte[]> muhurFunction);
+        /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
+        /// <param name="muhur">Paket içerisine eklenecek NihaiOzet bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
+        IPaketV2XGuncelleMuhur MuhurEkle(byte[] muhur);
+
+        /// <summary>
         /// Paket içerisinden ek çıkarılmak için kullanılır.
         /// </summary>
         /// <param name="ekId">Çıkarılacak eke ait Id bilgisidir.</param>
@@ -1424,6 +1463,21 @@ namespace eyazisma.online.api.Interfaces
         /// </summary>
         /// <param name="imza">Paket içerisine eklenecek PaketOzeti bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
         IPaketV2XGuncelleImza ImzaEkle(byte[] imza);
+        /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
+        /// <param name="muhurFunction">
+        /// Mühür ekleme işlemi için kullanılacak fonksiyondur.
+        /// Stream -> İmzalanacak NihaiOzet bileşenine ait STREAM değeridir.
+        /// byte[] -> Paket içerisine eklenecek mühür değeridir.
+        /// </param>
+        /// <remarks>Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</remarks>
+        IPaketV2XGuncelleMuhur MuhurEkle(Func<Stream, byte[]> muhurFunction);
+        /// <summary>
+        /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
+        /// </summary>
+        /// <param name="muhur">Paket içerisine eklenecek NihaiOzet bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
+        IPaketV2XGuncelleMuhur MuhurEkle(byte[] muhur);
     }
 
     public interface IPaketV2XGuncelleEkDosya
@@ -1516,7 +1570,7 @@ namespace eyazisma.online.api.Interfaces
         /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
         /// </summary>
         /// <param name="muhur">Paket içerisine eklenecek NihaiOzet bileşenine ait imza değeridir. Eklenecek imza "Ayrık olmayan CAdES-XL" türünde olmalıdır.</param>
-        IPaketV2XGuncelleImza MuhurEkle(byte[] muhur);
+        IPaketV2XGuncelleMuhur MuhurEkle(byte[] muhur);
     }
 
     public interface IPaketV2XGuncelleMuhur

@@ -1,14 +1,14 @@
 ﻿using eyazisma.online.api.Classes;
 using eyazisma.online.api.Enums;
-using eyazisma.online.api.framework.Extensions;
+using eyazisma.online.api.Extensions;
 using System;
 using System.IO;
 
-namespace eyazisma.online.api.framework.test
+namespace eyazisma.online.api.net5.test
 {
     public static class TestComponents
     {
-        private static string BASE_DIRECTORY => AppDomain.CurrentDomain.BaseDirectory.Replace(@"\bin\Debug", string.Empty);
+        private static string BASE_DIRECTORY => AppDomain.CurrentDomain.BaseDirectory.Replace(@"\bin\Debug\net5.0", string.Empty);
         public static string TEST_BASE_DIRECTORY => Path.Combine(BASE_DIRECTORY, "testFiles");
         public static string RESULT_BASE_DIRECTORY => Path.Combine(BASE_DIRECTORY, "results");
 
@@ -390,7 +390,8 @@ namespace eyazisma.online.api.framework.test
                                                    .OlusturanAta(bilesenler.Ustveri.Olusturan)
                                                    .BelgeHedefIle(bilesenler.BelgeHedef)
                                                    .BilesenleriOlustur()
-                                                   .Dogrula((hataVarMi, hatalar) => {
+                                                   .Dogrula((hataVarMi, hatalar) =>
+                                                   {
                                                        if (hataVarMi)
                                                            throw new ApplicationException("Şifreli paket oluşturulurken kritik hata oluşmuştur.");
                                                    })
@@ -426,7 +427,8 @@ namespace eyazisma.online.api.framework.test
                                                                             .HedeflerEkle(bilesenler.Ustveri.Dagitimlar.ToHedefler())
                                                                             .Olustur())
                                                    .BilesenleriOlustur()
-                                                   .Dogrula((hataVarMi, hatalar) => {
+                                                   .Dogrula((hataVarMi, hatalar) =>
+                                                   {
                                                        if (hataVarMi)
                                                            throw new ApplicationException("Şifreli paket oluşturulurken kritik hata oluşmuştur.");
                                                    })
