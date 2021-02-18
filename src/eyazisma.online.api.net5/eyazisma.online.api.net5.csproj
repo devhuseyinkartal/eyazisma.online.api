@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Hüseyin KARTAL</Authors>
+    <Company>eyazisma.online</Company>
+    <Product>eyazisma.online.api</Product>
+    <Description>E-Yazışma Teknik Rehberinin tüm sürümlerine uygun şekilde e-yazışma paketi oluşturmak, güncellemek ve okumak için hazırlanmış bir yardımcı kütüphanedir.</Description>
+    <Copyright>Copyright © 2021</Copyright>
+    <PackageProjectUrl>http://eyazisma.online</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/devhuseyinkartal/eyazisma.online.api</RepositoryUrl>
+    <Version>1.0.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
