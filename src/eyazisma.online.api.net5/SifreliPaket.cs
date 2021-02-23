@@ -87,13 +87,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static ISifreliPaketOku Oku(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
                 throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(sifreliPaketDosyaYolu))
-                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
 
             return new SifreliPaket(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
@@ -150,13 +150,13 @@ namespace eyazisma.online.api
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
         /// <returns>Şifreli paket versiyon bilgisidir.</returns>
         /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static PaketVersiyonTuru SifreliPaketVersiyonuAl(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
                 throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(sifreliPaketDosyaYolu))
-                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
 
             return SifreliPaketVersiyonuAl(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read));
         }
@@ -165,7 +165,7 @@ namespace eyazisma.online.api
         /// Varolan bir şifreli pakete ait şifreli içerik bilgisini almak için kullanılır.
         /// </summary>
         /// <param name="sifreliPaketStream">Şifreli pakete ilişkin STREAM objesidir.</param>
-        /// <returns>Şifreli içerik bilgisisidir.</returns>
+        /// <returns>Şifreli içerik bilgisidir.</returns>
         /// <exception cref="ArgumentNullException">sifreliPaketStream boş olduğu durumlarda fırlatılır.</exception>
         /// <exception cref="InvalidOperationException">SifreliIcerik bileşeninin olmadığı durumlarda fırlatılır.</exception>
         public static Stream SifreliIcerikAl(Stream sifreliPaketStream)
@@ -180,16 +180,16 @@ namespace eyazisma.online.api
         /// Varolan bir şifreli pakete ait şifreli içerik bilgisini almak için kullanılır.
         /// </summary>
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
-        /// <returns>Şifreli içerik bilgisisidir.</returns>
+        /// <returns>Şifreli içerik bilgisidir.</returns>
         /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         /// <exception cref="InvalidOperationException">SifreliIcerik bileşeninin olmadığı durumlarda fırlatılır.</exception>
         public static Stream SifreliIcerikAl(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
                 throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(sifreliPaketDosyaYolu))
-                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
 
             return SifreliIcerikAl(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read));
         }
@@ -733,13 +733,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static ISifreliPaketV1XOku Oku(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
                 throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(sifreliPaketDosyaYolu))
-                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new SifreliPaketV1X(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
 
@@ -1209,13 +1209,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="sifreliPaketDosyaYolu">Şifreli pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">sifreliPaketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static ISifreliPaketV2XOku Oku(string sifreliPaketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(sifreliPaketDosyaYolu))
                 throw new ArgumentNullException(nameof(sifreliPaketDosyaYolu), nameof(sifreliPaketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(sifreliPaketDosyaYolu))
-                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(sifreliPaketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new SifreliPaketV2X(File.Open(sifreliPaketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
 

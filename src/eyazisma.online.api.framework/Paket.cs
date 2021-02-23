@@ -86,13 +86,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static IPaketOku Oku(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new Paket(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
 
@@ -173,17 +173,17 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static PaketVersiyonTuru PaketVersiyonuAl(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
 
             return PaketVersiyonuAl(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read));
         }
-
+        
         public void Kapat() => Dispose();
 
         public void Dispose()
@@ -1200,13 +1200,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static IPaketV1XOku Oku(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
 
@@ -1242,13 +1242,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static IPaketV1XGuncelle Guncelle(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new PaketV1X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
         }
 
@@ -2936,13 +2936,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static IPaketV2XOku Oku(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.Read), PaketModuTuru.Oku);
         }
 
@@ -2978,13 +2978,13 @@ namespace eyazisma.online.api
         /// </summary>
         /// <param name="paketDosyaYolu">Pakete ilişkin dosya yoludur.</param>
         /// <exception cref="ArgumentNullException">paketDosyaYolu boş olduğu durumlarda fırlatılır.</exception>
-        /// <exception cref="FileNotFoundException">Verilen dosya yolunun gerçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
+        /// <exception cref="FileNotFoundException">Verilen dosya yolunun geçersiz olduğu ya da dosyaya erişim yetkisinin bulunmadığı durumlarda fırlatılır.</exception>
         public static IPaketV2XGuncelle Guncelle(string paketDosyaYolu)
         {
             if (string.IsNullOrWhiteSpace(paketDosyaYolu))
                 throw new ArgumentNullException(nameof(paketDosyaYolu), nameof(paketDosyaYolu) + " boş olmamalıdır.");
             else if (!File.Exists(paketDosyaYolu))
-                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu gerçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
+                throw new FileNotFoundException(nameof(paketDosyaYolu), "Verilen dosya yolu geçersizdir ya da dosyaya erişim yetkisi bulunmamaktadır.");
             return new PaketV2X(File.Open(paketDosyaYolu, FileMode.Open, FileAccess.ReadWrite), PaketModuTuru.Guncelle);
         }
 
