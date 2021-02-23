@@ -32,7 +32,7 @@ namespace eyazisma.online.api.Interfaces
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        IPaketOkuAction Versiyon1XIse(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> action);
+        IPaketOkuAction Versiyon1XIse(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
 
         /// <summary>
         /// Paket ait bileşenlerin verilerinin alınması için kullanılır.
@@ -43,7 +43,7 @@ namespace eyazisma.online.api.Interfaces
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
 
     }
 
@@ -58,7 +58,7 @@ namespace eyazisma.online.api.Interfaces
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
         void Kapat();
     }
 

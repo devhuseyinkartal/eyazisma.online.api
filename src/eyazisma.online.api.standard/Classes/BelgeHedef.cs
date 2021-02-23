@@ -44,7 +44,7 @@ namespace eyazisma.online.api.Classes
             /// <summary>
             /// Belgenin iletileceği taraf bilgileridir.
             /// </summary>
-            /// <param name="hedef">Taraf bilgisi değeridir. Hedef tipinde olmalıdır.</param>
+            /// <param name="hedefler">Taraf bilgisi değeridir. Hedef tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
             public static IBelgeHedefFluentHedefler HedeflerEkle(List<Hedef> hedefler) => new Kilavuz(hedefler);
 

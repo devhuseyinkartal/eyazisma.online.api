@@ -44,7 +44,7 @@ namespace eyazisma.online.api.Classes
             /// <summary>
             /// Belge üzerindeki imza bilgisidir.
             /// </summary>
-            /// <param name="imza">Imza bilgisi değeridir. Imza tipinde olmalıdır.</param>
+            /// <param name="imzalar">Imza bilgisi değeridir. Imza tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
             public static IBelgeImzaFluentImzalar ImzalarEkle(List<Imza> imzalar) => new Kilavuz(imzalar);
 

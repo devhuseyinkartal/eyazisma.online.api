@@ -151,7 +151,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Belgeye eklenecek eklere ilişkin bilgilerdir.
         /// </summary>
-        /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+        /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
         IUstveriV1XFluentEkler EklerIle(List<Ek> ekler);
         /// <summary>
         /// Belgeye eklenecek ilgiye ilişkin bilgidir.
@@ -187,7 +187,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Belgeye eklenecek eklere ilişkin bilgilerdir.
         /// </summary>
-        /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+        /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
         IUstveriV1XFluentEkler EklerIle(List<Ek> ekler);
         /// <summary>
         /// Belgeye eklenecek ilgiye ilişkin bilgidir.
@@ -487,7 +487,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Belgeye eklenecek eklere ilişkin bilgilerdir.
         /// </summary>
-        /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+        /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
         IUstveriV2XFluentEkler EklerIle(List<Ek> ekler);
         /// <summary>
         /// Belgeye eklenecek ilgiye ilişkin bilgidir.
@@ -523,7 +523,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Belgeye eklenecek eklere ilişkin bilgilerdir.
         /// </summary>
-        /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+        /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
         IUstveriV2XFluentEkler EklerIle(List<Ek> ekler);
         /// <summary>
         /// Belgeye eklenecek ilgiye ilişkin bilgidir.

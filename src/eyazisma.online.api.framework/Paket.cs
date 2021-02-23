@@ -105,10 +105,10 @@ namespace eyazisma.online.api
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public IPaketOkuAction Versiyon1XIse(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> action)
+        public IPaketOkuAction Versiyon1XIse(Action<bool, IPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon1X)
-                PaketV1X.Oku(_stream).BilesenleriAl(action).Kapat();
+                PaketV1X.Oku(_stream).BilesenleriAl(bilesenAction).Kapat();
             return this;
         }
 
@@ -121,10 +121,10 @@ namespace eyazisma.online.api
         /// IPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
+        public IPaketOkuAction Versiyon2XIse(Action<bool, IPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon2X)
-                PaketV2X.Oku(_stream).BilesenleriAl(action).Kapat();
+                PaketV2X.Oku(_stream).BilesenleriAl(bilesenAction).Kapat();
             return this;
         }
 
@@ -1399,7 +1399,7 @@ namespace eyazisma.online.api
         /// <summary>
         /// Paket içerisine NihaiOzet bileşeninin imzalı değerini ekler.
         /// </summary>
-        /// <param name="imza">Paket içerisine eklenecek mühür değeridir. Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</param>
+        /// <param name="muhur">Paket içerisine eklenecek mühür değeridir. Eklenecek mühür "Ayrık olmayan CAdES-XL" türünde imza olmalıdır.</param>
         IPaketV1XGuncelleMuhur IPaketV1XGuncelle.MuhurEkle(byte[] muhur)
         {
             if (!KritikHataExists())
@@ -3818,7 +3818,5 @@ namespace eyazisma.online.api
             if (!KritikHataExists())
                 _package.SetPaketDurumu(durum);
         }
-
-
     }
 }

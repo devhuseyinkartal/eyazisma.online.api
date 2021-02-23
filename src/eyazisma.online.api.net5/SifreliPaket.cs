@@ -107,10 +107,10 @@ namespace eyazisma.online.api
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Şifreli pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> action)
+        public ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon1X)
-                SifreliPaketV1X.Oku(_stream).BilesenleriAl(action).Kapat();
+                SifreliPaketV1X.Oku(_stream).BilesenleriAl(bilesenAction).Kapat();
             return this;
         }
 
@@ -123,10 +123,10 @@ namespace eyazisma.online.api
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Şifreli pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        public ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action)
+        public ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction)
         {
             if (_paketVersiyon == PaketVersiyonTuru.Versiyon2X)
-                SifreliPaketV2X.Oku(_stream).BilesenleriAl(action).Kapat();
+                SifreliPaketV2X.Oku(_stream).BilesenleriAl(bilesenAction).Kapat();
             return this;
         }
 

@@ -29,7 +29,7 @@ namespace eyazisma.online.api.Interfaces
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> action);
+        ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
         void Kapat();
     }
 
@@ -44,7 +44,7 @@ namespace eyazisma.online.api.Interfaces
         /// ISifreliPaketV1XOkuBilesen -> Bileşen verileridir.
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
-        ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> action);
+        ISifreliPaketOkuAction Versiyon2XIse(Action<bool, ISifreliPaketV2XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
         void Kapat();
     }
 

@@ -19,6 +19,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Kurum/kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
         /// </summary>
+        /// <param name="kkk">Devlet Teşkilatı Numarası değeridir.</param>
         /// <remarks>Zorunlu alandır.</remarks>
         IKurumKurulusFluentV1XKKK KKKAta(string kkk);
     }
@@ -28,6 +29,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Kurum/kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
         /// </summary>
+        /// <param name="kkk">Devlet Teşkilatı Numarası değeridir.</param>
         /// <remarks>Zorunlu alandır.</remarks>
         IKurumKurulusFluentV2XKKK KKKAta(string kkk);
     }
@@ -37,11 +39,13 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Kurum / kuruluşun adıdır.
         /// </summary>
+        /// <param name="ad">Kurum / kuruluşa ait ad değeridir. IsimTip tipinde olmalıdır.</param>
         /// <remarks>Bu alanın kullanılması durumunda DETSİS’teki kurum adı kullanılmalıdır.</remarks>
         IKurumKurulusFluentAd AdIle(IsimTip ad);
         /// <summary>
         /// Kurum / kuruluşun iletişim bilgisidir.
         /// </summary>
+        /// <param name="iletisimBilgisi">Kurum / kuruluşun iletişim bilgisi değeridir.</param>
         IKurumKurulusFluentIletisimBilgisi IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi);
         KurumKurulus Olustur();
     }
@@ -51,16 +55,19 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Paketi oluşturan veya muhatap alt birimlerin, DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
         /// </summary>
+        /// <param name="birimKKK">Devlet Teşkilatı Numarası değeridir.</param>
         /// <remarks>Only for version 2.0</remarks>
         IKurumKurulusFluentV2XBirimKKK BirimKKKIle(string birimKKK);
         /// <summary>
         /// Kurum / kuruluşun adıdır.
         /// </summary>
+        /// <param name="ad">Kurum / kuruluşa ait ad değeridir. IsimTip tipinde olmalıdır.</param>
         /// <remarks>Bu alanın kullanılması durumunda DETSİS’teki kurum adı kullanılmalıdır.</remarks>
         IKurumKurulusFluentAd AdIle(IsimTip ad);
         /// <summary>
         /// Kurum / kuruluşun iletişim bilgisidir.
         /// </summary>
+        /// <param name="iletisimBilgisi">Kurum / kuruluşun iletişim bilgisi değeridir.</param>
         IKurumKurulusFluentIletisimBilgisi IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi);
         KurumKurulus Olustur();
     }
@@ -70,20 +77,23 @@ namespace eyazisma.online.api.Interfaces.Fluents
         /// <summary>
         /// Kurum / kuruluşun adıdır.
         /// </summary>
+        /// <param name="ad">Kurum / kuruluşa ait ad değeridir. IsimTip tipinde olmalıdır.</param>
         /// <remarks>Bu alanın kullanılması durumunda DETSİS’teki kurum adı kullanılmalıdır.</remarks>
         IKurumKurulusFluentAd AdIle(IsimTip ad);
-        // <summary>
+        /// <summary>
         /// Kurum / kuruluşun iletişim bilgisidir.
         /// </summary>
+        /// <param name="iletisimBilgisi">Kurum / kuruluşun iletişim bilgisi değeridir.</param>
         IKurumKurulusFluentIletisimBilgisi IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi);
         KurumKurulus Olustur();
     }
 
     public interface IKurumKurulusFluentAd
     {
-        // <summary>
+        /// <summary>
         /// Kurum / kuruluşun iletişim bilgisidir.
         /// </summary>
+        /// <param name="iletisimBilgisi">Kurum / kuruluşun iletişim bilgisi değeridir.</param>
         IKurumKurulusFluentIletisimBilgisi IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi);
         KurumKurulus Olustur();
     }

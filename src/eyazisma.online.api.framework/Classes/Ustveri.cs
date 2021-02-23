@@ -356,7 +356,7 @@ namespace eyazisma.online.api.Classes
             /// <summary>
             /// Belgeye eklenecek eklere ilişkin bilgilerdir.
             /// </summary>
-            /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+            /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
             public IUstveriV1XFluentEkler EklerIle(List<Ek> ekler)
             {
                 if (ekler != null)
@@ -646,7 +646,7 @@ namespace eyazisma.online.api.Classes
             /// <summary>
             /// Belgeye eklenecek eklere ilişkin bilgilerdir.
             /// </summary>
-            /// <param name="ek">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
+            /// <param name="ekler">Belgeye eklenecek eklerin değeridir. Ek listesi tipinde olmalıdır.</param>
             public IUstveriV2XFluentEkler EklerIle(List<Ek> ekler)
             {
                 if (ekler != null)
