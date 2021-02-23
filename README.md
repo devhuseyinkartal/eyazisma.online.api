@@ -15,7 +15,7 @@ sürümlerinde belirtilen kriterlere uygun şekilde e-yazışma paketi oluşturm
 
 |Derleme| Teknoloji|
 |--|--|
-| eyazisma.online.api.framework | .NET Framework 4.5 |
+| eyazisma.online.api.framework | .NET Framework 4.6 |
 | eyazisma.online.api.standard | .NET Standard 2.0 |
 | eyazisma.online.api.net5 | .NET 5.0 |
 
