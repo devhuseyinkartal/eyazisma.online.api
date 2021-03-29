@@ -30,7 +30,6 @@ namespace eyazisma.online.api.Interfaces
         /// List -> Pakete ait tüm doğrulama hatalarını belirtir.
         /// </param>
         ISifreliPaketOkuAction Versiyon1XIse(Action<bool, ISifreliPaketV1XOkuBilesen, List<DogrulamaHatasi>> bilesenAction);
-        void Kapat();
     }
 
     public interface ISifreliPaketOkuAction
