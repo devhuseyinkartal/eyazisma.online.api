@@ -1,11 +1,13 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     public sealed class MetinTip
     {
-        public MetinTip() { }
+        public MetinTip()
+        {
+        }
 
         private MetinTip(string dilID, string deger)
         {
@@ -20,8 +22,9 @@ namespace eyazisma.online.api.Classes
 
         public sealed class Kilavuz : IMetinTipFluent
         {
-            private string _dilID,
-                           _deger;
+            private string _dilID;
+
+            private readonly string _deger;
 
             private Kilavuz(string deger)
             {
@@ -29,14 +32,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Değer alanının atanması için kullanılır.
-            /// </summary>
-            /// <param name="deger">Değer alanı değeridir.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IMetinTipFluentDeger DegerAta(string deger) => new Kilavuz(deger);
-
-            /// <summary>
-            /// DilID değerinin atanması için kullanılır.
+            ///     DilID değerinin atanması için kullanılır.
             /// </summary>
             /// <param name="dilID">DilID değeridir.</param>
             public IMetinTipFluentDilID DilIDIle(string dilID)
@@ -53,6 +49,16 @@ namespace eyazisma.online.api.Classes
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Değer alanının atanması için kullanılır.
+            /// </summary>
+            /// <param name="deger">Değer alanı değeridir.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IMetinTipFluentDeger DegerAta(string deger)
+            {
+                return new Kilavuz(deger);
             }
         }
     }

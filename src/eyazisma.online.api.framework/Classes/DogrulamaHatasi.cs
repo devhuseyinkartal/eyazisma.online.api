@@ -1,29 +1,28 @@
-﻿using eyazisma.online.api.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using eyazisma.online.api.Enums;
 
 namespace eyazisma.online.api.Classes
 {
-
     public sealed class DogrulamaHatasi
     {
         /// <summary>
-        /// Hata oluşan bileşenin paket içindeki URI'sidir.
+        ///     Hata oluşan bileşenin paket içindeki URI'sidir.
         /// </summary>
         public string Uri { get; set; }
 
         /// <summary>
-        /// Oluşan hatanın açıklamasıdır.
+        ///     Oluşan hatanın açıklamasıdır.
         /// </summary>
         public string Hata { get; set; }
 
         /// <summary>
-        /// Hata türüdür.
+        ///     Hata türüdür.
         /// </summary>
         public DogrulamaHataTuru HataTuru { get; set; }
 
         /// <summary>
-        /// Inner exception.
+        ///     Inner exception.
         /// </summary>
         public Exception InnerException { get; set; }
 

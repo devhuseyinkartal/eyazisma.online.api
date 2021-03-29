@@ -1,14 +1,16 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Dağıtım listesindeki bir dağıtım için konulmamış ek bilgisidir.
+    ///     Dağıtım listesindeki bir dağıtım için konulmamış ek bilgisidir.
     /// </summary>
     public sealed class KonulmamisEk
     {
-        public KonulmamisEk() { }
+        public KonulmamisEk()
+        {
+        }
 
         private KonulmamisEk(Guid ekIdDeger)
         {
@@ -16,35 +18,38 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Ekin paket içerisindeki Id değeridir.
+        ///     Ekin paket içerisindeki Id değeridir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public Guid EkIdDeger { get; set; }
 
         public sealed class Kilavuz : IKonulmamisEkFluent
         {
-            private Guid _ekIdDeger;
+            private readonly Guid _ekIdDeger;
 
             private Kilavuz(Guid ekIdDeger)
             {
                 _ekIdDeger = ekIdDeger;
             }
 
-            /// <summary>
-            /// Ekin paket içerisindeki Id değeridir.
-            /// </summary>
-            /// <param name="ekIdDeger">Ekin paket içerisindeki Id değeridir. Guid tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IKonulmamisEkFluentEkIdDeger EkIdDegerAta(Guid ekIdDeger) => new Kilavuz(ekIdDeger);
-
             public KonulmamisEk Olustur()
             {
-                return new KonulmamisEk(_ekIdDeger);
+                return new(_ekIdDeger);
             }
 
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Ekin paket içerisindeki Id değeridir.
+            /// </summary>
+            /// <param name="ekIdDeger">Ekin paket içerisindeki Id değeridir. Guid tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IKonulmamisEkFluentEkIdDeger EkIdDegerAta(Guid ekIdDeger)
+            {
+                return new Kilavuz(ekIdDeger);
             }
         }
     }

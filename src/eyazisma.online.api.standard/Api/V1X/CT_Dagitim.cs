@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V1X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1")]
     public sealed class CT_Dagitim
     {
@@ -12,11 +12,9 @@ namespace eyazisma.online.api.Api.V1X
         [XmlElement("TuzelSahis", typeof(CT_TuzelSahis), Order = 0)]
         public object Item { get; set; }
 
-        [XmlElement(Order = 1)]
-        public ST_KodIvedilik Ivedilik { get; set; }
+        [XmlElement(Order = 1)] public ST_KodIvedilik Ivedilik { get; set; }
 
-        [XmlElement(Order = 2)]
-        public ST_KodDagitimTuru DagitimTuru { get; set; }
+        [XmlElement(Order = 2)] public ST_KodDagitimTuru DagitimTuru { get; set; }
 
         [XmlElement(DataType = "duration", Order = 3)]
         public string Miat { get; set; }

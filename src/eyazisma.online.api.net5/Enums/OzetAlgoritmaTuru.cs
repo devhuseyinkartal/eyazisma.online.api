@@ -5,40 +5,43 @@ using System.Security.Cryptography;
 namespace eyazisma.online.api.Enums
 {
     /// <summary>
-    /// Özet algoritma türünü belirtir.
+    ///     Özet algoritma türünü belirtir.
     /// </summary>
     public enum OzetAlgoritmaTuru
     {
         /// <summary>
-        /// Yok
+        ///     Yok
         /// </summary>
         YOK = 0,
+
         /// <summary>
-        /// SHA1
+        ///     SHA1
         /// </summary>
-        [Obsolete("Since version 2.0", false)]
-        SHA1 = 1,
+        [Obsolete("Since version 2.0", false)] SHA1 = 1,
+
         /// <summary>
-        /// SHA256
+        ///     SHA256
         /// </summary>
         SHA256 = 2,
+
         /// <summary>
-        /// SHA384
+        ///     SHA384
         /// </summary>
         /// <remarks>Only for version 2.0</remarks>
         SHA384 = 3,
+
         /// <summary>
-        /// SHA512
+        ///     SHA512
         /// </summary>
         SHA512 = 4,
+
         /// <summary>
-        /// RIPEMD160
+        ///     RIPEMD160
         /// </summary>
-        [Obsolete("Since version 2.0", false)]
-        RIPEMD160 = 5
+        [Obsolete("Since version 2.0", false)] RIPEMD160 = 5
     }
 
-    internal static partial class AlgoritmaTuruExtensions
+    internal static class AlgoritmaTuruExtensions
     {
         public static string ToXmlNameSpace(this OzetAlgoritmaTuru algoritmaTuru)
         {
@@ -76,12 +79,12 @@ namespace eyazisma.online.api.Enums
                         return hashAlgorithm.ComputeHash(value);
                     }
                 case OzetAlgoritmaTuru.SHA1:
+                {
+                    using (var hashAlgorithm = new SHA1Managed())
                     {
-                        using (var hashAlgorithm = new SHA1Managed())
-                        {
-                            return hashAlgorithm.ComputeHash(value);
-                        }
+                        return hashAlgorithm.ComputeHash(value);
                     }
+                }
                 case OzetAlgoritmaTuru.SHA256:
                     using (var hashAlgorithm = new SHA256Managed())
                     {
@@ -105,8 +108,10 @@ namespace eyazisma.online.api.Enums
         public static byte[] CalculateHash(this OzetAlgoritmaTuru algoritmaTuru, byte[] value)
         {
             if (value == null) return null;
-            using (MemoryStream ms = new MemoryStream(value))
+            using (var ms = new MemoryStream(value))
+            {
                 return algoritmaTuru.CalculateHash(ms);
+            }
         }
     }
 }

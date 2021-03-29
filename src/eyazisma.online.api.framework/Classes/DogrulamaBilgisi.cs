@@ -1,15 +1,17 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Belgeye ilişkin belge doğrulama web adresi bilgisidir.
+    ///     Belgeye ilişkin belge doğrulama web adresi bilgisidir.
     /// </summary>
     /// <remarks>Only for version 2.0</remarks>
     public sealed class DogrulamaBilgisi
     {
-        public DogrulamaBilgisi() { }
+        public DogrulamaBilgisi()
+        {
+        }
 
         private DogrulamaBilgisi(string dogrulamaAdresi)
         {
@@ -17,26 +19,19 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Belgenin doğrulama yapılacağı web adresi bilgisidir.
+        ///     Belgenin doğrulama yapılacağı web adresi bilgisidir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string DogrulamaAdresi { get; set; }
 
         public sealed class Kilavuz : IDogrulamaBilgisiFluent
         {
-            private string _dogrulamaAdresi;
+            private readonly string _dogrulamaAdresi;
 
             private Kilavuz(string dogrulamaAdresi)
             {
                 _dogrulamaAdresi = dogrulamaAdresi;
             }
-
-            /// <summary>
-            /// Belgenin doğrulama yapılacağı web adresi bilgisidir.
-            /// </summary>
-            /// <param name="dogrulamaAdresi">Belgenin doğrulama yapılacağı web adresi bilgisi değeridir.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IDogrulamaBilgisiFluentAdres AdresAta(string dogrulamaAdresi) => new Kilavuz(dogrulamaAdresi);
 
             public DogrulamaBilgisi Olustur()
             {
@@ -46,6 +41,16 @@ namespace eyazisma.online.api.Classes
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Belgenin doğrulama yapılacağı web adresi bilgisidir.
+            /// </summary>
+            /// <param name="dogrulamaAdresi">Belgenin doğrulama yapılacağı web adresi bilgisi değeridir.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IDogrulamaBilgisiFluentAdres AdresAta(string dogrulamaAdresi)
+            {
+                return new Kilavuz(dogrulamaAdresi);
             }
         }
     }

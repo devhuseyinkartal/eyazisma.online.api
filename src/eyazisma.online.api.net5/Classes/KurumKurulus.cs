@@ -1,14 +1,16 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Kurum veya kuruluş bilgisidir.
+    ///     Kurum veya kuruluş bilgisidir.
     /// </summary>
     public sealed class KurumKurulus
     {
-        public KurumKurulus() { }
+        public KurumKurulus()
+        {
+        }
 
         private KurumKurulus(string kkk, string birimKKK, IsimTip ad, IletisimBilgisi iletisimBilgisi)
         {
@@ -19,47 +21,46 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Kurum/kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
+        ///     Kurum/kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string KKK { get; set; }
 
         /// <summary>
-        /// Paketi oluşturan veya muhatap alt birimlerin, DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
+        ///     Paketi oluşturan veya muhatap alt birimlerin, DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
         /// </summary>
         /// <remarks>Only for version 2.0</remarks>
         public string BirimKKK { get; set; }
 
         /// <summary>
-        /// Kurum / kuruluşun DTVT'deki Başbakanlık yazışma kodudur.
+        ///     Kurum / kuruluşun DTVT'deki Başbakanlık yazışma kodudur.
         /// </summary>
         [Obsolete("Since version 1.2", false)]
         public string BYK { get; set; }
 
         /// <summary>
-        /// Kurum / kuruluşun adıdır.
+        ///     Kurum / kuruluşun adıdır.
         /// </summary>
         /// <remarks>Bu alanın kullanılması durumunda DETSİS’teki kurum adı kullanılmalıdır.</remarks>
         public IsimTip Ad { get; set; }
 
         /// <summary>
-        /// Kurum/kuruluşun iletişim bilgisidir.
+        ///     Kurum/kuruluşun iletişim bilgisidir.
         /// </summary>
         public IletisimBilgisi IletisimBilgisi { get; set; }
 
         public sealed class Kilavuz : IKurumKurulusFluent
         {
-            private string _kkk, _birimKKK;
             private IsimTip _ad;
             private IletisimBilgisi _iletisimBilgisi;
+            private string _kkk, _birimKKK;
 
-            private Kilavuz() { }
-
-            public static IKurumKurulusFluentV1X Versiyon1X() => new Kilavuz();
-            public static IKurumKurulusFluentV2X Versiyon2X() => new Kilavuz();
+            private Kilavuz()
+            {
+            }
 
             /// <summary>
-            /// Kurum / kuruluşun adıdır.
+            ///     Kurum / kuruluşun adıdır.
             /// </summary>
             /// <param name="ad">Kurum / kuruluşa ait ad değeridir. IsimTip tipinde olmalıdır.</param>
             /// <remarks>Bu alanın kullanılması durumunda DETSİS’teki kurum adı kullanılmalıdır.</remarks>
@@ -70,7 +71,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Paketi oluşturan veya muhatap alt birimlerin, DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
+            ///     Paketi oluşturan veya muhatap alt birimlerin, DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
             /// </summary>
             /// <param name="birimKKK">Devlet Teşkilatı Numarası değeridir.</param>
             /// <remarks>Only for version 2.0</remarks>
@@ -81,7 +82,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kurum / kuruluşun iletişim bilgisidir.
+            ///     Kurum / kuruluşun iletişim bilgisidir.
             /// </summary>
             /// <param name="iletisimBilgisi">Kurum / kuruluşun iletişim bilgisi değeridir.</param>
             public IKurumKurulusFluentIletisimBilgisi IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi)
@@ -91,7 +92,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kurum / kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
+            ///     Kurum / kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
             /// </summary>
             /// <param name="kkk">Devlet Teşkilatı Numarası değeridir.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -102,7 +103,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kurum / kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
+            ///     Kurum / kuruluşun DETSİS'te yer alan Türkiye Cumhuriyeti Devlet Teşkilatı Numarasıdır.
             /// </summary>
             /// <param name="kkk">Devlet Teşkilatı Numarası değeridir.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -114,12 +115,22 @@ namespace eyazisma.online.api.Classes
 
             public KurumKurulus Olustur()
             {
-                return new KurumKurulus(_kkk, _birimKKK, _ad, _iletisimBilgisi);
+                return new(_kkk, _birimKKK, _ad, _iletisimBilgisi);
             }
 
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            public static IKurumKurulusFluentV1X Versiyon1X()
+            {
+                return new Kilavuz();
+            }
+
+            public static IKurumKurulusFluentV2X Versiyon2X()
+            {
+                return new Kilavuz();
             }
         }
     }

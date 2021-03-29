@@ -1,16 +1,17 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Sadece belgenin son imzasını alması sırasında belirlenebilen, belgeye ilişkin kimlik bilgileridir.
+    ///     Sadece belgenin son imzasını alması sırasında belirlenebilen, belgeye ilişkin kimlik bilgileridir.
     /// </summary>
-
     public sealed class NihaiUstveri
     {
-        public NihaiUstveri() { }
+        public NihaiUstveri()
+        {
+        }
 
         private NihaiUstveri(DateTime tarih, string belgeNo, List<Imza> belgeImzalar)
         {
@@ -20,34 +21,34 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Belgenin tarihidir.
+        ///     Belgenin tarihidir.
         /// </summary>
         /// <remarks>
-        /// Zorunlu alandır.
-        /// UTC ofset değeri ile verilmesi tavsiye edilir.
+        ///     Zorunlu alandır.
+        ///     UTC ofset değeri ile verilmesi tavsiye edilir.
         /// </remarks>
         public DateTime Tarih { get; set; }
 
         /// <summary>
-        /// Belge numarasıdır.
+        ///     Belge numarasıdır.
         /// </summary>
         /// <remarks>
-        /// Zorunlu alandır.
-        /// Resmi yazışmalara ilişkin mevzuatta belirtilen biçime uygun olmalıdır.
+        ///     Zorunlu alandır.
+        ///     Resmi yazışmalara ilişkin mevzuatta belirtilen biçime uygun olmalıdır.
         /// </remarks>
         public string BelgeNo { get; set; }
 
         /// <summary>
-        /// Belgenin üzerindeki imzalara ilişkin bilgilerdir.
+        ///     Belgenin üzerindeki imzalara ilişkin bilgilerdir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public List<Imza> BelgeImzalar { get; set; }
 
         public sealed class Kilavuz : INihaiUstveriFluent
         {
-            private DateTime _tarih;
-            private string _belgeNo;
             private List<Imza> _belgeImzalar;
+            private string _belgeNo;
+            private readonly DateTime _tarih;
 
             private Kilavuz(DateTime tarih)
             {
@@ -55,22 +56,12 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Belgenin tarihidir.
-            /// </summary>
-            /// <param name="tarih">Belge tarihi değeridir.</param>
-            /// <remarks>
-            /// Zorunlu alandır.
-            /// UTC ofset değeri ile verilmesi tavsiye edilir.
-            /// </remarks>
-            public static INihaiUstveriFluentTarih TarihAta(DateTime tarih) => new Kilavuz(tarih);
-
-            /// <summary>
-            /// Belge numarasıdır.
+            ///     Belge numarasıdır.
             /// </summary>
             /// <param name="belgeNo">Belge numarası değeridir.</param>
             /// <remarks>
-            /// Zorunlu alandır.
-            /// Resmi yazışmalara ilişkin mevzuatta belirtilen biçime uygun olmalıdır.
+            ///     Zorunlu alandır.
+            ///     Resmi yazışmalara ilişkin mevzuatta belirtilen biçime uygun olmalıdır.
             /// </remarks>
             public INihaiUstveriFluentBelgeNo BelgeNoAta(string belgeNo)
             {
@@ -79,7 +70,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            ///  Belgenin üzerindeki her bir imzaya ait bilgilerdir.
+            ///     Belgenin üzerindeki her bir imzaya ait bilgilerdir.
             /// </summary>
             /// <param name="belgeImza">İmza değeridir. Imza tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -111,12 +102,25 @@ namespace eyazisma.online.api.Classes
 
             public NihaiUstveri Olustur()
             {
-                return new NihaiUstveri(_tarih, _belgeNo, _belgeImzalar);
+                return new(_tarih, _belgeNo, _belgeImzalar);
             }
 
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Belgenin tarihidir.
+            /// </summary>
+            /// <param name="tarih">Belge tarihi değeridir.</param>
+            /// <remarks>
+            ///     Zorunlu alandır.
+            ///     UTC ofset değeri ile verilmesi tavsiye edilir.
+            /// </remarks>
+            public static INihaiUstveriFluentTarih TarihAta(DateTime tarih)
+            {
+                return new Kilavuz(tarih);
             }
         }
     }

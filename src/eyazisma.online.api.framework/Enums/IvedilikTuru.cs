@@ -3,36 +3,34 @@
 namespace eyazisma.online.api.Enums
 {
     /// <summary>
-    /// Dağıtıma ait ivedilik türünü belirtir. 
+    ///     Dağıtıma ait ivedilik türünü belirtir.
     /// </summary>
     public enum IvedilikTuru
     {
         /// <summary>
-        /// Normal
+        ///     Normal
         /// </summary>
         NRM = 1,
 
         /// <summary>
-        /// Acele
+        ///     Acele
         /// </summary>
         /// <remarks>Only for version 2.0</remarks>
         ACL = 2,
 
         /// <summary>
-        /// Günlüdür
+        ///     Günlüdür
         /// </summary>
         GNL = 3,
 
         /// <summary>
-        /// İvedi
+        ///     İvedi
         /// </summary>
-        [Obsolete("Since version 2.0", false)]
-        IVD = 4,
+        [Obsolete("Since version 2.0", false)] IVD = 4,
 
         /// <summary>
-        /// Çok ivedi
+        ///     Çok ivedi
         /// </summary>
-        [Obsolete("Since version 1.2", false)]
-        CIV = 5
+        [Obsolete("Since version 1.2", false)] CIV = 5
     }
 }

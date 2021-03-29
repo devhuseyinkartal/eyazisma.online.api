@@ -1,24 +1,26 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Belgeye eklenmiş ilgiye ilişkin bilgilerdir.
+    ///     Belgeye eklenmiş ilgiye ilişkin bilgilerdir.
     /// </summary>
     public sealed class Ilgi
     {
-        public Ilgi() { }
+        public Ilgi()
+        {
+        }
 
         private Ilgi(IdTip id,
-                    string belgeNo,
-                    DateTime? tarih,
-                    char etiket,
-                    Guid? ekIdDeger,
-                    MetinTip ad,
-                    MetinTip aciklama,
-                    TanimlayiciTip ozId
-                   )
+            string belgeNo,
+            DateTime? tarih,
+            char etiket,
+            Guid? ekIdDeger,
+            MetinTip ad,
+            MetinTip aciklama,
+            TanimlayiciTip ozId
+        )
         {
             Id = id;
             BelgeNo = belgeNo;
@@ -31,61 +33,62 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// İlginin paket içerisindeki tekil belirtecidir. Id değeri paketi oluşturan tarafından belirlenir.
+        ///     İlginin paket içerisindeki tekil belirtecidir. Id değeri paketi oluşturan tarafından belirlenir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public IdTip Id { get; set; }
 
         /// <summary>
-        /// İlgi, resmi bir yazı ise bu alana söz konusu belgenin numarası verilir.
+        ///     İlgi, resmi bir yazı ise bu alana söz konusu belgenin numarası verilir.
         /// </summary>
         public string BelgeNo { get; set; }
 
         /// <summary>
-        /// İlgi yazının tarihidir.
+        ///     İlgi yazının tarihidir.
         /// </summary>
         public DateTime? Tarih { get; set; }
 
         /// <summary>
-        /// Eklenen ek dosyasının etiketidir. (İlgi a ve ilgi b gibi ilgiler için etiket değerleri sırasıyla "a" ve "b" olmalıdır.)
+        ///     Eklenen ek dosyasının etiketidir. (İlgi a ve ilgi b gibi ilgiler için etiket değerleri sırasıyla "a" ve "b"
+        ///     olmalıdır.)
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public char Etiket { get; set; }
 
         /// <summary>
-        /// İlginin paket içerisinde ek olarak eklenmesi durumunda, ilgili ekin tekil anahtarı bu alana verilir.
+        ///     İlginin paket içerisinde ek olarak eklenmesi durumunda, ilgili ekin tekil anahtarı bu alana verilir.
         /// </summary>
         public Guid? EkIdDeger { get; set; }
 
         /// <summary>
-        ///  İlgi adıdır.
+        ///     İlgi adıdır.
         /// </summary>
         public MetinTip Ad { get; set; }
 
         /// <summary>
-        /// İlgiye ait açıklamalardır.
+        ///     İlgiye ait açıklamalardır.
         /// </summary>
         public MetinTip Aciklama { get; set; }
 
         /// <summary>
-        /// İlginin üretildiği sistemdeki tekil anahtar değeridir. 
+        ///     İlginin üretildiği sistemdeki tekil anahtar değeridir.
         /// </summary>
         /// <remarks>
-        /// Tekil anahtar değeri için kullanılan veri türü/şeması, elemanın SemaID alanında verilir.
-        /// Elemanın boş bırakılması ekin elektronik bir sistemde üretilmediği anlamına gelir.
-        /// OzId değeri verilmesi durumunda, SemaID değerinin verilmesi zorunludur.
+        ///     Tekil anahtar değeri için kullanılan veri türü/şeması, elemanın SemaID alanında verilir.
+        ///     Elemanın boş bırakılması ekin elektronik bir sistemde üretilmediği anlamına gelir.
+        ///     OzId değeri verilmesi durumunda, SemaID değerinin verilmesi zorunludur.
         /// </remarks>
         public TanimlayiciTip OzId { get; set; }
 
         public sealed class Kilavuz : IIlgiFluent
         {
-            private IdTip _id;
-            private Guid? _ekIdDeger;
-            private string _belgeNo;
-            private char _etiket;
-            private DateTime? _tarih;
             private MetinTip _ad, _aciklama;
+            private string _belgeNo;
+            private Guid? _ekIdDeger;
+            private char _etiket;
+            private readonly IdTip _id;
             private TanimlayiciTip _ozId;
+            private DateTime? _tarih;
 
             private Kilavuz(IdTip id)
             {
@@ -93,14 +96,8 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlginin paket içerisindeki tekil belirtecidir. Id değeri paketi oluşturan tarafından belirlenir.
-            /// </summary>
-            /// <param name="id">İlginin paket içerisindeki tekil belirtecinin değeridir. IdTip tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IIlgiFluentId IdAta(IdTip id) => new Kilavuz(id);
-
-            /// <summary>
-            /// Eklenen ek dosyasının etiketidir. (İlgi a ve ilgi b gibi ilgiler için etiket değerleri sırasıyla "a" ve "b" olmalıdır.)
+            ///     Eklenen ek dosyasının etiketidir. (İlgi a ve ilgi b gibi ilgiler için etiket değerleri sırasıyla "a" ve "b"
+            ///     olmalıdır.)
             /// </summary>
             /// <param name="etiket">Eklenen ek dosyasının etiket değeridir.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -111,7 +108,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlgiye ait açıklamalardır.
+            ///     İlgiye ait açıklamalardır.
             /// </summary>
             /// <param name="aciklama">İlgiye ait açıklamanın değeridir.</param>
             public IIlgiFluentAciklama AciklamaIle(MetinTip aciklama)
@@ -121,7 +118,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            ///  İlgi adıdır.
+            ///     İlgi adıdır.
             /// </summary>
             /// <param name="ad">İlgi adı değeridir.</param>
             public IIlgiFluentAd AdIle(MetinTip ad)
@@ -131,7 +128,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlgi, resmi bir yazı ise bu alana söz konusu belgenin numarası verilir.
+            ///     İlgi, resmi bir yazı ise bu alana söz konusu belgenin numarası verilir.
             /// </summary>
             /// <param name="belgeNo">Belge numarasının değeridir.</param>
             public IIlgiFluentBelgeNo BelgeNoIle(string belgeNo)
@@ -141,7 +138,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlginin paket içerisinde ek olarak eklenmesi durumunda, ilgili ekin tekil anahtarı değeri bu alana verilir.
+            ///     İlginin paket içerisinde ek olarak eklenmesi durumunda, ilgili ekin tekil anahtarı değeri bu alana verilir.
             /// </summary>
             /// <param name="ekIdDeger">İlgili ekin tekil anahtar değeridir. Guid tipinde olmalıdır.</param>
             public IIlgiFluentEkIdDeger EkIdDegerIle(Guid ekIdDeger)
@@ -151,13 +148,13 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlginin üretildiği sistemdeki tekil anahtar değeridir. 
+            ///     İlginin üretildiği sistemdeki tekil anahtar değeridir.
             /// </summary>
             /// <param name="ozId">TanimlayiciTip tipinde olmalıdır.</param>
             /// <remarks>
-            /// Tekil anahtar değeri için kullanılan veri türü/şeması, elemanın SemaID alanında verilir.
-            /// Elemanın boş bırakılması ekin elektronik bir sistemde üretilmediği anlamına gelir.
-            /// OzId değeri verilmesi durumunda, SemaID değerinin verilmesi zorunludur.
+            ///     Tekil anahtar değeri için kullanılan veri türü/şeması, elemanın SemaID alanında verilir.
+            ///     Elemanın boş bırakılması ekin elektronik bir sistemde üretilmediği anlamına gelir.
+            ///     OzId değeri verilmesi durumunda, SemaID değerinin verilmesi zorunludur.
             /// </remarks>
             public IIlgiFluentOzId OzIdIle(TanimlayiciTip ozId)
             {
@@ -166,7 +163,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İlgi yazının tarihidir.
+            ///     İlgi yazının tarihidir.
             /// </summary>
             /// <param name="tarih">İlgi yazının tarih değeridir.</param>
             public IIlgiFluentTarih TarihIle(DateTime tarih)
@@ -177,12 +174,22 @@ namespace eyazisma.online.api.Classes
 
             public Ilgi Olustur()
             {
-                return new Ilgi(_id, _belgeNo, _tarih, _etiket, _ekIdDeger, _ad, _aciklama, _ozId);
+                return new(_id, _belgeNo, _tarih, _etiket, _ekIdDeger, _ad, _aciklama, _ozId);
             }
 
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     İlginin paket içerisindeki tekil belirtecidir. Id değeri paketi oluşturan tarafından belirlenir.
+            /// </summary>
+            /// <param name="id">İlginin paket içerisindeki tekil belirtecinin değeridir. IdTip tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IIlgiFluentId IdAta(IdTip id)
+            {
+                return new Kilavuz(id);
             }
         }
     }

@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
@@ -10,11 +10,12 @@ namespace eyazisma.online.api.Interfaces.Fluents
     public interface IBelgeHedefFluentHedef
     {
         /// <summary>
-        /// Belgenin iletileceği taraf bilgisidir.
+        ///     Belgenin iletileceği taraf bilgisidir.
         /// </summary>
         /// <param name="hedef">Taraf bilgisi değeridir. Hedef tipinde olmalıdır.</param>
         /// <remarks>Zorunlu alandır.</remarks>
         IBelgeHedefFluentHedef DigerHedefEkle(Hedef hedef);
+
         BelgeHedef Olustur();
     }
 

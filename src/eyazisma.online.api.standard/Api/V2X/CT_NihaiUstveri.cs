@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:NihaiUstveri-2")]
     [XmlRoot("NihaiUstVeri", Namespace = "urn:dpt:eyazisma:schema:xsd:NihaiUstveri-2", IsNullable = false)]
     public sealed class CT_NihaiUstveri

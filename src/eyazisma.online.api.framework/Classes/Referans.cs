@@ -3,13 +3,13 @@
     public sealed class Referans
     {
         /// <summary>
-        /// Bir dosyaya ilişkin özet bilgisini barındıran elemandır.
+        ///     Bir dosyaya ilişkin özet bilgisini barındıran elemandır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public Ozet Ozet { get; set; }
 
         /// <summary>
-        /// Bir dosyaya ilişkin özet bilgisini barındıran elemandır.
+        ///     Bir dosyaya ilişkin özet bilgisini barındıran elemandır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         /// <remarks>Only for version 2.0</remarks>

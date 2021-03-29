@@ -1,38 +1,37 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
 using System.IO;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
     public interface IEkDosyaFluent : IDisposable,
-                                      IEkDosyaFluentEk,
-                                       IEkDosyaFluentDosya,
-                                       IEkDosyaFluentDosyaAdi
+        IEkDosyaFluentEk,
+        IEkDosyaFluentDosya,
+        IEkDosyaFluentDosyaAdi
     {
     }
 
     public interface IEkDosyaFluentEk
     {
         /// <summary>
-        /// Elektronik dosyanın dijital verisidir.
+        ///     Elektronik dosyanın dijital verisidir.
         /// </summary>
         /// <param name="dosyaStream">Elektronik dosyanın dijital veri değeridir. Stream tipinde olmalıdır.</param>
         /// <remarks>Zorunlu alandır.</remarks>
         IEkDosyaFluentDosya DosyaAta(Stream dosyaStream);
 
         /// <summary>
-        /// Elektronik dosyanın dijital verisidir.
+        ///     Elektronik dosyanın dijital verisidir.
         /// </summary>
         /// <param name="dosyaYolu">Elektronik dosyanın dosya sistemindeki yoludur.</param>
         /// <remarks>Zorunlu alandır.</remarks>
         IEkDosyaFluentDosya DosyaAta(string dosyaYolu);
-
     }
 
     public interface IEkDosyaFluentDosya
     {
         /// <summary>
-        /// Elektronik dosyanın adıdır.
+        ///     Elektronik dosyanın adıdır.
         /// </summary>
         /// <param name="dosyaAdi">Elektronik dosyanın ad değeridir.</param>
         /// <remarks>Zorunlu alandır.</remarks>

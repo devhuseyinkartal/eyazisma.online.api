@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:KodIvedilik-2")]
     public enum ST_KodIvedilik
     {

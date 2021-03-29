@@ -3,46 +3,44 @@
 namespace eyazisma.online.api.Enums
 {
     /// <summary>
-    /// Belgenin güvenlik derecesini gösterir.
+    ///     Belgenin güvenlik derecesini gösterir.
     /// </summary>
     public enum GuvenlikKoduTuru
     {
         /// <summary>
-        /// Yok
+        ///     Yok
         /// </summary>
         /// <remarks>Only for version 2.0</remarks>
         YOK = 1,
 
         /// <summary>
-        /// Tasnif Dışı
+        ///     Tasnif Dışı
         /// </summary>
-        [Obsolete("Since version 2.0", false)]
-        TSD = 2,
+        [Obsolete("Since version 2.0", false)] TSD = 2,
 
         /// <summary>
-        /// Hizmete Özel
+        ///     Hizmete Özel
         /// </summary>
         HZO = 3,
 
         /// <summary>
-        /// Özel
+        ///     Özel
         /// </summary>
         OZL = 4,
 
         /// <summary>
-        /// Gizli
+        ///     Gizli
         /// </summary>
         GZL = 5,
 
         /// <summary>
-        /// Çok Gizli
+        ///     Çok Gizli
         /// </summary>
         CGZ = 6,
 
         /// <summary>
-        /// Kişiye Özel
+        ///     Kişiye Özel
         /// </summary>
-        [Obsolete("Since version 2.0", false)]
-        KSO = 7
+        [Obsolete("Since version 2.0", false)] KSO = 7
     }
 }

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V1X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Ustveri-1")]
     [XmlRoot("Ustveri", Namespace = "urn:dpt:eyazisma:schema:xsd:Ustveri-1", IsNullable = false)]
     public sealed class CT_Ustveri
@@ -15,7 +15,7 @@ namespace eyazisma.online.api.Api.V1X
         public TextType Konu { get; set; }
 
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", Order = 2)]
-        public System.DateTime Tarih { get; set; }
+        public DateTime Tarih { get; set; }
 
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", Order = 3)]
         public string BelgeNo { get; set; }
@@ -26,8 +26,7 @@ namespace eyazisma.online.api.Api.V1X
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", IsNullable = true, Order = 5)]
         public DateTime? GuvenlikKoduGecerlilikTarihi { get; set; }
 
-        [XmlIgnore()]
-        public bool GuvenlikKoduGecerlilikTarihiSpecified { get; set; }
+        [XmlIgnore] public bool GuvenlikKoduGecerlilikTarihiSpecified { get; set; }
 
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", DataType = "normalizedString", Order = 6)]
         public string MimeTuru { get; set; }

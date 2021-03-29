@@ -1,19 +1,19 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
     public interface IUstYaziFluent : IDisposable,
-                                       IUstYaziFluentMimeTuru,
-                                       IUstYaziFluentDosya,
-                                       IUstYaziFluentDosyaAdi
+        IUstYaziFluentMimeTuru,
+        IUstYaziFluentDosya,
+        IUstYaziFluentDosyaAdi
     {
     }
 
     public interface IUstYaziFluentDosya
     {
         /// <summary>
-        /// Elektronik dosyanın adıdır.
+        ///     Elektronik dosyanın adıdır.
         /// </summary>
         /// <param name="dosyaAdi">Elektronik dosyanın ad değeridir.</param>
         /// <remarks>Zorunlu alandır.</remarks>
@@ -23,7 +23,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
     public interface IUstYaziFluentDosyaAdi
     {
         /// <summary>
-        /// Elektronik dosyanın dosya kimlik tanımlayıcısıdır.
+        ///     Elektronik dosyanın dosya kimlik tanımlayıcısıdır.
         /// </summary>
         /// <param name="mimeTuru">Elektronik dosyanın dosya kimlik tanımlayıcı değeridir.</param>
         /// <remarks>Zorunlu alandır.</remarks>

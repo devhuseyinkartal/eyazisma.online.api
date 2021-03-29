@@ -1,15 +1,17 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
 using System.IO;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Eke ait elektronik dosyanın bilgileridir.
+    ///     Eke ait elektronik dosyanın bilgileridir.
     /// </summary>
     public sealed class EkDosya
     {
-        public EkDosya() { }
+        public EkDosya()
+        {
+        }
 
         private EkDosya(Ek ek, Stream dosya, string dosyaAdi)
         {
@@ -19,28 +21,28 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Elektronik dosyanın ilişkili olduğu ek referansıdır.
+        ///     Elektronik dosyanın ilişkili olduğu ek referansıdır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public Ek Ek { get; set; }
 
         /// <summary>
-        /// Elektronik dosyanın dijital verisidir.
+        ///     Elektronik dosyanın dijital verisidir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public Stream Dosya { get; set; }
 
         /// <summary>
-        /// Elektronik dosyanın adıdır.
+        ///     Elektronik dosyanın adıdır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string DosyaAdi { get; set; }
 
         public sealed class Kilavuz : IEkDosyaFluent
         {
-            private Ek _ek;
-            private Stream _dosyaStream;
             private string _dosyaAdi;
+            private Stream _dosyaStream;
+            private readonly Ek _ek;
 
             private Kilavuz(Ek ek)
             {
@@ -48,14 +50,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Elektronik dosyanın ilişkili olduğu ek referansıdır.
-            /// </summary>
-            /// <param name="ek">Elektronik dosyanın ilişkili olduğu ek referansı değeridir. Ek tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IEkDosyaFluentEk EkAta(Ek ek) => new Kilavuz(ek);
-
-            /// <summary>
-            /// Elektronik dosyanın dijital verisidir.
+            ///     Elektronik dosyanın dijital verisidir.
             /// </summary>
             /// <param name="dosyaStream">Elektronik dosyanın dijital veri değeridir. Stream tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -66,7 +61,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Elektronik dosyanın dijital verisidir.
+            ///     Elektronik dosyanın dijital verisidir.
             /// </summary>
             /// <param name="dosyaYolu">Elektronik dosyanın dosya sistemindeki yoludur.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -77,7 +72,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Elektronik dosyanın adıdır.
+            ///     Elektronik dosyanın adıdır.
             /// </summary>
             /// <param name="dosyaAdi">Elektronik dosyanın ad değeridir.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -97,6 +92,16 @@ namespace eyazisma.online.api.Classes
                 if (_dosyaStream != null)
                     _dosyaStream.Dispose();
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Elektronik dosyanın ilişkili olduğu ek referansıdır.
+            /// </summary>
+            /// <param name="ek">Elektronik dosyanın ilişkili olduğu ek referansı değeridir. Ek tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IEkDosyaFluentEk EkAta(Ek ek)
+            {
+                return new Kilavuz(ek);
             }
         }
     }

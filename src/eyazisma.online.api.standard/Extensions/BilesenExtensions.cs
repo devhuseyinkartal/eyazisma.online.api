@@ -1,6 +1,6 @@
-﻿using eyazisma.online.api.Classes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Extensions
 {
@@ -12,13 +12,12 @@ namespace eyazisma.online.api.Extensions
                 return null;
 
             if (dagitim.Oge is GercekSahis)
-                return Hedef.Kilavuz.OgeAta((GercekSahis)dagitim.Oge).Olustur();
-            else if (dagitim.Oge is TuzelSahis)
-                return Hedef.Kilavuz.OgeAta((TuzelSahis)dagitim.Oge).Olustur();
-            else if (dagitim.Oge is KurumKurulus)
-                return Hedef.Kilavuz.OgeAta((KurumKurulus)dagitim.Oge).Olustur();
-            else
-                return null;
+                return Hedef.Kilavuz.OgeAta((GercekSahis) dagitim.Oge).Olustur();
+            if (dagitim.Oge is TuzelSahis)
+                return Hedef.Kilavuz.OgeAta((TuzelSahis) dagitim.Oge).Olustur();
+            if (dagitim.Oge is KurumKurulus)
+                return Hedef.Kilavuz.OgeAta((KurumKurulus) dagitim.Oge).Olustur();
+            return null;
         }
 
         public static List<Hedef> ToHedefler(this List<Dagitim> dagitimlar)

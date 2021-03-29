@@ -1,27 +1,30 @@
-﻿using eyazisma.online.api.Classes;
-using eyazisma.online.api.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Text.RegularExpressions;
+using eyazisma.online.api.Classes;
+using eyazisma.online.api.Enums;
 
 namespace eyazisma.online.api.Extensions
 {
     public static class DogrulamaExtensions
     {
-        public static bool Dogrula(this KurumKurulus kurumKurulus, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this KurumKurulus kurumKurulus, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (kurumKurulus == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(KurumKurulus) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(kurumKurulus.KKK))
@@ -70,7 +73,6 @@ namespace eyazisma.online.api.Extensions
                             Hata = nameof(KurumKurulus.IletisimBilgisi) + " alanı doğrulanamamıştır.",
                             HataTuru = hatalar.GetDogrulamaHataTuru().Value
                         });
-
                 }
                 else
                 {
@@ -87,32 +89,38 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this TuzelSahis tuzelSahis, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this TuzelSahis tuzelSahis, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (tuzelSahis == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(TuzelSahis) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
                 if (!tuzelSahis.Id.Dogrula(paketVersiyon, ref hatalar))
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         AltDogrulamaHatalari = hatalar,
                         Hata = nameof(TuzelSahis.Id) + " alanı doğrulanamamıştır.",
                         HataTuru = hatalar.GetDogrulamaHataTuru().Value
                     });
+                }
                 else
                 {
                     if (!Constants.TUZEL_SAHIS_ID_SCHEMES.Contains(tuzelSahis.Id.SemaID))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(TuzelSahis.Id.SemaID) + " alanı formatı uygun değildir. Geçerli formatlar: " + string.Join(",", Constants.TUZEL_SAHIS_ID_SCHEMES),
+                            Hata = nameof(TuzelSahis.Id.SemaID) + " alanı formatı uygun değildir. Geçerli formatlar: " +
+                                   string.Join(",", Constants.TUZEL_SAHIS_ID_SCHEMES),
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
                 }
@@ -164,16 +172,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this GercekSahis gercekSahis, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this GercekSahis gercekSahis, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (gercekSahis == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(GercekSahis) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
@@ -244,16 +255,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this TanimlayiciTip tanimlayiciTip, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this TanimlayiciTip tanimlayiciTip, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (tanimlayiciTip == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(tanimlayiciTip) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(tanimlayiciTip.SemaID))
@@ -275,16 +289,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this IsimTip isimTip, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this IsimTip isimTip, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (isimTip == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(isimTip) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(isimTip.DilID))
@@ -306,16 +323,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this MetinTip metinTip, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this MetinTip metinTip, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (metinTip == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(metinTip) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(metinTip.DilID))
@@ -337,16 +357,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this IdTip id, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this IdTip id, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (id == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(id) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(id.Deger))
@@ -368,16 +391,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Kisi kisi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Kisi kisi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (kisi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(kisi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
@@ -448,19 +474,21 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Ozet ozet, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Ozet ozet, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ozet == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ozet) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
-
                 var hatalar = new List<DogrulamaHatasi>();
                 if (!ozet.OzetAlgoritmasi.Dogrula(paketVersiyon, ref hatalar))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
@@ -483,34 +511,43 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this OzetAlgoritmasi ozetAlgoritmasi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this OzetAlgoritmasi ozetAlgoritmasi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ozetAlgoritmasi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ozetAlgoritmasi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.YOK)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ozetAlgoritmasi.Algoritma) + " alanı " + nameof(OzetAlgoritmaTuru.YOK) + " olmamalıdır.",
+                        Hata = nameof(ozetAlgoritmasi.Algoritma) + " alanı " + nameof(OzetAlgoritmaTuru.YOK) +
+                               " olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
-                else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X && ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
+                else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X &&
+                         ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(OzetAlgoritmaTuru.SHA384) + " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir.",
+                        Hata = nameof(OzetAlgoritmaTuru.SHA384) +
+                               " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
-                else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X && (ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 || ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
+                else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X &&
+                         (ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 ||
+                          ozetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " + nameof(OzetAlgoritmaTuru.RIPEMD160) + " özet algoritması kullanımdan kaldırılmıştır.",
+                        Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " +
+                               nameof(OzetAlgoritmaTuru.RIPEMD160) + " özet algoritması kullanımdan kaldırılmıştır.",
                         HataTuru = DogrulamaHataTuru.Onemli
                     });
             }
@@ -520,16 +557,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this KonulmamisEk konulmamisEk, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this KonulmamisEk konulmamisEk, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (konulmamisEk == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(konulmamisEk) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (konulmamisEk.EkIdDeger == Guid.Empty)
@@ -545,16 +585,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Dagitim dagitim, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Dagitim dagitim, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (dagitim == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(Dagitim) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (dagitim.Oge == null)
@@ -565,11 +608,14 @@ namespace eyazisma.online.api.Extensions
                     });
 
                 if (!(dagitim.Oge is KurumKurulus || dagitim.Oge is TuzelSahis || dagitim.Oge is GercekSahis))
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(Dagitim.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
+                        Hata = nameof(Dagitim.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," +
+                               typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else if (dagitim.Oge is KurumKurulus kurumKurulus)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
@@ -607,14 +653,16 @@ namespace eyazisma.online.api.Extensions
                 if (dagitim.IvedilikTuru == IvedilikTuru.CIV || dagitim.IvedilikTuru == IvedilikTuru.IVD)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı için " + nameof(IvedilikTuru.CIV) + " ve " + nameof(IvedilikTuru.IVD) + " seçeneği kullanımdan kaldırılmıştır.",
+                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı için " + nameof(IvedilikTuru.CIV) + " ve " +
+                               nameof(IvedilikTuru.IVD) + " seçeneği kullanımdan kaldırılmıştır.",
                         HataTuru = DogrulamaHataTuru.Onemli
                     });
 
-                if (dagitim.Miat == default(TimeSpan) && dagitim.IvedilikTuru == IvedilikTuru.GNL)
+                if (dagitim.Miat == default && dagitim.IvedilikTuru == IvedilikTuru.GNL)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı " + nameof(IvedilikTuru.GNL) + " olması durumunda " + nameof(Dagitim.Miat) + " alanı boş olmamalıdır.",
+                        Hata = nameof(Dagitim.IvedilikTuru) + " alanı " + nameof(IvedilikTuru.GNL) +
+                               " olması durumunda " + nameof(Dagitim.Miat) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -623,11 +671,12 @@ namespace eyazisma.online.api.Extensions
                     if (dagitim.KonulmamisEkler.Count == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(Dagitim.KonulmamisEkler) + " alanı en az bir tane " + typeof(KonulmamisEk).Name + " tipinde öğe içermelidir.",
+                            Hata = nameof(Dagitim.KonulmamisEkler) + " alanı en az bir tane " +
+                                   typeof(KonulmamisEk).Name + " tipinde öğe içermelidir.",
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
                     else
-                        foreach (KonulmamisEk konulmamisEk in dagitim.KonulmamisEkler)
+                        foreach (var konulmamisEk in dagitim.KonulmamisEkler)
                         {
                             var hatalar = new List<DogrulamaHatasi>();
                             if (!konulmamisEk.Dogrula(paketVersiyon, ref hatalar))
@@ -646,16 +695,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Ek ek, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Ek ek, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ek == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(Ek) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
@@ -711,13 +763,15 @@ namespace eyazisma.online.api.Extensions
                     if (string.IsNullOrWhiteSpace(ek.DosyaAdi))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(Ek.DosyaAdi) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " +
+                                   nameof(Ek.DosyaAdi) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                     if (string.IsNullOrWhiteSpace(ek.MimeTuru))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " + nameof(Ek.MimeTuru) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.DED) + " olması durumunda " +
+                                   nameof(Ek.MimeTuru) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                 }
@@ -733,7 +787,8 @@ namespace eyazisma.online.api.Extensions
                     if (string.IsNullOrWhiteSpace(ek.Referans))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.HRF) + " olması durumunda " + nameof(Ek.Referans) + " alanı boş olmamalıdır.",
+                            Hata = nameof(Ek.Tur) + " alanı değeri " + nameof(EkTuru.HRF) + " olması durumunda " +
+                                   nameof(Ek.Referans) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                     else if (!ek.Referans.DogrulaWebAdresi())
@@ -783,16 +838,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Ilgi ilgi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Ilgi ilgi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ilgi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ilgi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
@@ -868,16 +926,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Ilgili ilgili, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Ilgili ilgili, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ilgili == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ilgili) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (ilgili.Oge == null)
@@ -888,11 +949,14 @@ namespace eyazisma.online.api.Extensions
                     });
 
                 if (!(ilgili.Oge is KurumKurulus || ilgili.Oge is TuzelSahis || ilgili.Oge is GercekSahis))
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ilgili.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
+                        Hata = nameof(ilgili.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," +
+                               typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else if (ilgili.Oge is KurumKurulus kurumKurulus)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
@@ -933,16 +997,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Ustveri ustveri, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Ustveri ustveri, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ustveri == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ustveri) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (ustveri.BelgeId == Guid.Empty)
@@ -978,28 +1045,33 @@ namespace eyazisma.online.api.Extensions
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
-                if (paketVersiyon == PaketVersiyonTuru.Versiyon2X && (ustveri.GuvenlikKodu == GuvenlikKoduTuru.KSO || ustveri.GuvenlikKodu == GuvenlikKoduTuru.TSD))
+                if (paketVersiyon == PaketVersiyonTuru.Versiyon2X && (ustveri.GuvenlikKodu == GuvenlikKoduTuru.KSO ||
+                                                                      ustveri.GuvenlikKodu == GuvenlikKoduTuru.TSD))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ustveri.GuvenlikKodu) + " alanı için " + nameof(GuvenlikKoduTuru.KSO) + " ve " + nameof(GuvenlikKoduTuru.TSD) + " seçeneği kullanımdan kaldırılmıştır.",
+                        Hata = nameof(ustveri.GuvenlikKodu) + " alanı için " + nameof(GuvenlikKoduTuru.KSO) + " ve " +
+                               nameof(GuvenlikKoduTuru.TSD) + " seçeneği kullanımdan kaldırılmıştır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
-                if (paketVersiyon == PaketVersiyonTuru.Versiyon1X && ustveri.GuvenlikKoduGecerlilikTarihi.HasValue && ustveri.GuvenlikKoduGecerlilikTarihi.Value < ustveri.Tarih)
+                if (paketVersiyon == PaketVersiyonTuru.Versiyon1X && ustveri.GuvenlikKoduGecerlilikTarihi.HasValue &&
+                    ustveri.GuvenlikKoduGecerlilikTarihi.Value < ustveri.Tarih)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ustveri.GuvenlikKoduGecerlilikTarihi) + " alanı " + nameof(ustveri.Tarih) + " değerine eşit ya da daha ileri bir tarih olmalıdır.",
+                        Hata = nameof(ustveri.GuvenlikKoduGecerlilikTarihi) + " alanı " + nameof(ustveri.Tarih) +
+                               " değerine eşit ya da daha ileri bir tarih olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Onemli
                     });
 
                 if (ustveri.Dagitimlar == null || ustveri.Dagitimlar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(ustveri.Dagitimlar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Dagitim).Name + " tipinde öğe içermelidir.",
+                        Hata = nameof(ustveri.Dagitimlar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Dagitim).Name + " tipinde öğe içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
-                    foreach (Dagitim dagitim in ustveri.Dagitimlar)
+                    foreach (var dagitim in ustveri.Dagitimlar)
                     {
                         var hatalar = new List<DogrulamaHatasi>();
                         if (!dagitim.Dogrula(paketVersiyon, ref hatalar))
@@ -1019,7 +1091,7 @@ namespace eyazisma.online.api.Extensions
                     });
 
                 if (ustveri.Ekler != null && ustveri.Ekler.Count > 0)
-                    foreach (Ek ek in ustveri.Ekler)
+                    foreach (var ek in ustveri.Ekler)
                     {
                         var hatalar = new List<DogrulamaHatasi>();
                         if (!ek.Dogrula(paketVersiyon, ref hatalar))
@@ -1032,7 +1104,7 @@ namespace eyazisma.online.api.Extensions
                     }
 
                 if (ustveri.Ilgiler != null && ustveri.Ilgiler.Count > 0)
-                    foreach (Ilgi ilgi in ustveri.Ilgiler)
+                    foreach (var ilgi in ustveri.Ilgiler)
                     {
                         var hatalar = new List<DogrulamaHatasi>();
                         if (!ilgi.Dogrula(paketVersiyon, ref hatalar))
@@ -1045,7 +1117,7 @@ namespace eyazisma.online.api.Extensions
                     }
 
                 if (ustveri.Ilgililer != null && ustveri.Ilgililer.Count > 0)
-                    foreach (Ilgili ilgili in ustveri.Ilgililer)
+                    foreach (var ilgili in ustveri.Ilgililer)
                     {
                         var hatalar = new List<DogrulamaHatasi>();
                         if (!ilgili.Dogrula(paketVersiyon, ref hatalar))
@@ -1101,16 +1173,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this NihaiUstveri nihaiUstveri, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this NihaiUstveri nihaiUstveri, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (nihaiUstveri == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(nihaiUstveri) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(nihaiUstveri.BelgeNo))
@@ -1130,7 +1205,8 @@ namespace eyazisma.online.api.Extensions
                 if (nihaiUstveri.BelgeImzalar == null || nihaiUstveri.BelgeImzalar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(nihaiUstveri.BelgeImzalar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Imza).Name + " tipinde item içermelidir.",
+                        Hata = nameof(nihaiUstveri.BelgeImzalar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Imza).Name + " tipinde item içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
@@ -1152,16 +1228,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Olusturan olusturan, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Olusturan olusturan, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (olusturan == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(olusturan) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (olusturan.Oge == null)
@@ -1172,11 +1251,14 @@ namespace eyazisma.online.api.Extensions
                     });
 
                 if (!(olusturan.Oge is KurumKurulus || olusturan.Oge is TuzelSahis || olusturan.Oge is GercekSahis))
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(olusturan.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
+                        Hata = nameof(olusturan.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," +
+                               typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else if (olusturan.Oge is KurumKurulus kurumKurulus)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
@@ -1217,16 +1299,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Hedef hedef, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Hedef hedef, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (hedef == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(Hedef) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (hedef.Oge == null)
@@ -1237,11 +1322,14 @@ namespace eyazisma.online.api.Extensions
                     });
 
                 if (!(hedef.Oge is KurumKurulus || hedef.Oge is TuzelSahis || hedef.Oge is GercekSahis))
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(hedef.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," + typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
+                        Hata = nameof(hedef.Oge) + " alanı için " + typeof(KurumKurulus).Name + "," +
+                               typeof(TuzelSahis).Name + " veya " + typeof(GercekSahis).Name + " tipinde olmalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else if (hedef.Oge is KurumKurulus kurumKurulus)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
@@ -1282,16 +1370,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this IletisimBilgisi iletisimBilgisi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this IletisimBilgisi iletisimBilgisi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (iletisimBilgisi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(iletisimBilgisi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (!string.IsNullOrWhiteSpace(iletisimBilgisi.Telefon) && !iletisimBilgisi.Telefon.DogrulaTelefon())
@@ -1307,7 +1398,8 @@ namespace eyazisma.online.api.Extensions
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
 
-                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.TelefonDiger) && !iletisimBilgisi.TelefonDiger.DogrulaTelefon())
+                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.TelefonDiger) &&
+                    !iletisimBilgisi.TelefonDiger.DogrulaTelefon())
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(iletisimBilgisi.TelefonDiger) + " alanı formatı uygun değildir.",
@@ -1327,7 +1419,8 @@ namespace eyazisma.online.api.Extensions
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
 
-                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.EPosta) && !iletisimBilgisi.EPosta.ToLower().DogrulaEPosta())
+                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.EPosta) &&
+                    !iletisimBilgisi.EPosta.ToLower().DogrulaEPosta())
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(iletisimBilgisi.EPosta) + " alanı formatı uygun değildir.",
@@ -1340,7 +1433,8 @@ namespace eyazisma.online.api.Extensions
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
 
-                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.WebAdresi) && !iletisimBilgisi.WebAdresi.ToLower().DogrulaWebAdresi())
+                if (!string.IsNullOrWhiteSpace(iletisimBilgisi.WebAdresi) &&
+                    !iletisimBilgisi.WebAdresi.ToLower().DogrulaWebAdresi())
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(iletisimBilgisi.WebAdresi) + " alanı formatı uygun değildir.",
@@ -1355,7 +1449,8 @@ namespace eyazisma.online.api.Extensions
 
                 if (paketVersiyon == PaketVersiyonTuru.Versiyon2X)
                 {
-                    if (!string.IsNullOrWhiteSpace(iletisimBilgisi.KepAdresi) && !iletisimBilgisi.KepAdresi.ToLower().DogrulaKepAdresi())
+                    if (!string.IsNullOrWhiteSpace(iletisimBilgisi.KepAdresi) &&
+                        !iletisimBilgisi.KepAdresi.ToLower().DogrulaKepAdresi())
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = nameof(iletisimBilgisi.KepAdresi) + " alanı formatı uygun değildir.",
@@ -1392,11 +1487,13 @@ namespace eyazisma.online.api.Extensions
                             });
                     }
                     else
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = nameof(iletisimBilgisi.Ilce) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
+                    }
 
                     if (iletisimBilgisi.Il != null)
                     {
@@ -1410,11 +1507,13 @@ namespace eyazisma.online.api.Extensions
                             });
                     }
                     else
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = nameof(iletisimBilgisi.Il) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
+                    }
 
                     if (iletisimBilgisi.Ulke != null)
                     {
@@ -1428,18 +1527,22 @@ namespace eyazisma.online.api.Extensions
                             });
                     }
                     else
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = nameof(iletisimBilgisi.Ulke) + " alanı boş olmamalıdır.",
                             HataTuru = DogrulamaHataTuru.Uyari
                         });
+                    }
                 }
                 else
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(iletisimBilgisi.Adres) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
+                }
             }
 
             if (dogrulamaHatalari.Count > 0)
@@ -1447,16 +1550,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this BelgeHedef belgeHedef, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this BelgeHedef belgeHedef, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (belgeHedef == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(belgeHedef) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (belgeHedef.Hedefler == null || belgeHedef.Hedefler.Count == 0)
@@ -1484,16 +1590,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Imza imza, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Imza imza, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (imza == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(imza) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (imza.Imzalayan == null)
@@ -1567,11 +1676,13 @@ namespace eyazisma.online.api.Extensions
                         });
                 }
                 else
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(imza.Amac) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
+                }
 
                 if (imza.Makam != null)
                 {
@@ -1591,22 +1702,26 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this BelgeImza belgeImza, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this BelgeImza belgeImza, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (belgeImza == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(belgeImza) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (belgeImza.Imzalar == null || belgeImza.Imzalar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(belgeImza.Imzalar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Imza).Name + " tipinde item içermelidir.",
+                        Hata = nameof(belgeImza.Imzalar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Imza).Name + " tipinde item içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
@@ -1628,16 +1743,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this Referans referans, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this Referans referans, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (referans == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(referans) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 var hatalar = new List<DogrulamaHatasi>();
@@ -1667,16 +1785,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this HEYSK heysk, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this HEYSK heysk, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (heysk == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(heysk) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (heysk.Kod <= 0)
@@ -1699,16 +1820,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this UstYazi ustYazi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this UstYazi ustYazi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ustYazi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(ustYazi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (ustYazi.Dosya == null || ustYazi.Dosya.Length == 0)
@@ -1736,16 +1860,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this EkDosya ekDosya, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this EkDosya ekDosya, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ekDosya == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(EkDosya) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (ekDosya.Dosya == null || ekDosya.Dosya.Length == 0)
@@ -1772,7 +1899,8 @@ namespace eyazisma.online.api.Extensions
                 if (ekDosya.Ek.Tur != EkTuru.DED)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = "Ek türü " + nameof(EkTuru.DED) + " olmayan eklere ait " + nameof(EkDosya) + "bileşeni eklenemez.",
+                        Hata = "Ek türü " + nameof(EkTuru.DED) + " olmayan eklere ait " + nameof(EkDosya) +
+                               "bileşeni eklenemez.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
 
@@ -1792,16 +1920,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this SDP sdp, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this SDP sdp, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (sdp == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(sdp) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(sdp.Kod))
@@ -1829,16 +1960,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this DogrulamaBilgisi dogrulamaBilgisi, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this DogrulamaBilgisi dogrulamaBilgisi, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (dogrulamaBilgisi == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(dogrulamaBilgisi) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (string.IsNullOrWhiteSpace(dogrulamaBilgisi.DogrulamaAdresi))
@@ -1861,16 +1995,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this ParafOzeti parafOzeti, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this ParafOzeti parafOzeti, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (parafOzeti == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(parafOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (parafOzeti.Id == Guid.Empty)
@@ -1883,7 +2020,8 @@ namespace eyazisma.online.api.Extensions
                 if (parafOzeti.Referanslar == null || parafOzeti.Referanslar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(parafOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Referans).Name + " tipinde öğe içermelidir.",
+                        Hata = nameof(parafOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Referans).Name + " tipinde öğe içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
@@ -1905,16 +2043,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this PaketOzeti paketOzeti, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this PaketOzeti paketOzeti, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (paketOzeti == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(paketOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (paketOzeti.Id == Guid.Empty)
@@ -1927,7 +2068,8 @@ namespace eyazisma.online.api.Extensions
                 if (paketOzeti.Referanslar == null || paketOzeti.Referanslar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(paketOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Referans).Name + " tipinde öğe içermelidir.",
+                        Hata = nameof(paketOzeti.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Referans).Name + " tipinde öğe içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
@@ -1949,16 +2091,19 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        public static bool Dogrula(this NihaiOzet nihaiOzet, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        public static bool Dogrula(this NihaiOzet nihaiOzet, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (nihaiOzet == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(nihaiOzet) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (nihaiOzet.Id == Guid.Empty)
@@ -1971,7 +2116,8 @@ namespace eyazisma.online.api.Extensions
                 if (nihaiOzet.Referanslar == null || nihaiOzet.Referanslar.Count == 0)
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = nameof(nihaiOzet.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " + typeof(Referans).Name + " tipinde öğe içermelidir.",
+                        Hata = nameof(nihaiOzet.Referanslar) + " alanı boş olmamalıdır ve en az bir tane " +
+                               typeof(Referans).Name + " tipinde öğe içermelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
                 else
@@ -1993,7 +2139,8 @@ namespace eyazisma.online.api.Extensions
             return dogrulamaHatalari.Count == 0;
         }
 
-        internal static bool IlgileriDogrula(this Ustveri ustveri, PaketVersiyonTuru paketVersiyon, ref List<DogrulamaHatasi> dogrulamaHatalariRef)
+        internal static bool IlgileriDogrula(this Ustveri ustveri, PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
@@ -2019,7 +2166,8 @@ namespace eyazisma.online.api.Extensions
                 if (string.Join("", etiketler) != alfabe.Substring(0, etiketler.Length))
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
-                        Hata = "Paket içerisine eklenen ilgilerin Etiket değerleri alfabe sıralamasına göre yapılmamıştır.",
+                        Hata =
+                            "Paket içerisine eklenen ilgilerin Etiket değerleri alfabe sıralamasına göre yapılmamıştır.",
                         HataTuru = DogrulamaHataTuru.Uyari
                     });
 
@@ -2041,22 +2189,23 @@ namespace eyazisma.online.api.Extensions
                     if (ustveri.Ekler == null || ustveri.Ekler.Count == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = "Ustveri bileşeninde verilen ilgilerden, ek olarak belirtilmiş ilgi için, paket içerisine eklenmiş Ek bileşeni bulunamamıştır.",
+                            Hata =
+                                "Ustveri bileşeninde verilen ilgilerden, ek olarak belirtilmiş ilgi için, paket içerisine eklenmiş Ek bileşeni bulunamamıştır.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
                     else
                         foreach (var ekOlarakBelirtilmisIlgi in ekOlarakBelirtilmisIlgiler)
-                        {
-                            if (!ustveri.Ekler.Any(ek => string.Compare(ek.Id.Deger, ekOlarakBelirtilmisIlgi.EkIdDeger.ToString(), true) == 0))
+                            if (!ustveri.Ekler.Any(ek =>
+                                string.Compare(ek.Id.Deger, ekOlarakBelirtilmisIlgi.EkIdDeger.ToString(), true) == 0))
                             {
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = "Ustveri bileşeninde verilen ilgilerden, ek olarak belirtilmiş ilgi için, paket içerisine eklenmiş Ek bileşeni bulunamamıştır.",
+                                    Hata =
+                                        "Ustveri bileşeninde verilen ilgilerden, ek olarak belirtilmiş ilgi için, paket içerisine eklenmiş Ek bileşeni bulunamamıştır.",
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
                                 break;
                             }
-                        }
                 }
             }
 
@@ -2066,32 +2215,28 @@ namespace eyazisma.online.api.Extensions
         }
 
         internal static bool EkleriDogrula(this Ustveri ustveri,
-                                           Package package,
-                                           PaketVersiyonTuru paketVersiyon,
-                                           ref List<DogrulamaHatasi> dogrulamaHatalariRef,
-                                           TanimlayiciTip dagitimTanimlayici = null)
+            Package package,
+            PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef,
+            TanimlayiciTip dagitimTanimlayici = null)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (ustveri.Ekler != null && ustveri.Ekler.Count > 0)
             {
                 if (ustveri.Ekler.Any(p => p.SiraNo <= 0))
-                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Paket içerisine SiraNo alanı '1'den küçük olan ek eklenmemelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
-                }
 
                 if (ustveri.Ekler.Select(p => p.SiraNo).Distinct().Count() < ustveri.Ekler.Count)
-                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Paket içerisine aynı SiraNo değerine sahip birden fazla ek eklenmemelidir.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
-                }
 
                 foreach (var ek in ustveri.Ekler)
                 {
@@ -2117,12 +2262,11 @@ namespace eyazisma.online.api.Extensions
                 {
                     Dagitim dagitim = null;
                     if (ustveri.Dagitimlar != null && ustveri.Dagitimlar.Count == 0)
-                    {
                         foreach (var dagitimOge in ustveri.Dagitimlar)
-                        {
                             if (dagitim.Oge is KurumKurulus kurumKurulus)
                             {
-                                if (!string.IsNullOrWhiteSpace(kurumKurulus.KKK) && kurumKurulus.KKK == dagitimTanimlayici.Deger)
+                                if (!string.IsNullOrWhiteSpace(kurumKurulus.KKK) &&
+                                    kurumKurulus.KKK == dagitimTanimlayici.Deger)
                                 {
                                     dagitim = dagitimOge;
                                     break;
@@ -2130,7 +2274,8 @@ namespace eyazisma.online.api.Extensions
                             }
                             else if (dagitim.Oge is TuzelSahis tuzelSahis)
                             {
-                                if (tuzelSahis.Id != null && string.IsNullOrWhiteSpace(tuzelSahis.Id.Deger) && tuzelSahis.Id.Deger == dagitimTanimlayici.Deger)
+                                if (tuzelSahis.Id != null && string.IsNullOrWhiteSpace(tuzelSahis.Id.Deger) &&
+                                    tuzelSahis.Id.Deger == dagitimTanimlayici.Deger)
                                 {
                                     dagitim = dagitimOge;
                                     break;
@@ -2138,88 +2283,85 @@ namespace eyazisma.online.api.Extensions
                             }
                             else if (dagitim.Oge is GercekSahis gercekSahis)
                             {
-                                if (!string.IsNullOrWhiteSpace(gercekSahis.TCKN) && gercekSahis.TCKN == dagitimTanimlayici.Deger)
+                                if (!string.IsNullOrWhiteSpace(gercekSahis.TCKN) &&
+                                    gercekSahis.TCKN == dagitimTanimlayici.Deger)
                                 {
                                     dagitim = dagitimOge;
                                     break;
                                 }
                             }
-                        }
-                    }
 
                     foreach (var ustveriEki in ustveri.Ekler)
-                    {
                         if (ustveriEki.Tur == EkTuru.DED && !package.EkDosyaExists(ustveriEki.Id))
-                        {
-                            if (dagitimTanimlayici == null ||
-                                (dagitim == null ||
-                                dagitim.KonulmamisEkler == null ||
-                                dagitim.KonulmamisEkler.Count == 0 ||
-                                !dagitim.KonulmamisEkler.Any(p => string.Compare(p.EkIdDeger.ToString(), ustveriEki.Id.Deger, true) == 0)))
-                            {
+                            if (dagitimTanimlayici == null || dagitim == null || dagitim.KonulmamisEkler == null ||
+                                dagitim.KonulmamisEkler.Count == 0 || !dagitim.KonulmamisEkler.Any(p =>
+                                    string.Compare(p.EkIdDeger.ToString(), ustveriEki.Id.Deger, true) == 0))
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = string.Format("Ustveri bileşeni için eklenen ek, paket içerisine eklenmemiştir. EkId: {0}", ustveriEki.Id.Deger),
+                                    Hata = string.Format(
+                                        "Ustveri bileşeni için eklenen ek, paket içerisine eklenmemiştir. EkId: {0}",
+                                        ustveriEki.Id.Deger),
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
-                            }
-                        }
-                    }
                 }
             }
 
             if ((ustveri.Ekler == null || ustveri.Ekler.Count == 0) &&
-               (package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).Count() > 0 ||
-                package.GetRelationshipsByType(Constants.RELATION_TYPE_IMZASIZEK).Count() > 0))
+                (package.GetRelationshipsByType(Constants.RELATION_TYPE_EK).Count() > 0 ||
+                 package.GetRelationshipsByType(Constants.RELATION_TYPE_IMZASIZEK).Count() > 0))
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = "Paket içerisine eklenmiş eklerin hiç biri, üstveri bileşeninde belirtilmemiştir.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 foreach (var relationship in package.GetRelationshipsByType(Constants.RELATION_TYPE_EK))
                 {
-                    var relationshipEki = ustveri.Ekler.SingleOrDefault(re => string.Compare(relationship.Id, Constants.ID_ROOT_EK(re.Id.Deger), true) == 0);
+                    var relationshipEki = ustveri.Ekler.SingleOrDefault(re =>
+                        string.Compare(relationship.Id, Constants.ID_ROOT_EK(re.Id.Deger), true) == 0);
 
                     if (relationshipEki == default(Ek))
-                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = string.Format("Paket içerisine eklenmiş ek, üstveri bileşeninde belirtilmemiştir. EkId: {0}", relationship.Id.Replace("IdEk_", "")),
+                            Hata = string.Format(
+                                "Paket içerisine eklenmiş ek, üstveri bileşeninde belirtilmemiştir. EkId: {0}",
+                                relationship.Id.Replace("IdEk_", "")),
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
-                    }
                     else if (relationshipEki.Tur != EkTuru.DED)
-                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = string.Format("Paket içerisine eklenmiş ek, üstveri bileşeninde " + nameof(EkTuru.DED) + " olarak belirtilmelidir. EkId: {0}", relationship.Id.Replace("IdEk_", "")),
+                            Hata = string.Format(
+                                "Paket içerisine eklenmiş ek, üstveri bileşeninde " + nameof(EkTuru.DED) +
+                                " olarak belirtilmelidir. EkId: {0}", relationship.Id.Replace("IdEk_", "")),
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
-                    }
                 }
 
                 foreach (var relationship in package.GetRelationshipsByType(Constants.RELATION_TYPE_IMZASIZEK))
                 {
-                    var relationshipEki = ustveri.Ekler.SingleOrDefault(re => string.Compare(relationship.Id.ToString(), Constants.ID_ROOT_IMZASIZEK(re.Id.Deger), true) == 0);
+                    var relationshipEki = ustveri.Ekler.SingleOrDefault(re =>
+                        string.Compare(relationship.Id, Constants.ID_ROOT_IMZASIZEK(re.Id.Deger), true) == 0);
 
                     if (relationshipEki == default(Ek))
-                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = string.Format("Paket içerisine eklenmiş ek, üstveri bileşeninde belirtilmemiştir. EkId: {0}", relationship.Id.Replace("IdImzasizEk_", "")),
+                            Hata = string.Format(
+                                "Paket içerisine eklenmiş ek, üstveri bileşeninde belirtilmemiştir. EkId: {0}",
+                                relationship.Id.Replace("IdImzasizEk_", "")),
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
-                    }
                     else if (relationshipEki.Tur != EkTuru.DED)
-                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = string.Format("Paket içerisine eklenmiş ek, üstveri bileşeninde " + nameof(EkTuru.DED) + " olarak belirtilmelidir. EkId: {0}", relationship.Id.Replace("IdImzasizEk_", "")),
+                            Hata = string.Format(
+                                "Paket içerisine eklenmiş ek, üstveri bileşeninde " + nameof(EkTuru.DED) +
+                                " olarak belirtilmelidir. EkId: {0}", relationship.Id.Replace("IdImzasizEk_", "")),
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
-                    }
                 }
             }
 
@@ -2229,31 +2371,36 @@ namespace eyazisma.online.api.Extensions
         }
 
         internal static bool NihaiOzetDogrula(this NihaiOzet nihaiOzet,
-                                              Package package,
-                                              PaketVersiyonTuru paketVersiyon,
-                                              ref List<DogrulamaHatasi> dogrulamaHatalariRef,
-                                              Ustveri ustveri,
-                                              TanimlayiciTip dagitimTanimlayici = null)
+            Package package,
+            PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef,
+            Ustveri ustveri,
+            TanimlayiciTip dagitimTanimlayici = null)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (nihaiOzet == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(nihaiOzet) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (!package.UstveriExists())
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Ustveri bileşeni yoktur.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
-                    Uri readedUstveriUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
+                    var readedUstveriUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
                     if (!nihaiOzet.Referanslar.Any(p => string.Compare(p.URI, readedUstveriUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2272,7 +2419,8 @@ namespace eyazisma.online.api.Extensions
                 }
                 else
                 {
-                    Uri readedUstYaziUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
+                    var readedUstYaziUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
                     if (!nihaiOzet.Referanslar.Any(p => string.Compare(p.URI, readedUstYaziUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2284,15 +2432,19 @@ namespace eyazisma.online.api.Extensions
                 if (paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 {
                     if (!package.BelgeHedefRelationExists())
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "BelgeHedef bileşeni yoktur.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
+                    }
                     else
                     {
-                        Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                        if (!nihaiOzet.Referanslar.Any(p => string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
+                        var readedBelgeHedefUri = PackUriHelper.CreatePartUri(package
+                            .GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
+                        if (!nihaiOzet.Referanslar.Any(p =>
+                            string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 Hata = "NihaiOzet bileşeninde BelgeHedef özet alanı yoktur.",
@@ -2301,15 +2453,19 @@ namespace eyazisma.online.api.Extensions
                     }
 
                     if (!package.BelgeImzaRelationExists())
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "BelgeImza bileşeni yoktur.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
+                    }
                     else
                     {
-                        Uri readedBelgeImzaUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA).First().TargetUri);
-                        if (!nihaiOzet.Referanslar.Any(p => string.Compare(p.URI, readedBelgeImzaUri.ToString(), true) == 0))
+                        var readedBelgeImzaUri = PackUriHelper.CreatePartUri(package
+                            .GetRelationshipsByType(Constants.RELATION_TYPE_BELGEIMZA).First().TargetUri);
+                        if (!nihaiOzet.Referanslar.Any(p =>
+                            string.Compare(p.URI, readedBelgeImzaUri.ToString(), true) == 0))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 Hata = "NihaiOzet bileşeninde BelgeImza özet alanı yoktur.",
@@ -2319,21 +2475,26 @@ namespace eyazisma.online.api.Extensions
                 }
 
                 if (!package.PaketOzetiExists())
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "PaketOzeti bileşeni yoktur.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
-                    var relImza = package.GetPart(Constants.URI_PAKETOZETI).GetRelationshipsByType(Constants.RELATION_TYPE_IMZA);
+                    var relImza = package.GetPart(Constants.URI_PAKETOZETI)
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_IMZA);
                     if (relImza == null || relImza.Count() == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "Imza bileşeni yoktur.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
-                    else if (nihaiOzet.Referanslar.Count(p => string.Compare(p.URI, PackUriHelper.CreatePartUri(relImza.First().TargetUri).ToString(), true) == 0) == 0)
+                    else if (nihaiOzet.Referanslar.Count(p =>
+                        string.Compare(p.URI, PackUriHelper.CreatePartUri(relImza.First().TargetUri).ToString(),
+                            true) == 0) == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "NihaiOzet bileşeninde Imza özet alanı yoktur.",
@@ -2342,15 +2503,18 @@ namespace eyazisma.online.api.Extensions
                 }
 
                 if (!package.CoreRelationExists())
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Core bileşeni yoktur.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
-                    Uri readedCoreUri = package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE).First().TargetUri;
-                    if (nihaiOzet.Referanslar.Count(p => string.Compare(p.URI, PackUriHelper.CreatePartUri(readedCoreUri).ToString(), true) == 0) == 0)
+                    var readedCoreUri = package.GetRelationshipsByType(Constants.RELATION_TYPE_CORE).First().TargetUri;
+                    if (nihaiOzet.Referanslar.Count(p =>
+                        string.Compare(p.URI, PackUriHelper.CreatePartUri(readedCoreUri).ToString(), true) == 0) == 0)
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "NihaiOzet bileşeninde Core özet alanı yoktur.",
@@ -2358,7 +2522,7 @@ namespace eyazisma.online.api.Extensions
                         });
                 }
 
-                foreach (Referans referans in nihaiOzet.Referanslar)
+                foreach (var referans in nihaiOzet.Referanslar)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
                     if (!referans.ReferansDogrula(package, paketVersiyon, ref hatalar, ustveri, dagitimTanimlayici))
@@ -2370,37 +2534,43 @@ namespace eyazisma.online.api.Extensions
                         });
                 }
             }
+
             if (dogrulamaHatalari.Count > 0)
                 dogrulamaHatalariRef.AddRange(dogrulamaHatalari);
             return dogrulamaHatalari.Count == 0;
         }
 
         internal static bool PaketOzetiDogrula(this PaketOzeti paketOzeti,
-                                               Package package,
-                                               PaketVersiyonTuru paketVersiyon,
-                                               ref List<DogrulamaHatasi> dogrulamaHatalariRef,
-                                               Ustveri ustveri,
-                                               TanimlayiciTip dagitimTanimlayici = null)
+            Package package,
+            PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef,
+            Ustveri ustveri,
+            TanimlayiciTip dagitimTanimlayici = null)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (paketOzeti == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(paketOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (!package.UstveriExists())
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Ustveri bileşeni yoktur.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
-                    Uri readedUstveriUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
+                    var readedUstveriUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
                     if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstveriUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2419,7 +2589,8 @@ namespace eyazisma.online.api.Extensions
                 }
                 else
                 {
-                    Uri readedUstYaziUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
+                    var readedUstYaziUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
                     if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstYaziUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2431,15 +2602,19 @@ namespace eyazisma.online.api.Extensions
                 if (paketVersiyon == PaketVersiyonTuru.Versiyon1X)
                 {
                     if (!package.BelgeHedefRelationExists())
+                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = "BelgeHedef bileşeni yoktur.",
                             HataTuru = DogrulamaHataTuru.Kritik
                         });
+                    }
                     else
                     {
-                        Uri readedBelgeHedefUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
-                        if (!paketOzeti.Referanslar.Any(p => string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
+                        var readedBelgeHedefUri = PackUriHelper.CreatePartUri(package
+                            .GetRelationshipsByType(Constants.RELATION_TYPE_BELGEHEDEF).First().TargetUri);
+                        if (!paketOzeti.Referanslar.Any(p =>
+                            string.Compare(p.URI, readedBelgeHedefUri.ToString(), true) == 0))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
                                 Hata = "PaketOzeti bileşeninde BelgeHedef özet alanı yoktur.",
@@ -2448,7 +2623,7 @@ namespace eyazisma.online.api.Extensions
                     }
                 }
 
-                foreach (Referans referans in paketOzeti.Referanslar)
+                foreach (var referans in paketOzeti.Referanslar)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
                     if (!referans.ReferansDogrula(package, paketVersiyon, ref hatalar, ustveri, dagitimTanimlayici))
@@ -2467,31 +2642,36 @@ namespace eyazisma.online.api.Extensions
         }
 
         internal static bool ParafOzetiDogrula(this ParafOzeti parafOzeti,
-                                               Package package,
-                                               PaketVersiyonTuru paketVersiyon,
-                                               ref List<DogrulamaHatasi> dogrulamaHatalariRef,
-                                               Ustveri ustveri,
-                                               TanimlayiciTip dagitimTanimlayici = null)
+            Package package,
+            PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef,
+            Ustveri ustveri,
+            TanimlayiciTip dagitimTanimlayici = null)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (parafOzeti == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(parafOzeti) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
                 if (!package.UstveriExists())
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = "Ustveri bileşeni yoktur.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
-                    Uri readedUstveriUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
+                    var readedUstveriUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTVERI).First().TargetUri);
                     if (!parafOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstveriUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2510,7 +2690,8 @@ namespace eyazisma.online.api.Extensions
                 }
                 else
                 {
-                    Uri readedUstYaziUri = PackUriHelper.CreatePartUri(package.GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
+                    var readedUstYaziUri = PackUriHelper.CreatePartUri(package
+                        .GetRelationshipsByType(Constants.RELATION_TYPE_USTYAZI).First().TargetUri);
                     if (!parafOzeti.Referanslar.Any(p => string.Compare(p.URI, readedUstYaziUri.ToString(), true) == 0))
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
@@ -2519,7 +2700,7 @@ namespace eyazisma.online.api.Extensions
                         });
                 }
 
-                foreach (Referans referans in parafOzeti.Referanslar)
+                foreach (var referans in parafOzeti.Referanslar)
                 {
                     var hatalar = new List<DogrulamaHatasi>();
                     if (!referans.ReferansDogrula(package, paketVersiyon, ref hatalar, ustveri, dagitimTanimlayici))
@@ -2538,35 +2719,38 @@ namespace eyazisma.online.api.Extensions
         }
 
         internal static bool ReferansDogrula(this Referans referans,
-                                             Package package,
-                                             PaketVersiyonTuru paketVersiyon,
-                                             ref List<DogrulamaHatasi> dogrulamaHatalariRef,
-                                             Ustveri ustveri,
-                                             TanimlayiciTip dagitimTanimlayici = null)
+            Package package,
+            PaketVersiyonTuru paketVersiyon,
+            ref List<DogrulamaHatasi> dogrulamaHatalariRef,
+            Ustveri ustveri,
+            TanimlayiciTip dagitimTanimlayici = null)
         {
             var dogrulamaHatalari = new List<DogrulamaHatasi>();
 
             if (referans == null)
+            {
                 dogrulamaHatalari.Add(new DogrulamaHatasi
                 {
                     Hata = nameof(referans) + " boş olmamalıdır.",
                     HataTuru = DogrulamaHataTuru.Kritik
                 });
+            }
             else
             {
-
                 if (referans.URI == null)
+                {
                     dogrulamaHatalari.Add(new DogrulamaHatasi
                     {
                         Hata = nameof(referans.URI) + " alanı boş olmamalıdır.",
                         HataTuru = DogrulamaHataTuru.Kritik
                     });
+                }
                 else
                 {
                     var hatalar = new List<DogrulamaHatasi>();
                     if (!referans.Ozet.Dogrula(paketVersiyon, ref hatalar))
                     {
-                        hatalar.ForEach((hata) =>
+                        hatalar.ForEach(hata =>
                         {
                             hata.Uri = referans.URI;
                             hata.Hata = hata.Hata + " URI: " + referans.URI;
@@ -2583,21 +2767,29 @@ namespace eyazisma.online.api.Extensions
                         if (referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.YOK)
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
-                                Hata = nameof(referans.Ozet.OzetAlgoritmasi.Algoritma) + " alanı değeri desteklenmemektedir. URI: " + referans.URI,
+                                Hata = nameof(referans.Ozet.OzetAlgoritmasi.Algoritma) +
+                                       " alanı değeri desteklenmemektedir. URI: " + referans.URI,
                                 Uri = referans.URI,
                                 HataTuru = DogrulamaHataTuru.Kritik
                             });
-                        else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X && (referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 || referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
+                        else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X &&
+                                 (referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 ||
+                                  referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
-                                Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " + nameof(OzetAlgoritmaTuru.RIPEMD160) + " özet algoritması kullanımdan kaldırılmıştır. URI: " + referans.URI,
+                                Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " +
+                                       nameof(OzetAlgoritmaTuru.RIPEMD160) +
+                                       " özet algoritması kullanımdan kaldırılmıştır. URI: " + referans.URI,
                                 Uri = referans.URI,
                                 HataTuru = DogrulamaHataTuru.Onemli
                             });
-                        else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X && referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
+                        else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X &&
+                                 referans.Ozet.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
-                                Hata = nameof(OzetAlgoritmaTuru.SHA384) + " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir. URI: " + referans.URI,
+                                Hata = nameof(OzetAlgoritmaTuru.SHA384) +
+                                       " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir. URI: " +
+                                       referans.URI,
                                 Uri = referans.URI,
                                 HataTuru = DogrulamaHataTuru.Kritik
                             });
@@ -2609,7 +2801,7 @@ namespace eyazisma.online.api.Extensions
 
                         if (!referans.Ozet1.Dogrula(paketVersiyon, ref hatalar))
                         {
-                            hatalar.ForEach((hata) =>
+                            hatalar.ForEach(hata =>
                             {
                                 hata.Uri = referans.URI;
                                 hata.Hata = hata.Hata + " URI: " + referans.URI;
@@ -2626,21 +2818,29 @@ namespace eyazisma.online.api.Extensions
                             if (referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.YOK)
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = nameof(referans.Ozet1.OzetAlgoritmasi.Algoritma) + " alanı değeri desteklenmemektedir. URI: " + referans.URI,
+                                    Hata = nameof(referans.Ozet1.OzetAlgoritmasi.Algoritma) +
+                                           " alanı değeri desteklenmemektedir. URI: " + referans.URI,
                                     Uri = referans.URI,
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
-                            else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X && (referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 || referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
+                            else if (paketVersiyon == PaketVersiyonTuru.Versiyon2X &&
+                                     (referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.RIPEMD160 ||
+                                      referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA1))
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " + nameof(OzetAlgoritmaTuru.RIPEMD160) + " özet algoritması kullanımdan kaldırılmıştır. URI: " + referans.URI,
+                                    Hata = nameof(OzetAlgoritmaTuru.SHA1) + " özet algoritması ve " +
+                                           nameof(OzetAlgoritmaTuru.RIPEMD160) +
+                                           " özet algoritması kullanımdan kaldırılmıştır. URI: " + referans.URI,
                                     Uri = referans.URI,
                                     HataTuru = DogrulamaHataTuru.Onemli
                                 });
-                            else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X && referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
+                            else if (paketVersiyon == PaketVersiyonTuru.Versiyon1X &&
+                                     referans.Ozet1.OzetAlgoritmasi.Algoritma == OzetAlgoritmaTuru.SHA384)
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = nameof(OzetAlgoritmaTuru.SHA384) + " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir. URI: " + referans.URI,
+                                    Hata = nameof(OzetAlgoritmaTuru.SHA384) +
+                                           " özet algoritması yalnızca e-Yazışma API 2.X versiyonlarında kullanılabilir. URI: " +
+                                           referans.URI,
                                     Uri = referans.URI,
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
@@ -2648,15 +2848,20 @@ namespace eyazisma.online.api.Extensions
                             if (referans.Ozet.OzetAlgoritmasi.Algoritma == referans.Ozet1.OzetAlgoritmasi.Algoritma)
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = nameof(referans.Ozet.OzetAlgoritmasi.Algoritma) + " alanı değeri ile " + nameof(referans.Ozet1.OzetAlgoritmasi.Algoritma) + " alanı değeri aynı olmamalıdır. URI: " + referans.URI,
+                                    Hata = nameof(referans.Ozet.OzetAlgoritmasi.Algoritma) + " alanı değeri ile " +
+                                           nameof(referans.Ozet1.OzetAlgoritmasi.Algoritma) +
+                                           " alanı değeri aynı olmamalıdır. URI: " + referans.URI,
                                     Uri = referans.URI,
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
 
-                            if (referans.Ozet.OzetAlgoritmasi.Algoritma != OzetAlgoritmaTuru.SHA512 && referans.Ozet1.OzetAlgoritmasi.Algoritma != OzetAlgoritmaTuru.SHA512)
+                            if (referans.Ozet.OzetAlgoritmasi.Algoritma != OzetAlgoritmaTuru.SHA512 &&
+                                referans.Ozet1.OzetAlgoritmasi.Algoritma != OzetAlgoritmaTuru.SHA512)
                                 dogrulamaHatalari.Add(new DogrulamaHatasi
                                 {
-                                    Hata = "En az bir " + nameof(OzetAlgoritmasi.Algoritma) + " alanı değeri " + nameof(OzetAlgoritmaTuru.SHA512) + " türünde olmalıdır. URI: " + referans.URI,
+                                    Hata = "En az bir " + nameof(OzetAlgoritmasi.Algoritma) + " alanı değeri " +
+                                           nameof(OzetAlgoritmaTuru.SHA512) + " türünde olmalıdır. URI: " +
+                                           referans.URI,
                                     Uri = referans.URI,
                                     HataTuru = DogrulamaHataTuru.Kritik
                                 });
@@ -2673,16 +2878,18 @@ namespace eyazisma.online.api.Extensions
                     Stream referansStream;
                     try
                     {
-                        referansStream = package.GetPart(PackUriHelper.CreatePartUri(new Uri(Uri.UnescapeDataString(referans.URI), UriKind.Relative))).GetStream();
+                        referansStream = package
+                            .GetPart(PackUriHelper.CreatePartUri(new Uri(Uri.UnescapeDataString(referans.URI),
+                                UriKind.Relative))).GetStream();
                     }
                     catch (Exception ex)
                     {
-                        if ((paketVersiyon == PaketVersiyonTuru.Versiyon2X && string.Compare(referans.URI, Constants.URI_PARAFIMZA_STRING, true) == 0) ||
+                        if (paketVersiyon == PaketVersiyonTuru.Versiyon2X &&
+                            string.Compare(referans.URI, Constants.URI_PARAFIMZA_STRING, true) == 0 ||
                             !referans.URI.StartsWith("/Ekler/") ||
-                            dagitimTanimlayici == null ||
-                            (ustveri.Dagitimlar == null || ustveri.Dagitimlar.Count == 0) ||
-                            (ustveri.Ekler == null || ustveri.Ekler.Count == 0)
-                           )
+                            dagitimTanimlayici == null || ustveri.Dagitimlar == null || ustveri.Dagitimlar.Count == 0 ||
+                            ustveri.Ekler == null || ustveri.Ekler.Count == 0
+                        )
                         {
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
@@ -2711,12 +2918,11 @@ namespace eyazisma.online.api.Extensions
                             {
                                 Dagitim dagitim = null;
                                 if (ustveri.Dagitimlar != null && ustveri.Dagitimlar.Count == 0)
-                                {
                                     foreach (var dagitimOge in ustveri.Dagitimlar)
-                                    {
                                         if (dagitim.Oge is KurumKurulus kurumKurulus)
                                         {
-                                            if (!string.IsNullOrWhiteSpace(kurumKurulus.KKK) && kurumKurulus.KKK == dagitimTanimlayici.Deger)
+                                            if (!string.IsNullOrWhiteSpace(kurumKurulus.KKK) &&
+                                                kurumKurulus.KKK == dagitimTanimlayici.Deger)
                                             {
                                                 dagitim = dagitimOge;
                                                 break;
@@ -2724,7 +2930,9 @@ namespace eyazisma.online.api.Extensions
                                         }
                                         else if (dagitim.Oge is TuzelSahis tuzelSahis)
                                         {
-                                            if (tuzelSahis.Id != null && string.IsNullOrWhiteSpace(tuzelSahis.Id.Deger) && tuzelSahis.Id.Deger == dagitimTanimlayici.Deger)
+                                            if (tuzelSahis.Id != null &&
+                                                string.IsNullOrWhiteSpace(tuzelSahis.Id.Deger) &&
+                                                tuzelSahis.Id.Deger == dagitimTanimlayici.Deger)
                                             {
                                                 dagitim = dagitimOge;
                                                 break;
@@ -2732,20 +2940,19 @@ namespace eyazisma.online.api.Extensions
                                         }
                                         else if (dagitim.Oge is GercekSahis gercekSahis)
                                         {
-                                            if (!string.IsNullOrWhiteSpace(gercekSahis.TCKN) && gercekSahis.TCKN == dagitimTanimlayici.Deger)
+                                            if (!string.IsNullOrWhiteSpace(gercekSahis.TCKN) &&
+                                                gercekSahis.TCKN == dagitimTanimlayici.Deger)
                                             {
                                                 dagitim = dagitimOge;
                                                 break;
                                             }
                                         }
-                                    }
-                                }
 
                                 if (dagitim == null ||
                                     dagitim.KonulmamisEkler == null ||
                                     dagitim.KonulmamisEkler.Count == 0 ||
-                                    !dagitim.KonulmamisEkler.Any(p => string.Compare(p.EkIdDeger.ToString(), ek.Id.Deger, true) == 0))
-                                {
+                                    !dagitim.KonulmamisEkler.Any(p =>
+                                        string.Compare(p.EkIdDeger.ToString(), ek.Id.Deger, true) == 0))
                                     dogrulamaHatalari.Add(new DogrulamaHatasi
                                     {
                                         Hata = string.Format("Paket bileşeni alınamamıştır. URI: {0}.", referans.URI),
@@ -2753,7 +2960,6 @@ namespace eyazisma.online.api.Extensions
                                         Uri = referans.URI,
                                         InnerException = ex
                                     });
-                                }
                             }
                         }
 
@@ -2771,7 +2977,8 @@ namespace eyazisma.online.api.Extensions
                     {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
-                            Hata = string.Format("Paket bileşenine ait hash hesaplanamamıştır. URI: {0}.", referans.URI),
+                            Hata = string.Format("Paket bileşenine ait hash hesaplanamamıştır. URI: {0}.",
+                                referans.URI),
                             HataTuru = DogrulamaHataTuru.Kritik,
                             Uri = referans.URI,
                             InnerException = ex
@@ -2779,14 +2986,12 @@ namespace eyazisma.online.api.Extensions
                     }
 
                     if (computedDigestValue != null && !computedDigestValue.SequenceEqual(referans.Ozet.OzetDegeri))
-                    {
                         dogrulamaHatalari.Add(new DogrulamaHatasi
                         {
                             Hata = string.Format("Paket bileşenine ait hashler eşit değildir. URI: {0}.", referans.URI),
                             HataTuru = DogrulamaHataTuru.Kritik,
                             Uri = referans.URI
                         });
-                    }
 
                     if (paketVersiyon == PaketVersiyonTuru.Versiyon2X)
                     {
@@ -2794,28 +2999,30 @@ namespace eyazisma.online.api.Extensions
                         byte[] computedDigestValue1 = null;
                         try
                         {
-                            computedDigestValue1 = referans.Ozet1.OzetAlgoritmasi.Algoritma.CalculateHash(referansStream);
+                            computedDigestValue1 =
+                                referans.Ozet1.OzetAlgoritmasi.Algoritma.CalculateHash(referansStream);
                         }
                         catch (Exception ex)
                         {
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
-                                Hata = string.Format("Paket bileşenine ait hash hesaplanamamıştır. URI: {0}.", referans.URI),
+                                Hata = string.Format("Paket bileşenine ait hash hesaplanamamıştır. URI: {0}.",
+                                    referans.URI),
                                 HataTuru = DogrulamaHataTuru.Kritik,
                                 Uri = referans.URI,
                                 InnerException = ex
                             });
                         }
 
-                        if (computedDigestValue1 != null && !computedDigestValue.SequenceEqual(referans.Ozet.OzetDegeri))
-                        {
+                        if (computedDigestValue1 != null &&
+                            !computedDigestValue.SequenceEqual(referans.Ozet.OzetDegeri))
                             dogrulamaHatalari.Add(new DogrulamaHatasi
                             {
-                                Hata = string.Format("Paket bileşenine ait hashler eşit değildir. URI: {0}.", referans.URI),
+                                Hata = string.Format("Paket bileşenine ait hashler eşit değildir. URI: {0}.",
+                                    referans.URI),
                                 HataTuru = DogrulamaHataTuru.Kritik,
                                 Uri = referans.URI
                             });
-                        }
                     }
                 }
             }
@@ -2830,7 +3037,9 @@ namespace eyazisma.online.api.Extensions
             if (string.IsNullOrWhiteSpace(telefon))
                 return false;
 
-            return new Regex(@"^(?:(\+\d{1,3})?)(?:[\s]?)((\(\d{3}\))|(\d{3}))(?:[.\s]?)(\d{3})(?:[-\.\s]?)(\d{2})(?:[\s]?)(\d{2})(?!\d)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(telefon);
+            return new Regex(
+                @"^(?:(\+\d{1,3})?)(?:[\s]?)((\(\d{3}\))|(\d{3}))(?:[.\s]?)(\d{3})(?:[-\.\s]?)(\d{2})(?:[\s]?)(\d{2})(?!\d)$",
+                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(telefon);
         }
 
         internal static bool DogrulaEPosta(this string eposta)
@@ -2842,7 +3051,7 @@ namespace eyazisma.online.api.Extensions
             {
                 // Normalize the domain
                 eposta = Regex.Replace(eposta, @"(@)(.+)$", DomainMapper,
-                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
 
                 // Examines the domain part of the email and normalizes it.
                 string DomainMapper(Match match)
@@ -2851,7 +3060,7 @@ namespace eyazisma.online.api.Extensions
                     var idn = new IdnMapping();
 
                     // Pull out and process domain name (throws ArgumentException on invalid)
-                    string domainName = idn.GetAscii(match.Groups[2].Value);
+                    var domainName = idn.GetAscii(match.Groups[2].Value);
 
                     return match.Groups[1].Value + domainName;
                 }
@@ -2882,35 +3091,47 @@ namespace eyazisma.online.api.Extensions
             if (string.IsNullOrWhiteSpace(webAdresi))
                 return false;
 
-            return new Regex(@"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(webAdresi);
+            return new Regex(
+                @"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$",
+                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(webAdresi);
         }
 
         internal static bool DogrulaTCKimlikNo(this string tcKimlikNo)
         {
-            if (string.IsNullOrWhiteSpace(tcKimlikNo) || tcKimlikNo.Length != 11 || !new Regex(@"^\d{11}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(tcKimlikNo))
+            if (string.IsNullOrWhiteSpace(tcKimlikNo) || tcKimlikNo.Length != 11 ||
+                !new Regex(@"^\d{11}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(tcKimlikNo))
                 return false;
 
-            Int64 ATCNO, BTCNO, TcNo;
+            long ATCNO, BTCNO, TcNo;
             long C1, C2, C3, C4, C5, C6, C7, C8, C9, Q1, Q2;
 
-            TcNo = Int64.Parse(tcKimlikNo);
+            TcNo = long.Parse(tcKimlikNo);
 
             ATCNO = TcNo / 100;
             BTCNO = TcNo / 100;
 
-            C1 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C2 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C3 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C4 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C5 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C6 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C7 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C8 = ATCNO % 10; ATCNO = ATCNO / 10;
-            C9 = ATCNO % 10; ATCNO = ATCNO / 10;
-            Q1 = ((10 - ((((C1 + C3 + C5 + C7 + C9) * 3) + (C2 + C4 + C6 + C8)) % 10)) % 10);
-            Q2 = ((10 - (((((C2 + C4 + C6 + C8) + Q1) * 3) + (C1 + C3 + C5 + C7 + C9)) % 10)) % 10);
+            C1 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C2 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C3 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C4 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C5 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C6 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C7 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C8 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            C9 = ATCNO % 10;
+            ATCNO = ATCNO / 10;
+            Q1 = (10 - ((C1 + C3 + C5 + C7 + C9) * 3 + C2 + C4 + C6 + C8) % 10) % 10;
+            Q2 = (10 - ((C2 + C4 + C6 + C8 + Q1) * 3 + C1 + C3 + C5 + C7 + C9) % 10) % 10;
 
-            return ((BTCNO * 100) + (Q1 * 10) + Q2 == TcNo);
+            return BTCNO * 100 + Q1 * 10 + Q2 == TcNo;
         }
 
         internal static bool DogrulaKKK(this string kkk)
@@ -2918,7 +3139,8 @@ namespace eyazisma.online.api.Extensions
             if (string.IsNullOrWhiteSpace(kkk))
                 return false;
 
-            return new Regex(@"^[1-9]{1}[0-9]{7}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(kkk);
+            return new Regex(@"^[1-9]{1}[0-9]{7}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+                .IsMatch(kkk);
         }
 
         internal static bool DogrulaKepAdresi(this string kepAdresi)
@@ -2934,7 +3156,8 @@ namespace eyazisma.online.api.Extensions
             if (string.IsNullOrWhiteSpace(kod))
                 return false;
 
-            return new Regex(@"^([0-9][0-9][0-9])(\.[0-9][0-9])?(\.[0-9][0-9])?(\.[0-9][0-9])?$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(kod);
+            return new Regex(@"^([0-9][0-9][0-9])(\.[0-9][0-9])?(\.[0-9][0-9])?(\.[0-9][0-9])?$",
+                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(kod);
         }
 
         internal static DogrulamaHataTuru? GetDogrulamaHataTuru(this List<DogrulamaHatasi> dogrulamaHatalari)
@@ -2943,10 +3166,11 @@ namespace eyazisma.online.api.Extensions
             {
                 if (dogrulamaHatalari.Any(p => p.HataTuru == DogrulamaHataTuru.Kritik))
                     return DogrulamaHataTuru.Kritik;
-                else if (dogrulamaHatalari.Any(p => p.HataTuru == DogrulamaHataTuru.Onemli))
+                if (dogrulamaHatalari.Any(p => p.HataTuru == DogrulamaHataTuru.Onemli))
                     return DogrulamaHataTuru.Onemli;
                 return DogrulamaHataTuru.Uyari;
             }
+
             return null;
         }
     }

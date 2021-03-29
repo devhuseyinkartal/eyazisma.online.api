@@ -1,16 +1,17 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Belgenin üzerindeki imzalara ilişkin bilgilerdir.
+    ///     Belgenin üzerindeki imzalara ilişkin bilgilerdir.
     /// </summary>
-
     public sealed class BelgeImza
     {
-        public BelgeImza() { }
+        public BelgeImza()
+        {
+        }
 
         public BelgeImza(List<Imza> imzalar)
         {
@@ -18,14 +19,14 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Belgenin üzerindeki imza bilgilerdir.
+        ///     Belgenin üzerindeki imza bilgilerdir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public List<Imza> Imzalar { get; set; }
 
         public sealed class Kilavuz : IBelgeImzaFluent
         {
-            private List<Imza> _imzalar;
+            private readonly List<Imza> _imzalar;
 
             private Kilavuz(List<Imza> imzalar)
             {
@@ -34,22 +35,38 @@ namespace eyazisma.online.api.Classes
                     _imzalar.AddRange(imzalar);
             }
 
+            public void Dispose()
+            {
+                GC.SuppressFinalize(this);
+            }
+
+            public BelgeImza Olustur()
+            {
+                return new BelgeImza(_imzalar);
+            }
+
             /// <summary>
-            /// Belge üzerindeki imza bilgisidir.
+            ///     Belge üzerindeki imza bilgisidir.
             /// </summary>
             /// <param name="imza">Imza bilgisi değeridir. Imza tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
-            public static IBelgeImzaFluentImza ImzaEkle(Imza imza) => new Kilavuz(new List<Imza> { imza });
+            public static IBelgeImzaFluentImza ImzaEkle(Imza imza)
+            {
+                return new Kilavuz(new List<Imza> {imza});
+            }
 
             /// <summary>
-            /// Belge üzerindeki imza bilgisidir.
+            ///     Belge üzerindeki imza bilgisidir.
             /// </summary>
             /// <param name="imzalar">Imza bilgisi değeridir. Imza tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
-            public static IBelgeImzaFluentImzalar ImzalarEkle(List<Imza> imzalar) => new Kilavuz(imzalar);
+            public static IBelgeImzaFluentImzalar ImzalarEkle(List<Imza> imzalar)
+            {
+                return new Kilavuz(imzalar);
+            }
 
             /// <summary>
-            /// Belge üzerindeki imza bilgisidir.
+            ///     Belge üzerindeki imza bilgisidir.
             /// </summary>
             /// <param name="imza">Imza bilgisi değeridir. Imza tipinde olmalıdır.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -58,13 +75,6 @@ namespace eyazisma.online.api.Classes
                 _imzalar.Add(imza);
                 return this;
             }
-
-            public void Dispose()
-            {
-                GC.SuppressFinalize(this);
-            }
-
-            public BelgeImza Olustur() => new BelgeImza(_imzalar);
         }
     }
 }

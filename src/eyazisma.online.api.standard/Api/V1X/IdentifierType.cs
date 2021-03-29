@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V1X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2")]
     [XmlRoot("OzId", Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", IsNullable = false)]
     public sealed class IdentifierType

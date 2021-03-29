@@ -3,12 +3,12 @@
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Şifreleme yöntemi bilgileridir.
+    ///     Şifreleme yöntemi bilgileridir.
     /// </summary>
     public sealed class SifreliIcerikBilgisi
     {
         /// <summary>
-        /// Şifreleme mekanizmasını tanımlayan URI bilgileridir.
+        ///     Şifreleme mekanizmasını tanımlayan URI bilgileridir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public List<string> URI { get; set; }
@@ -16,13 +16,13 @@ namespace eyazisma.online.api.Classes
         public string Id { get; set; }
 
         /// <summary>
-        /// Şifreleme mekanizmasını tanımlayan dokümanın adıdır.
+        ///     Şifreleme mekanizmasını tanımlayan dokümanın adıdır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string Yontem { get; set; }
 
         /// <summary>
-        /// Şifreleme mekanizmasını tanımlayan sürüm bilgisidir.
+        ///     Şifreleme mekanizmasını tanımlayan sürüm bilgisidir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string Versiyon { get; set; }

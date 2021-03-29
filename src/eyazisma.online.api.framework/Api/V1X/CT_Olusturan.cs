@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V1X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1")]
     [XmlRoot("Olusturan", Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-1", IsNullable = false)]
     public sealed class CT_Olusturan

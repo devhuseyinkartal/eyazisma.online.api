@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:ParafOzeti-2")]
     [XmlRoot("ParafOzeti", Namespace = "urn:dpt:eyazisma:schema:xsd:ParafOzeti-2", IsNullable = false)]
     public sealed class CT_ParafOzeti
@@ -11,7 +11,6 @@ namespace eyazisma.online.api.Api.V2X
         [XmlElement("Reference", Namespace = "urn:dpt:eyazisma:schema:xsd:PaketOzeti-2", Order = 0)]
         public CT_Reference[] Reference { get; set; }
 
-        [XmlAttribute(DataType = "ID")]
-        public string Id { get; set; }
+        [XmlAttribute(DataType = "ID")] public string Id { get; set; }
     }
 }

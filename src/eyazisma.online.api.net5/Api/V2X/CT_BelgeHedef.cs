@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:BelgeHedef-2")]
     [XmlRoot("BelgeHedef", Namespace = "urn:dpt:eyazisma:schema:xsd:BelgeHedef-2", IsNullable = false)]
     public sealed class CT_BelgeHedef

@@ -1,15 +1,17 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Standart Dosya Planı bilgisidir.
+    ///     Standart Dosya Planı bilgisidir.
     /// </summary>
     /// <remarks>Only for version 2.0</remarks>
     public sealed class SDP
     {
-        public SDP() { }
+        public SDP()
+        {
+        }
 
         private SDP(string kod, string ad, string aciklama)
         {
@@ -19,25 +21,26 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Standart Dosya Planı kodudur.
+        ///     Standart Dosya Planı kodudur.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string Kod { get; set; }
 
         /// <summary>
-        /// Standart Dosya Planı adıdır.
+        ///     Standart Dosya Planı adıdır.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public string Ad { get; set; }
 
         /// <summary>
-        /// Standart Dosya Planı açıklamasıdır.
+        ///     Standart Dosya Planı açıklamasıdır.
         /// </summary>
         public string Aciklama { get; set; }
 
         public sealed class Kilavuz : ISDPFluent
         {
-            private string _kod, _ad, _aciklama;
+            private readonly string _kod;
+            private string _ad, _aciklama;
 
             private Kilavuz(string kod)
             {
@@ -45,14 +48,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Standart Dosya Planı kodudur.
-            /// </summary>
-            /// <param name="ad">SDP kod değeridir.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static ISDPFluentKod KodAta(string kod) => new Kilavuz(kod);
-
-            /// <summary>
-            /// Standart Dosya Planı adıdır.
+            ///     Standart Dosya Planı adıdır.
             /// </summary>
             /// <param name="ad">SDP adı değeridir.</param>
             /// <remarks>Zorunlu alandır.</remarks>
@@ -63,7 +59,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Standart Dosya Planı açıklamasıdır.
+            ///     Standart Dosya Planı açıklamasıdır.
             /// </summary>
             /// <param name="aciklama">SDP açıklaması değeridir.</param>
             public ISDPFluentAciklama AciklamaIle(string aciklama)
@@ -74,12 +70,22 @@ namespace eyazisma.online.api.Classes
 
             public SDP Olustur()
             {
-                return new SDP(_kod, _ad, _aciklama);
+                return new(_kod, _ad, _aciklama);
             }
 
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Standart Dosya Planı kodudur.
+            /// </summary>
+            /// <param name="ad">SDP kod değeridir.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static ISDPFluentKod KodAta(string kod)
+            {
+                return new Kilavuz(kod);
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:KodGuvenlik-2")]
     [XmlRoot("GuvenlikKodu", Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2", IsNullable = false)]
     public enum ST_KodGuvenlikKodu

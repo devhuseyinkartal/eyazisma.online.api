@@ -1,16 +1,17 @@
 ﻿namespace eyazisma.online.api.Enums
 {
     /// <summary>
-    /// Dağıtımın türünü belirtir.
+    ///     Dağıtımın türünü belirtir.
     /// </summary>
     public enum DagitimTuru
     {
         /// <summary>
-        /// Gereği
+        ///     Gereği
         /// </summary>
         GRG = 1,
+
         /// <summary>
-        /// Bilgi
+        ///     Bilgi
         /// </summary>
         BLG = 2
     }

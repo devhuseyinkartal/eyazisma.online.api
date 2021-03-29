@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
@@ -10,10 +10,12 @@ namespace eyazisma.online.api.Interfaces.Fluents
     public interface IIdTipFluentDeger
     {
         /// <summary>
-        ///  Paket içerisindeki ilgi veya ekin başka bir e-Yazışma Paketi veya başka bir e-Yazışma Paketi'nin eki olup olmadığını belirtir.
+        ///     Paket içerisindeki ilgi veya ekin başka bir e-Yazışma Paketi veya başka bir e-Yazışma Paketi'nin eki olup
+        ///     olmadığını belirtir.
         /// </summary>
         /// <param name="eYazismaIdMi">Boolean tipinde olmalıdır.</param>
         IIdTipFluentEYazismaId EYazismaIdMiAta(bool eYazismaIdMi);
+
         IdTip Olustur();
     }
 

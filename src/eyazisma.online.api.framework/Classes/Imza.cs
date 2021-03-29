@@ -1,22 +1,24 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Belgenin üzerindeki her bir imzaya ait bilgilerdir.
+    ///     Belgenin üzerindeki her bir imzaya ait bilgilerdir.
     /// </summary>
     public sealed class Imza
     {
-        public Imza() { }
+        public Imza()
+        {
+        }
 
         private Imza(GercekSahis imzalayan,
-                    GercekSahis yetkiDevreden,
-                    GercekSahis vekaletVeren,
-                    IsimTip makam,
-                    MetinTip amac,
-                    MetinTip aciklama,
-                    DateTime? tarih)
+            GercekSahis yetkiDevreden,
+            GercekSahis vekaletVeren,
+            IsimTip makam,
+            MetinTip amac,
+            MetinTip aciklama,
+            DateTime? tarih)
         {
             Imzalayan = imzalayan;
             YetkiDevreden = yetkiDevreden;
@@ -28,43 +30,43 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// İmzayı atan kişiye ait bilgilerdir.
+        ///     İmzayı atan kişiye ait bilgilerdir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public GercekSahis Imzalayan { get; set; }
 
         /// <summary>
-        /// İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerdir.
+        ///     İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerdir.
         /// </summary>
         public GercekSahis YetkiDevreden { get; set; }
 
         /// <summary>
-        /// İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerdir.
+        ///     İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerdir.
         /// </summary>
         public GercekSahis VekaletVeren { get; set; }
 
         /// <summary>
-        /// İmzayı atan kişinin makam bilgisidir.
+        ///     İmzayı atan kişinin makam bilgisidir.
         /// </summary>
         public IsimTip Makam { get; set; }
 
         /// <summary>
-        /// İmza amacıdır.
+        ///     İmza amacıdır.
         /// </summary>
         public MetinTip Amac { get; set; }
 
         /// <summary>
-        /// İmzaya ilişkin açıklamadır.
+        ///     İmzaya ilişkin açıklamadır.
         /// </summary>
         public MetinTip Aciklama { get; set; }
 
         /// <summary>
-        /// İmzanın atıldığı tarih ve saat bilgisidir.
+        ///     İmzanın atıldığı tarih ve saat bilgisidir.
         /// </summary>
         public DateTime? Tarih { get; set; }
 
         /// <summary>
-        /// DETSİS'te yer alan T.C. Yönetici Kodudur.
+        ///     DETSİS'te yer alan T.C. Yönetici Kodudur.
         /// </summary>
         [Obsolete("Since version 2.0", false)]
         public string TCYK { get; set; }
@@ -72,9 +74,10 @@ namespace eyazisma.online.api.Classes
 
         public sealed class Kilavuz : IImzaFluent
         {
-            private GercekSahis _imzalayan, _yetkiDevreden, _vekaletVeren;
-            private IsimTip _makam;
             private MetinTip _amac, _aciklama;
+            private readonly GercekSahis _imzalayan;
+            private GercekSahis _yetkiDevreden, _vekaletVeren;
+            private IsimTip _makam;
             private DateTime? _tarih;
 
             private Kilavuz(GercekSahis imzalayan)
@@ -83,16 +86,12 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmzayı atan kişiye ait bilgilerdir.
+            ///     İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerdir.
             /// </summary>
-            /// <param name="imzalayan">İmzayı atan kişiye ait bilgilerin değeridir. GercekSahis tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IImzaFluentImzalayan ImzalayanAta(GercekSahis imzalayan) => new Kilavuz(imzalayan);
-
-            /// <summary>
-            /// İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerdir.
-            /// </summary>
-            /// <param name="yetkiDevreden">İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerin değeridir. GercekSahis tipinde olmalıdır.</param>
+            /// <param name="yetkiDevreden">
+            ///     İmzayı atan kişiye imza yetkisini devreden kişiye ait bilgilerin değeridir. GercekSahis
+            ///     tipinde olmalıdır.
+            /// </param>
             public IImzaFluentYetkiDevreden YetkiDevredenIle(GercekSahis yetkiDevreden)
             {
                 _yetkiDevreden = yetkiDevreden;
@@ -100,9 +99,12 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerdir.
+            ///     İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerdir.
             /// </summary>
-            /// <param name="vekaletVeren">İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerin değeridir. GercekSahis tipinde olmalıdır.</param>
+            /// <param name="vekaletVeren">
+            ///     İmzayı atan kişinin vekâlet ettiği kişiye ait bilgilerin değeridir. GercekSahis tipinde
+            ///     olmalıdır.
+            /// </param>
             public IImzaFluentVekaletVeren VekaletVerenIle(GercekSahis vekaletVeren)
             {
                 _vekaletVeren = vekaletVeren;
@@ -110,7 +112,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmzayı atan kişinin makam bilgisidir.
+            ///     İmzayı atan kişinin makam bilgisidir.
             /// </summary>
             /// <param name="makam">İmzayı atan kişinin makam bilgisi değeridir. IsimTip tipinde olmalıdır.</param>
             public IImzaFluentMakam MakamIle(IsimTip makam)
@@ -120,7 +122,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmza amacıdır.
+            ///     İmza amacıdır.
             /// </summary>
             /// <param name="amac">İmza amacının değeridir. MetinTip tipinde olmalıdır.</param>
             public IImzaFluentAmac AmacIle(MetinTip amac)
@@ -130,7 +132,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmzaya ilişkin açıklamadır.
+            ///     İmzaya ilişkin açıklamadır.
             /// </summary>
             /// <param name="aciklama">İmzaya ilişkin açıklama değeridir. MetinTip tipinde olmalıdır.</param>
             public IImzaFluentAciklama AciklamaIle(MetinTip aciklama)
@@ -140,7 +142,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// İmzanın atıldığı tarih ve saat bilgisidir.
+            ///     İmzanın atıldığı tarih ve saat bilgisidir.
             /// </summary>
             /// <param name="tarih">İmzanın atıldığı tarih ve saat bilgisi değeridir. DateTime tipinde olmalıdır.</param>
             public IImzaFluentTarih TarihIle(DateTime tarih)
@@ -157,6 +159,16 @@ namespace eyazisma.online.api.Classes
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     İmzayı atan kişiye ait bilgilerdir.
+            /// </summary>
+            /// <param name="imzalayan">İmzayı atan kişiye ait bilgilerin değeridir. GercekSahis tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IImzaFluentImzalayan ImzalayanAta(GercekSahis imzalayan)
+            {
+                return new Kilavuz(imzalayan);
             }
         }
     }

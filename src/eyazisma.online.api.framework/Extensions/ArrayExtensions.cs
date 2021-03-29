@@ -16,7 +16,9 @@ namespace eyazisma.online.api.Extensions
                 array[0] = arrayItem;
             }
             else
-                array = array.Concat(new T[] { arrayItem }).ToArray();
+            {
+                array = array.Concat(new[] {arrayItem}).ToArray();
+            }
 
             return array;
         }

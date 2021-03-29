@@ -1,14 +1,16 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Gerçek şahıs bilgisidir.
+    ///     Gerçek şahıs bilgisidir.
     /// </summary>
     public sealed class GercekSahis
     {
-        public GercekSahis() { }
+        public GercekSahis()
+        {
+        }
 
         private GercekSahis(Kisi kisi, string tckn, MetinTip gorev, IletisimBilgisi iletisimBilgisi)
         {
@@ -19,32 +21,32 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// Kişiye ait kimlik bilgileridir.
+        ///     Kişiye ait kimlik bilgileridir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public Kisi Kisi { get; set; }
 
         /// <summary>
-        /// Kişinin T.C. kimlik numarasıdır.
+        ///     Kişinin T.C. kimlik numarasıdır.
         /// </summary>
         public string TCKN { get; set; }
 
         /// <summary>
-        /// Kişinin görev bilgisidir.
+        ///     Kişinin görev bilgisidir.
         /// </summary>
         public MetinTip Gorev { get; set; }
 
         /// <summary>
-        /// Kişiye ait iletişim bilgisidir.
+        ///     Kişiye ait iletişim bilgisidir.
         /// </summary>
         public IletisimBilgisi IletisimBilgisi { get; set; }
 
         public sealed class Kilavuz : IGercekSahisFluent
         {
-            private Kisi _kisi;
-            private string _tckn;
             private MetinTip _gorev;
             private IletisimBilgisi _iletisim;
+            private readonly Kisi _kisi;
+            private string _tckn;
 
             private Kilavuz(Kisi kisi)
             {
@@ -52,14 +54,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kişiye ait kimlik bilgisinin atanaması için kullanılır.
-            /// </summary>
-            /// <param name="kisi">Kişiye ait kimlik bilgisi değeridir. Kisi tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IGercekSahisFluentKisi KisiAta(Kisi kisi) => new Kilavuz(kisi);
-
-            /// <summary>
-            /// Kişinin T.C. kimlik numarasının atanması için kullanılır.
+            ///     Kişinin T.C. kimlik numarasının atanması için kullanılır.
             /// </summary>
             /// <param name="tckn">Kişinin T.C. kimlik numarası değeridir. String tipinde olmalıdır.</param>
             public IGercekSahisFluentTCKN TCKNIle(string tckn)
@@ -69,7 +64,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kişinin görev bilgisi değerinin atanması için kullanılır.
+            ///     Kişinin görev bilgisi değerinin atanması için kullanılır.
             /// </summary>
             /// <param name="gorev">Kişinin görev bilgisi değeridir. MetinTip tipinde olmalıdır.</param>
             public IGercekSahisFluentGorev GorevIle(MetinTip gorev)
@@ -79,7 +74,7 @@ namespace eyazisma.online.api.Classes
             }
 
             /// <summary>
-            /// Kişiye ait iletişim bilgisi değerinin atanması için kullanılır.
+            ///     Kişiye ait iletişim bilgisi değerinin atanması için kullanılır.
             /// </summary>
             /// <param name="iletisimBilgisi">Kişiye ait iletişim bilgisi değeridir. IletisimBilgisi tipinde olmalıdır.</param>
             public IGercekSahisFluentIletisim IletisimBilgisiIle(IletisimBilgisi iletisimBilgisi)
@@ -96,6 +91,16 @@ namespace eyazisma.online.api.Classes
             public void Dispose()
             {
                 GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Kişiye ait kimlik bilgisinin atanaması için kullanılır.
+            /// </summary>
+            /// <param name="kisi">Kişiye ait kimlik bilgisi değeridir. Kisi tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IGercekSahisFluentKisi KisiAta(Kisi kisi)
+            {
+                return new Kilavuz(kisi);
             }
         }
     }

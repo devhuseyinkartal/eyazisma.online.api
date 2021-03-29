@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Ustveri-2")]
     [XmlRoot("UstVeri", Namespace = "urn:dpt:eyazisma:schema:xsd:Ustveri-2", IsNullable = false)]
     public sealed class CT_Ustveri
@@ -20,8 +20,7 @@ namespace eyazisma.online.api.Api.V2X
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2", IsNullable = true, Order = 3)]
         public DateTime? GuvenlikKoduGecerlilikTarihi { get; set; }
 
-        [XmlIgnore()]
-        public bool GuvenlikKoduGecerlilikTarihiSpecified { get; set; }
+        [XmlIgnore] public bool GuvenlikKoduGecerlilikTarihiSpecified { get; set; }
 
         [XmlElement(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2", DataType = "normalizedString", Order = 4)]
         public string MimeTuru { get; set; }

@@ -1,14 +1,16 @@
-﻿using eyazisma.online.api.Interfaces.Fluents;
-using System;
+﻿using System;
+using eyazisma.online.api.Interfaces.Fluents;
 
 namespace eyazisma.online.api.Classes
 {
     /// <summary>
-    /// Belgeyi oluşturan tarafa ait bilgidir
+    ///     Belgeyi oluşturan tarafa ait bilgidir
     /// </summary>
     public class Olusturan
     {
-        public Olusturan() { }
+        public Olusturan()
+        {
+        }
 
         private Olusturan(object oge)
         {
@@ -16,10 +18,10 @@ namespace eyazisma.online.api.Classes
         }
 
         /// <summary>
-        /// GercekSahis, KurumKurulus, TuzelSahis tipinde değer olmalıdır.
-        /// GercekSahis -> Belgeyi oluşturan gerçek şahıs bilgisidir.
-        /// KurumKurulus -> Belgeyi oluşturan kurum / kuruluş bilgisidir.
-        /// TuzelSahis -> Belgeyi oluşturan tüzel şahıs bilgisidir.
+        ///     GercekSahis, KurumKurulus, TuzelSahis tipinde değer olmalıdır.
+        ///     GercekSahis -> Belgeyi oluşturan gerçek şahıs bilgisidir.
+        ///     KurumKurulus -> Belgeyi oluşturan kurum / kuruluş bilgisidir.
+        ///     TuzelSahis -> Belgeyi oluşturan tüzel şahıs bilgisidir.
         /// </summary>
         /// <remarks>Zorunlu alandır.</remarks>
         public object Oge { get; set; }
@@ -33,27 +35,6 @@ namespace eyazisma.online.api.Classes
                 _oge = oge;
             }
 
-            /// <summary>
-            /// Belgeyi oluşturan gerçek şahıs bilgisidir.
-            /// </summary>
-            /// <param name="oge">Belgeyi oluşturan gerçek şahıs bilgisi değeridir. GercekSahis tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IOlusturanFluentItem OgeAta(GercekSahis oge) => new Kilavuz(oge);
-
-            /// <summary>
-            /// Belgeyi oluşturan kurum / kuruluş bilgisidir.
-            /// </summary>
-            /// <param name="oge">Belgeyi oluşturan kurum / kuruluş bilgisi değeridir. KurumKurulus tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IOlusturanFluentItem OgeAta(KurumKurulus oge) => new Kilavuz(oge);
-
-            /// <summary>
-            /// Belgeyi oluşturan tüzel şahıs bilgisidir.
-            /// </summary>
-            /// <param name="oge">Belgeyi oluşturan tüzel şahıs bilgisi değeridir. TuzelSahis tipinde olmalıdır.</param>
-            /// <remarks>Zorunlu alandır.</remarks>
-            public static IOlusturanFluentItem OgeAta(TuzelSahis oge) => new Kilavuz(oge);
-
             public Olusturan Olustur()
             {
                 return new Olusturan(_oge);
@@ -63,19 +44,46 @@ namespace eyazisma.online.api.Classes
             {
                 GC.SuppressFinalize(this);
             }
+
+            /// <summary>
+            ///     Belgeyi oluşturan gerçek şahıs bilgisidir.
+            /// </summary>
+            /// <param name="oge">Belgeyi oluşturan gerçek şahıs bilgisi değeridir. GercekSahis tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IOlusturanFluentItem OgeAta(GercekSahis oge)
+            {
+                return new Kilavuz(oge);
+            }
+
+            /// <summary>
+            ///     Belgeyi oluşturan kurum / kuruluş bilgisidir.
+            /// </summary>
+            /// <param name="oge">Belgeyi oluşturan kurum / kuruluş bilgisi değeridir. KurumKurulus tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IOlusturanFluentItem OgeAta(KurumKurulus oge)
+            {
+                return new Kilavuz(oge);
+            }
+
+            /// <summary>
+            ///     Belgeyi oluşturan tüzel şahıs bilgisidir.
+            /// </summary>
+            /// <param name="oge">Belgeyi oluşturan tüzel şahıs bilgisi değeridir. TuzelSahis tipinde olmalıdır.</param>
+            /// <remarks>Zorunlu alandır.</remarks>
+            public static IOlusturanFluentItem OgeAta(TuzelSahis oge)
+            {
+                return new Kilavuz(oge);
+            }
         }
     }
 
-    internal static partial class OlusturanExtensions
+    internal static class OlusturanExtensions
     {
         public static string GenerateOlusturanAd(this Olusturan olusturan)
         {
-            if (olusturan == null || olusturan.Oge == null)
-            {
-                return null;
-            }
+            if (olusturan == null || olusturan.Oge == null) return null;
 
-            string olusturanAdi = string.Empty;
+            var olusturanAdi = string.Empty;
 
             if (olusturan.Oge is KurumKurulus kurumKurulus)
             {
@@ -124,7 +132,8 @@ namespace eyazisma.online.api.Classes
                     if (gercekSahis.Kisi.IlkAdi != null && !string.IsNullOrWhiteSpace(gercekSahis.Kisi.IlkAdi.Deger))
                         olusturanAdi += gercekSahis.Kisi.IlkAdi.Deger + " ";
 
-                    if (gercekSahis.Kisi.IkinciAdi != null && !string.IsNullOrWhiteSpace(gercekSahis.Kisi.IkinciAdi.Deger))
+                    if (gercekSahis.Kisi.IkinciAdi != null &&
+                        !string.IsNullOrWhiteSpace(gercekSahis.Kisi.IkinciAdi.Deger))
                         olusturanAdi += gercekSahis.Kisi.IkinciAdi.Deger + " ";
 
                     if (gercekSahis.Kisi.Soyadi != null && !string.IsNullOrWhiteSpace(gercekSahis.Kisi.Soyadi.Deger))

@@ -1,5 +1,5 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
@@ -10,7 +10,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
     public interface IOzetFluentAlgoritma
     {
         /// <summary>
-        /// Özetin değeridir.
+        ///     Özetin değeridir.
         /// </summary>
         /// <param name="ozetDegeri">ByteArray tipinde olmalıdır.</param>
         /// <remarks>Zorunlu alandır.</remarks>

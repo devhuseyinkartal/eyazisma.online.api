@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V1X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:BelgeImza-1")]
     [XmlRoot("BelgeImza", Namespace = "urn:dpt:eyazisma:schema:xsd:BelgeImza-1", IsNullable = false)]
     public sealed class CT_BelgeImza

@@ -1,5 +1,6 @@
-﻿using eyazisma.online.api.Classes;
-using System;
+﻿using System;
+using System.Xml;
+using eyazisma.online.api.Classes;
 
 namespace eyazisma.online.api.Interfaces.Fluents
 {
@@ -9,7 +10,7 @@ namespace eyazisma.online.api.Interfaces.Fluents
 
     public interface IOzetAlgoritmasiFluentAlgoritma
     {
-        IOzetAlgoritmasiFluentAny AnyIle(System.Xml.XmlNode[] any);
+        IOzetAlgoritmasiFluentAny AnyIle(XmlNode[] any);
         OzetAlgoritmasi Olustur();
     }
 

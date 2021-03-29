@@ -3,13 +3,12 @@ using System.Xml.Serialization;
 
 namespace eyazisma.online.api.Api.V2X
 {
-    [Serializable()]
+    [Serializable]
     [XmlType(Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2")]
-    [System.Xml.Serialization.XmlRootAttribute("SdpBilgisi", Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2", IsNullable = false)]
+    [XmlRootAttribute("SdpBilgisi", Namespace = "urn:dpt:eyazisma:schema:xsd:Tipler-2", IsNullable = false)]
     public sealed class CT_SDPBilgisi
     {
-        [XmlElement(Order = 0)]
-        public CT_SDP AnaSdp { get; set; }
+        [XmlElement(Order = 0)] public CT_SDP AnaSdp { get; set; }
 
         [XmlArray(Order = 1)]
         [XmlArrayItem("SdpListesi", IsNullable = false)]
